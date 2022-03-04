@@ -1,0 +1,24 @@
+FROM ruby:3.0.3-bullseye
+
+RUN curl -fsSL https://deb.nodesource.com/setup_17.x | bash - \
+  && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+  && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+  && apt-get update -qq \
+  && apt-get install -y \
+    default-mysql-client \
+    default-libmysqlclient-dev \
+    yarn \
+    nodejs \
+  && apt-get clean
+
+WORKDIR /myapp1
+
+COPY Gemfile /myapp1/Gemfile
+COPY Gemfile.lock /myapp1/Gemfile.lock
+RUN gem install bundler -v 2.3.3
+RUN bundle install
+COPY . /myapp1
+
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
