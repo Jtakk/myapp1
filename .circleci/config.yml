@@ -7,72 +7,73 @@ orbs:
   node: circleci/node@2
 
 jobs:
-  build: # our first job, named "build"
+  rubocop:
+    working_directory: ~/myapp1
     docker:
-      - image: cimg/ruby:2.7-node # use a tailored CircleCI docker image.
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    steps:
-      - checkout # pull down our git code.
-      - ruby/install-deps # use the ruby orb to install dependencies
-      # use the node orb to install our packages
-      # specifying that we use `yarn` and to cache dependencies with `yarn.lock`
-      # learn more: https://circleci.com/docs/2.0/caching/
-      - node/install-packages:
-          pkg-manager: yarn
-          cache-key: "yarn.lock"
-
-  test:  # our next job, called "test"
-    # we run "parallel job containers" to enable speeding up our tests;
-    # this splits our tests across multiple containers.
-    parallelism: 3
-    # here we set TWO docker images.
-    docker:
-      - image: cimg/ruby:2.7-node # this is our primary docker image, where step commands run.
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-      - image: cimg/postgres:14.0
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-        environment: # add POSTGRES environment variables.
-          POSTGRES_USER: circleci-demo-ruby
-          POSTGRES_DB: rails_blog_test
-          POSTGRES_PASSWORD: ""
-    # environment variables specific to Ruby/Rails, applied to the primary container.
-    environment:
-      BUNDLE_JOBS: "3"
-      BUNDLE_RETRY: "3"
-      PGHOST: 127.0.0.1
-      PGUSER: circleci-demo-ruby
-      PGPASSWORD: ""
-      RAILS_ENV: test
-    # A series of steps to run, some are similar to those in "build".
+      - image: cimg/ruby:3.0.3
+    parallelism: 1
     steps:
       - checkout
-      - ruby/install-deps
-      - node/install-packages:
-          pkg-manager: yarn
-          cache-key: "yarn.lock"
-      # Here we make sure that the secondary container boots
-      # up before we run operations on the database.
+      - restore_cache:
+          key:
+            - gem-cache-v1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+            - gem-cache-v1-{{ .Branch }}-
+            - gem-cache-v1-
+      - run: bundle config --local path vendor/bundle
       - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+          name: bundle install
+          command: bundle check || bundle install --jobs=4 --clean
       - run:
-          name: Database setup
-          command: bundle exec rails db:schema:load --trace
-      # Run rspec in parallel
-      - ruby/rspec-test
+          name: Run rubocop
+          command: bundle exec rubocop --parallel
+      - save_cache:
+          key: gem-cache-v1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+  rspec:
+    working_directory: ~/myapp1
+    docker:
+      - image: cimg/ruby:3.0.3
+    parallelism: 1
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Setup environment variable
+          command: |
+            echo "export COMPOSE_FILE=docker-compose.ci.yml" >> $BASH_ENV
+      - run:
+          name: Start containers and verify it is working
+          command: |
+            set -x
+            docker-compose up -d
+            docker exec myapp1_web curl --retry 5 --retry-delay 3 --retry-connrefused http://localhost:3000
+      - run:
+          name: Run rspec
+          command: |
+            mkdir /tmp/rspec-results
+            docker-compose exec myapp1 rspec -- format RspecJunitFormatter --out /tmp/rspec-results/rspec.xml
+      - store_test_results:
+          path: /tmp/rspec-results
+
+  deploy:
+    working_directory: ~/myapp1
+    docker:
+      - image:
+
+
+
 
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
-  version: 2
-  build_and_test:     # The name of our workflow is "build_and_test"
-    jobs:             # The list of jobs we run as part of this workflow.
-      - build         # Run build first.
-      - test:         # Then run test,
-          requires:   # Test requires that build passes for it to run.
-            - build   # Finally, run the build job.
+  version: 2.1
+  test_and_deploy:
+    jobs:
+      - rubocop
+      - rspec:
+          requires:
+            - rubocop
+      - deploy:
+          requires:
+            - rspec
