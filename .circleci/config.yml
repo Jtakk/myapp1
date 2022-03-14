@@ -3,8 +3,8 @@ version: 2.1 # Use 2.1 to enable using orbs and other features.
 # Declare the orbs that we'll use in our config.
 # read more about orbs: https://circleci.com/docs/2.0/orb-intro/
 orbs:
-  ruby: circleci/ruby@1.0
-  node: circleci/node@2
+  build-tools: circleci/build-tools@3.0.0
+  jq: circleci/jq@2.2.0
 
 jobs:
   rubocop:
@@ -60,10 +60,26 @@ jobs:
   deploy:
     working_directory: ~/myapp1
     docker:
-      - image:
-
-
-
+      - image: sue445/heroku-cli
+    steps:
+      - checkout
+      - build-tools/install-ci-tools
+      - jq/install
+      - run:
+          name: Define Heroku app name to create
+          command: timestamp=`date +%Y%m%d%H%M%S` && echo "export HEROKU_APP_NAME=myapp1-$timestamp" >> $BASH_ENV
+      - heroku/deploy-via-git
+      - run:
+          name: Create fresh Heroku app
+          command: heroku apps:create $HEROKU_APP_NAME --addons=jawsdb:kitefin
+      - run:
+          name: Deploy
+          command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
+      - run:
+          name: Run post-deploy tasks
+          command: |
+            heroku config:set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            heroku run bin/rails db:migrate
 
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
