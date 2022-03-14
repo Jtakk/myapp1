@@ -48,12 +48,12 @@ jobs:
           command: |
             set -x
             docker-compose up -d
-            docker exec myapp1_web curl --retry 5 --retry-delay 3 --retry-connrefused http://localhost:3000
+            docker exec web_myapp1 curl --retry 5 --retry-delay 3 --retry-connrefused http://localhost:3000
       - run:
           name: Run rspec
           command: |
             mkdir /tmp/rspec-results
-            docker-compose exec myapp1 rspec -- format RspecJunitFormatter --out /tmp/rspec-results/rspec.xml
+            docker-compose exec web rspec -- format RspecJunitFormatter --out /tmp/rspec-results/rspec.xml
       - store_test_results:
           path: /tmp/rspec-results
 
