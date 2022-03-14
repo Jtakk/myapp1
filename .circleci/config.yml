@@ -50,6 +50,11 @@ jobs:
             docker-compose up -d
             docker exec web_myapp1 curl -4 --retry 10 --retry-delay 3 --retry-connrefused http://localhost:3000
       - run:
+          name: Setup database
+          command: |
+            docker-compose exec web bash -c 'bundle exec rake db:create'
+            docker-compose exec web bash -c 'bundle exec rake db:schema:load'
+      - run:
           name: Run rspec
           command: |
             mkdir /tmp/rspec-results
