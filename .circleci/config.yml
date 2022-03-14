@@ -68,7 +68,6 @@ jobs:
       - run:
           name: Define Heroku app name to create
           command: timestamp=`date +%Y%m%d%H%M%S` && echo "export HEROKU_APP_NAME=myapp1-$timestamp" >> $BASH_ENV
-      - heroku/deploy-via-git
       - run:
           name: Create fresh Heroku app
           command: heroku apps:create $HEROKU_APP_NAME --addons=jawsdb:kitefin
