@@ -55,9 +55,13 @@ jobs:
             docker-compose exec web bash -c 'bundle exec rake db:create'
             docker-compose exec web bash -c 'bundle exec rake db:schema:load'
       - run:
+          name: Install dependencies
+          command: |
+            docker-compose exec web bash -c 'bin/rails webpacker:install'
+            docker-compose exec web bash -c 'bin/rails webpacker:compile'
+      - run:
           name: Run rspec
           command: |
-            docker-compose exec web bash -c 'bundle exec rake webpacker:compile'
             mkdir /tmp/rspec-results
             docker-compose exec web rspec
       - store_test_results:
