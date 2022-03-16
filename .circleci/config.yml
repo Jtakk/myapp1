@@ -57,6 +57,7 @@ jobs:
       - run:
           name: Run rspec
           command: |
+            docker-compose exec web bash -c 'bundle exec rake webpacker:compile'
             mkdir /tmp/rspec-results
             docker-compose exec web rspec
       - store_test_results:
