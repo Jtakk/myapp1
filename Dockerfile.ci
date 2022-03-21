@@ -13,10 +13,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
 
 WORKDIR /myapp1
 
-COPY Gemfile /myapp1/Gemfile
-COPY Gemfile.lock /myapp1/Gemfile.lock
 RUN gem install bundler -v 2.3.3
-RUN bundle install
 COPY . /myapp1
 
 COPY entrypoint.sh /usr/bin/
