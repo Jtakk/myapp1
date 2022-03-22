@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+bundle config set --local path 'vendor/bundle'
+
+bundle install
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f /myapp1/tmp/pids/server.pid
 
