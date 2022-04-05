@@ -13,6 +13,11 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
+  chrome:
+    image: selenium/standalone-chrome:latest
+    container_name: chrome_myapp1
+    ports:
+      - '4444:4444'
   web:
     build:
       context: .
@@ -31,6 +36,7 @@ services:
       - .:/myapp1
     depends_on:
       - db
+      - chrome
     tty: true
     stdin_open: true
     command: bundle exec rails server -b 0.0.0.0
