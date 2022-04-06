@@ -6,6 +6,8 @@ RSpec.describe User, type: :model do
   let(:email_less_user) { build(:user, email: "") }
   let(:long_name_user) { build(:user, name: "a" * 31) }
   let(:long_email_user) { build(:user, email: "a" * 244 + "@example.com") }
+  let(:blank_password_user) { build(:user, password: "" * 6, password_confirmation: "" * 6) }
+  let(:short_password_user) { build(:user, password: "a" * 5, password_confirmation: "a" * 5) }
   let(:valid_addresses_user_list) { build_list(:user, 5) }
   let(:invalid_addresses_user_list) { build_list(:user, 6) }
 
@@ -78,6 +80,21 @@ RSpec.describe User, type: :model do
       user.email = mixed_case_email
       user.save
       expect(user.email).to eq mixed_case_email.downcase
+    end
+  end
+
+  describe "password validation" do
+    it "is invalid with a blank password" do
+      expect(blank_password_user).not_to be_valid
+      blank_password_user.valid?
+      expect(blank_password_user.errors.messages[:password]).to include("can't be blank")
+    end
+
+    it "is invalid with a too short password" do
+      expect(short_password_user).not_to be_valid
+      short_password_user.valid?
+      expect(short_password_user.errors.messages[:password]).
+        to include("is too short (minimum is 6 characters)")
     end
   end
 end
