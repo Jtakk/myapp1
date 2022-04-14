@@ -16,7 +16,7 @@ class UsersController < ApplicationController
       flash[:success] = "ユーザーを登録しました。"
       redirect_to @user
     else
-      render 'new'
+      render :new
     end
   end
 

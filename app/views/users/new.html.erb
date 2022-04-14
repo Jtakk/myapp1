@@ -1,4 +1,7 @@
+<% if @user.errors.any? %>
+  <%= react_component("ErrorMessages", { messages: @user.errors.full_messages }) %>
+<% end %>
 <%= react_component("SignUp", {
   user: @user,
-  authenticity_token: form_authenticity_token(form_options: { action: users_path, method: "post" }),
+  token: form_authenticity_token(form_options: { action: users_path, method: "post" }),
   }) %>

@@ -28,7 +28,7 @@ const SignUp = (props) => {
       <Box sx={{ p: 5, bgcolor: '#cfe8fc' }}>
         <Typography variant="h4" align="center">Sign Up</Typography>
         <form action="/users" method="post">
-          <input name="authenticity_token" type="hidden" value={props.authenticity_token} />
+          <input name="authenticity_token" type="hidden" value={props.token} />
           <TextField fullWidth required label="Name" value={name} name="user[name]" onChange={handleNameChange} placeholder="山田太郎" type="text" variant="outlined" margin="normal" />
           <TextField fullWidth required label="Email" value={email} name="user[email]" onChange={handleEmailChange} placeholder="test@example.com" type="email" variant="outlined" margin="normal" />
           <TextField fullWidth required label="Password" value={password} name="user[password]" onChange={handlePasswordChange} placeholder="foo123" helperText="半角英数6文字以上" type="password" variant="outlined" margin="normal" />
