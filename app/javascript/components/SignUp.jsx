@@ -11,16 +11,16 @@ import InputPasswordConfirmation from './InputPasswordConfirmation';
 import { useForm } from 'react-hook-form';
 
 const SignUp = (props) => {
-  const { control, handleSubmit } = useForm({
+  const { control } = useForm({
     mode: "onChange"
   });
-  const validEmailRegex = /^[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+$/i
+  const validEmailRegex = /^[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+$/i;
 
   return (
     <Container maxWidth="sm" sx={{ py: 5}}>
       <Box sx={{ p: 5, bgcolor: '#cfe8fc' }}>
         <Typography variant="h4" align="center" sx={{ mb: 3 }}>Sign Up</Typography>
-        <form action="/users" method="post" onSubmit={handleSubmit()}>
+        <form action="/users" method="post">
           <input name="authenticity_token" type="hidden" value={props.token} />
           <InputName control={control} name="user[name]" defaultValue="" rules={{ required: true, maxLength: 30 }} />
           <InputEmail control={control} name="user[email]" defaultValue="" rules={{ required: true, maxLength: 255, pattern: validEmailRegex }} />

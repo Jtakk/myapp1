@@ -11,17 +11,17 @@ RSpec.describe User, type: :model do
     let(:blank_name_user) { build(:user, name: "") }
     let(:long_name_user) { build(:user, name: "a" * 31) }
 
-    it "is invalid with a blank name" do
+    it "rejects attributes with a blank name" do
       expect(blank_name_user).not_to be_valid
       blank_name_user.valid?
-      expect(blank_name_user.errors.messages[:name]).to include("can't be blank")
+      expect(blank_name_user.errors.messages[:name]).to include("を入力してください")
     end
 
-    it "is invalid with a too long name" do
+    it "rejects attributes with a too long name" do
       expect(long_name_user).not_to be_valid
       long_name_user.valid?
       expect(long_name_user.errors.messages[:name]).
-        to include("is too long (maximum is 30 characters)")
+        to include("は30文字以内で入力してください")
     end
   end
 
@@ -37,38 +37,42 @@ RSpec.describe User, type: :model do
       %w(foo@bar,com foo_bar.org foo.bar@baz foo@bar_baz.com foo@bar+baz.com foo@bar..com)
     end
 
-    it "is invalid with a blank email" do
+    it "rejects attributes with a blank email" do
       expect(blank_email_user).not_to be_valid
       blank_email_user.valid?
-      expect(blank_email_user.errors.messages[:email]).to include("can't be blank")
+      expect(blank_email_user.errors.messages[:email]).to include("を入力してください")
     end
 
-    it "is invalid with a too long email" do
+    it "rejects attributes with a too long email" do
       expect(long_email_user).not_to be_valid
       long_email_user.valid?
       expect(long_email_user.errors.messages[:email]).
-        to include("is too long (maximum is 255 characters)")
+        to include("は255文字以内で入力してください")
     end
 
-    it "is valid with a email formatted correctly" do
+    it "accepts attributes with a email formatted correctly" do
       valid_email_user_list.map.with_index { |user, i| user.email = valid_emails[i] }
       valid_email_user_list.each do |user|
         expect(user).to be_valid
       end
     end
 
-    it "is invalid with a email formatted incorrectly" do
+    it "rejects attributes with a email formatted incorrectly" do
       invalid_email_user_list.map.with_index { |user, i| user.email = invalid_emails[i] }
       invalid_email_user_list.each do |user|
         expect(user).not_to be_valid
+        user.valid?
+        expect(user.errors.messages[:email]).to include("は不正な値です")
       end
     end
 
-    it "is invalid with a duplicated email" do
+    it "rejects attributes with a duplicated email" do
       duplicated_user = user.dup
       duplicated_user.email.upcase!
       user.save
       expect(duplicated_user).not_to be_valid
+      duplicated_user.valid?
+      expect(duplicated_user.errors.messages[:email]).to include("はすでに存在します")
     end
 
     it "converts a email to lower-case before save" do
@@ -83,17 +87,17 @@ RSpec.describe User, type: :model do
     let(:blank_password_user) { build(:user, password: "" * 6, password_confirmation: "" * 6) }
     let(:short_password_user) { build(:user, password: "a" * 5, password_confirmation: "a" * 5) }
 
-    it "is invalid with a blank password" do
+    it "rejects attributes with a blank password" do
       expect(blank_password_user).not_to be_valid
       blank_password_user.valid?
-      expect(blank_password_user.errors.messages[:password]).to include("can't be blank")
+      expect(blank_password_user.errors.messages[:password]).to include("を入力してください")
     end
 
-    it "is invalid with a too short password" do
+    it "rejects attributes with a too short password" do
       expect(short_password_user).not_to be_valid
       short_password_user.valid?
       expect(short_password_user.errors.messages[:password]).
-        to include("is too short (minimum is 6 characters)")
+        to include("は6文字以上で入力してください")
     end
   end
 end
