@@ -14,7 +14,7 @@ RSpec.describe "UsersSignup", type: :system do
         fill_in "ニックネーム (30文字以内)", with: valid_user_params[:name]
         fill_in "メールアドレス", with: valid_user_params[:email]
         fill_in "パスワード (半角英数6文字以上)", with: valid_user_params[:password]
-        fill_in "パスワード (再入力)", with: valid_user_params[:password_confirmation]
+        fill_in "パスワード再入力", with: valid_user_params[:password_confirmation]
         click_button "アカウントを作成する"
       }.to change(User, :count).by(1)
       user = User.find_by(email: valid_user_params[:email])
@@ -31,7 +31,7 @@ RSpec.describe "UsersSignup", type: :system do
         fill_in "ニックネーム (30文字以内)", with: invalid_user_params[:name]
         fill_in "メールアドレス", with: invalid_user_params[:email]
         fill_in "パスワード (半角英数6文字以上)", with: invalid_user_params[:password]
-        fill_in "パスワード (再入力)", with: invalid_user_params[:password_confirmation]
+        fill_in "パスワード再入力", with: invalid_user_params[:password_confirmation]
         click_button "アカウントを作成する"
       }.not_to change(User, :count)
       expect(page).to have_content "Sign Up"
