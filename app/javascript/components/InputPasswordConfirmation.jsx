@@ -21,7 +21,7 @@ const InputPasswordConfirmation = (props) => {
     <TextField
       fullWidth
       required
-      label="パスワード (再入力)"
+      label="パスワード再入力"
       type="password"
       placeholder=""
       variant="outlined"
