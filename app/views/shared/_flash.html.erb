@@ -1,0 +1,3 @@
+<% flash.each do |message_type, message| %>
+  <%= react_component("Flash", {message_type: message_type, message: message }) %>
+<% end %>

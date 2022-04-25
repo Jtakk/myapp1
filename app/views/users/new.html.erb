@@ -1,2 +1,7 @@
-<h1>Users#new</h1>
-<p>Find me in app/views/users/new.html.erb</p>
+<% if @user.errors.any? %>
+  <%= react_component("ErrorMessages", { messages: @user.errors.full_messages }) %>
+<% end %>
+<%= react_component("SignUp", {
+  user: @user,
+  token: form_authenticity_token(form_options: { action: users_path, method: "post" }),
+  }) %>
