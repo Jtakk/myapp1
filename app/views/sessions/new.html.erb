@@ -1,0 +1,4 @@
+<%= react_component("LogIn", {
+  user: @user,
+  token: form_authenticity_token(form_options: { action: login_path, method: "post" }),
+  }) %>
