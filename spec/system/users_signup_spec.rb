@@ -4,9 +4,7 @@ RSpec.describe "UsersSignup", type: :system do
   let(:valid_user_params) { attributes_for(:user) }
   let(:invalid_user_params) { attributes_for(:user, name: "") }
 
-  before do
-    visit signup_path
-  end
+  before { visit signup_path }
 
   context "with valid attributes" do
     it "succeeds and redirects to the user's page", js: true do

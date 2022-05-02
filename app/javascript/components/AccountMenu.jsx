@@ -22,7 +22,7 @@ const AccountMenu = (props) => {
   return (
     <>
       <Tooltip title="アカウント詳細">
-        <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
+        <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }} id="menu-toggle-button">
           <Avatar sx={{ width: 32, height: 32 }}>A</Avatar>
         </IconButton>
       </Tooltip>
