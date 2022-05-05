@@ -26,8 +26,16 @@ RSpec.describe "Sessions", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "succeeds in logout" do
+    before do
       post login_path, params: { session: { email: user.email, password: user.password } }
+      delete logout_path
+    end
+
+    it "succeeds in logout" do
+      expect(session[:user_id]).to eq nil
+    end
+
+    it "doesn't raise an error if logout in another window" do
       delete logout_path
       expect(session[:user_id]).to eq nil
     end

@@ -100,4 +100,10 @@ RSpec.describe User, type: :model do
         to include("は6文字以上で入力してください")
     end
   end
+
+  describe "#authenticated?(remember_token)" do
+    it "doesn't raise an error for a user without remember_digest" do
+      expect(user.authenticated?('')).to eq false
+    end
+  end
 end
