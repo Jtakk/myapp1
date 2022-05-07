@@ -26,7 +26,7 @@ const LogIn = (props) => {
           <InputEmail control={control} name="session[email]" defaultValue="" rules={{ required: true, maxLength: 255, pattern: validEmailRegex }} />
           <InputPassword control={control} name="session[password]" defaultValue="" rules={{ required: true, minLength: 6 }} />
           <FormGroup sx={{ mt: 2 }}>
-            <FormControlLabel control={<Checkbox />} name="session[remember_me]" label="ログイン状態を保持する" />
+            <FormControlLabel control={<Checkbox id="remember-me-checkbox" />} name="session[remember_me]" label="ログイン状態を保持する" />
           </FormGroup>
           <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>ログインする</Button>
           <Typography variant="body1" component="p" align="center" sx={{ mt: 3 }}>アカウントをお持ちでない方は<Link href="/signup" underline="hover">新規登録</Link></Typography>

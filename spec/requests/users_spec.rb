@@ -23,22 +23,26 @@ RSpec.describe "Users", type: :request do
   end
 
   describe "POST /create" do
-    let(:valid_user_params) { attributes_for(:user) }
-    let(:invalid_user_params) { attributes_for(:user, name: "") }
+    subject { post users_path, params: { user: user_attributes } }
 
     context "with valid attributes" do
+      let(:user_attributes) { attributes_for(:user) }
+
       it "adds a user" do
-        expect {
-          post users_path, params: { user: valid_user_params }
-        }.to change(User, :count).by(1)
+        expect { subject }.to change(User, :count).by(1)
+      end
+
+      it "inserts a flash message" do
+        subject
+        expect(flash[:success]).to be_present
       end
     end
 
     context "with invalid attributes" do
+      let(:user_attributes) { attributes_for(:user, name: "") }
+
       it "does not add a user" do
-        expect {
-          post users_path, params: { user: invalid_user_params }
-        }.not_to change(User, :count)
+        expect { subject }.not_to change(User, :count)
       end
     end
   end

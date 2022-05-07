@@ -14,6 +14,8 @@ RSpec.describe "UsersLogin", type: :system do
     it "succeeds and redirects to the user's page, and then is able to logout", js: true do
       fill_in "メールアドレス", with: user.email
       fill_in "パスワード (半角英数6文字以上)", with: user.password
+      checkbox = find_by_id("remember-me-checkbox", visible: false)
+      expect(checkbox).not_to be_checked
       click_button "ログインする"
       expect(current_path).to eq user_path(user.id)
       expect(page).not_to have_link "ログイン", href: login_path
