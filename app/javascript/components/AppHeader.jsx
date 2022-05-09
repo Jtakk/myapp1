@@ -7,11 +7,12 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppLogo from './AppLogo';
+import AccountMenu from './AccountMenu';
 
-const AppHeader = () => {
+const AppHeader = (props) => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <>
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             size="large"
@@ -23,15 +24,14 @@ const AppHeader = () => {
             <MenuIcon />
           </IconButton>
           <AppLogo />
-          <Button
-            color="inherit"
-            href="/#"
-          >
-            Login
-          </Button>
+          {props.isLoggedIn
+            ? <AccountMenu currentUser={props.currentUser} />
+            : <Button color="inherit" variant="outlined" href="/login">ログイン</Button>
+          }
         </Toolbar>
       </AppBar>
-    </Box>
+      <Toolbar />
+    </>
   );
 };
 

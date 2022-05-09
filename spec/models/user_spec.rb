@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) { build(:user) }
+  let(:new_user) { build(:user) }
+  let(:user) { create(:user) }
 
   it "has a valid value" do
-    expect(user).to be_valid
+    expect(new_user).to be_valid
   end
 
   describe "name validation" do
@@ -67,9 +68,9 @@ RSpec.describe User, type: :model do
     end
 
     it "rejects attributes with a duplicated email" do
-      duplicated_user = user.dup
+      duplicated_user = new_user.dup
       duplicated_user.email.upcase!
-      user.save
+      new_user.save
       expect(duplicated_user).not_to be_valid
       duplicated_user.valid?
       expect(duplicated_user.errors.messages[:email]).to include("はすでに存在します")
@@ -77,9 +78,9 @@ RSpec.describe User, type: :model do
 
     it "converts a email to lower-case before save" do
       mixed_case_email = "TesT@eXamPle.CoM"
-      user.email = mixed_case_email
-      user.save
-      expect(user.email).to eq mixed_case_email.downcase
+      new_user.email = mixed_case_email
+      new_user.save
+      expect(new_user.email).to eq mixed_case_email.downcase
     end
   end
 
@@ -98,6 +99,41 @@ RSpec.describe User, type: :model do
       short_password_user.valid?
       expect(short_password_user.errors.messages[:password]).
         to include("は6文字以上で入力してください")
+    end
+  end
+
+  describe "#remember" do
+    it "saves a remember_digest" do
+      user.remember
+      expect(user.remember_digest).to be_present
+    end
+  end
+
+  describe "#authenticated?(remember_token)" do
+    context "with a remember_digest" do
+      before { user.remember }
+
+      it "returns true when a remember_token is correct" do
+        expect(user.authenticated?(user.remember_token)).to eq true
+      end
+
+      it "returns false when a remember_token is incorrect" do
+        expect(user.authenticated?('')).to eq false
+      end
+    end
+
+    context "without a remember_digest" do
+      it "doesn't raise an error" do
+        expect(user.authenticated?('')).to eq false
+      end
+    end
+  end
+
+  describe "#forget" do
+    it "deletes the remember_digest" do
+      user.remember
+      user.forget
+      expect(user.remember_digest).to eq nil
     end
   end
 end
