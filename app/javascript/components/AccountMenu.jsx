@@ -7,6 +7,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 
@@ -28,13 +29,16 @@ const AccountMenu = (props) => {
       </Tooltip>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose} transformOrigin={{ horizontal: 'right', vertical: 'top' }} anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
         <MenuItem component="a" href={"/users/"+props.currentUser.id}>
-          <Avatar sx={{ width: 32, height: 32, ml: -0.5, mr: 1 }} /> プロフィール
+          <ListItemIcon>
+            <AccountCircleIcon fontSize="small" />
+          </ListItemIcon>
+          プロフィール
         </MenuItem>
-        <MenuItem component="a" href="/#">
+        <MenuItem component="a" href={"/users/"+props.currentUser.id+"/edit"}>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
-          プロフィール編集
+          アカウント設定
         </MenuItem>
         <Divider />
         <MenuItem component="a" href="/logout" data-method="delete">
