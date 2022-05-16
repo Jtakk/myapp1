@@ -27,7 +27,7 @@ const AccountMenu = (props) => {
           <Avatar sx={{ width: 32, height: 32 }}>A</Avatar>
         </IconButton>
       </Tooltip>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose} transformOrigin={{ horizontal: 'right', vertical: 'top' }} anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
+      <Menu id="account-menu-list" anchorEl={anchorEl} open={open} onClose={handleClose} transformOrigin={{ horizontal: 'right', vertical: 'top' }} anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
         <MenuItem component="a" href={"/users/"+props.currentUser.id}>
           <ListItemIcon>
             <AccountCircleIcon fontSize="small" />
