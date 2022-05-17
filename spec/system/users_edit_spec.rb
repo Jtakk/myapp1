@@ -4,7 +4,7 @@ RSpec.describe "UsersEdit", type: :system do
   include LogInRequestSupport
   let(:user) { create(:user) }
 
-  context "when logged in" do
+  context "when logged in as correct user" do
     let(:revised_user_params) do
       attributes_for(:user, name: "revised_name",
                             email: "revised_email@example.com",
@@ -14,12 +14,13 @@ RSpec.describe "UsersEdit", type: :system do
       attributes_for(:user, password: "wrong", password_confirmation: "wrong")
     end
 
-    before do
-      log_in_as(user)
+    it "redirects to the page correctly by friendly forwarding,
+          and succeeds in editing a user with valid attributes", js: true do
       visit edit_user_path(user)
-    end
-
-    it "succeeds and redirects to the user's page with valid attributes", js: true do
+      expect(current_path).to eq login_path
+      expect(page).to have_content "ログインしてください"
+      log_in_as(user)
+      expect(current_path).to eq edit_user_path(user)
       fill_in "ニックネーム (30文字以内)", with: revised_user_params[:name]
       fill_in "メールアドレス", with: revised_user_params[:email]
       fill_in "紹介文", with: revised_user_params[:introduction]
@@ -29,9 +30,17 @@ RSpec.describe "UsersEdit", type: :system do
       expect(page).to have_content revised_user_params[:name]
       expect(page).to have_content revised_user_params[:email]
       expect(page).to have_content revised_user_params[:introduction]
+      within('#side-menu-list') do
+        click_link "ログアウト"
+      end
+      log_in_as(user, email: revised_user_params[:email])
+      expect(current_path).to eq user_path(user)
     end
 
     it "fails and stay with invalid attributes", js: true do
+      log_in_as(user)
+      expect(current_path).to eq user_path(user)
+      visit edit_user_path(user)
       fill_in "ニックネーム (30文字以内)", with: invalid_user_params[:name]
       fill_in "メールアドレス", with: invalid_user_params[:email]
       fill_in "パスワード (半角英数6文字以上)", with: invalid_user_params[:password]
@@ -41,12 +50,14 @@ RSpec.describe "UsersEdit", type: :system do
     end
   end
 
-  context "when not logged in" do
-    before { visit edit_user_path(user) }
+  context "when logged in as wrong user" do
+    let(:other_user) { create(:user) }
 
-    it "fails and redirects to the login page", js: true do
-      expect(current_path).to eq login_path
-      expect(page).to have_content "ログインしてください"
+    it "fails and redirects to the root page", js: true do
+      log_in_as(other_user)
+      visit edit_user_path(user)
+      expect(current_path).to eq root_path
+      expect(page).to have_content "保護されたページです"
     end
   end
 end

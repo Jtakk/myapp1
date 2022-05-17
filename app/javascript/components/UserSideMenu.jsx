@@ -12,7 +12,7 @@ import Logout from '@mui/icons-material/Logout';
 
 const UserSideMenu = (props) => {
   return (
-    <Box sx={{ width: '240px', height: '100%', bgcolor: 'background.paper', borderRight: '1px solid rgba(0,0,0,0.12)' }}>
+    <Box id="side-menu-list" sx={{ width: '240px', height: '100%', bgcolor: 'background.paper', borderRight: '1px solid rgba(0,0,0,0.12)' }}>
       <nav aria-label="main mailbox folders">
         <List>
           <ListItem disablePadding>

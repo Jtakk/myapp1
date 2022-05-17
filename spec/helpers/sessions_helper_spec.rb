@@ -65,17 +65,37 @@ RSpec.describe SessionsHelper, type: :helper do
     end
   end
 
-  describe "#logged_in?" do
-    subject { logged_in? }
+  describe "#current_user?(user)" do
+    subject { current_user?(user) }
 
-    context "with login state" do
+    let(:other_user) { create(:user) }
+
+    context "when logged in as correct user" do
       it "returns true" do
         log_in(user)
         is_expected.to be_truthy
       end
     end
 
-    context "without login state" do
+    context "when logged in as wrong user" do
+      it "returns false" do
+        log_in(other_user)
+        is_expected.to be_falsey
+      end
+    end
+  end
+
+  describe "#logged_in?" do
+    subject { logged_in? }
+
+    context "when logged in" do
+      it "returns true" do
+        log_in(user)
+        is_expected.to be_truthy
+      end
+    end
+
+    context "when not logged in" do
       it "returns false" do
         is_expected.to be_falsey
       end
