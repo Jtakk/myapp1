@@ -8,6 +8,7 @@ import InputPassword from './InputPassword';
 import InputPasswordConfirmation from './InputPasswordConfirmation';
 import InputIntroduction from './InputIntroduction';
 import Button from '@mui/material/Button';
+import DeleteUser from './DeleteUser';
 import { useForm } from 'react-hook-form';
 
 const UserEdit = (props) => {
@@ -30,6 +31,9 @@ const UserEdit = (props) => {
           <InputIntroduction control={control} name="user[introduction]" defaultValue={props.user.introduction} />
           <Button type="submit" variant="contained" fullWidth sx={{ mt: 5 }}>変更を保存する</Button>
         </form>
+        <Box sx={{ mt: 5 }}>
+          <DeleteUser user={props.user} />
+        </Box>
       </Box>
     </Container>
   );
