@@ -38,6 +38,7 @@ const DeleteUser = (props) => {
     <>
       <Button variant="outlined" color="error" onClick={handleOpen}>アカウントを削除する</Button>
       <Modal
+        id="delete-user-modal"
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"

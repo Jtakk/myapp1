@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "UsersEdit", type: :system do
-  include LogInRequestSupport
   let(:user) { create(:user) }
 
   context "when logged in as correct user" do

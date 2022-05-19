@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
-  include LogInRequestSupport
   describe "GET /new" do
     it "returns http success" do
       get signup_path
@@ -47,7 +46,7 @@ RSpec.describe "Users", type: :request do
     context "with invalid attributes" do
       let(:user_attributes) { attributes_for(:user, name: "") }
 
-      it "does not add a user" do
+      it "doesn't add a user" do
         expect { subject }.not_to change(User, :count)
       end
     end
@@ -171,6 +170,70 @@ RSpec.describe "Users", type: :request do
       end
 
       it "inserts a flash message" do
+        expect(flash[:warning]).to be_present
+      end
+    end
+  end
+
+  describe "DELETE /destroy" do
+    subject { delete user_path(user) }
+
+    let!(:user) { create(:user) }
+    let!(:other_user) { create(:user) }
+
+    context "when not logged in" do
+      it "doesn't delete a user" do
+        expect { subject }.not_to change(User, :count)
+      end
+
+      it "returns http status 302" do
+        subject
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        subject
+        expect(flash[:warning]).to be_present
+      end
+
+      it "doesn't save the forwarding_url in the session for DELETE method" do
+        subject
+        expect(session[:forwarding_url]).to eq nil
+      end
+    end
+
+    context "when logged in" do
+      before { log_in_request_as(user) }
+
+      it "deletes a user" do
+        expect { subject }.to change(User, :count).by(-1)
+      end
+
+      it "returns http status 302" do
+        subject
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        subject
+        expect(flash[:success]).to be_present
+      end
+    end
+
+    context "when logged in as wrong user" do
+      before { log_in_request_as(other_user) }
+
+      it "doesn't delete a user" do
+        expect { subject }.not_to change(User, :count)
+      end
+
+      it "returns http status 302" do
+        subject
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        subject
         expect(flash[:warning]).to be_present
       end
     end
