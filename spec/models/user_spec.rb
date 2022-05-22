@@ -109,22 +109,22 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#authenticated?(remember_token)" do
+  describe "#authenticated?(attribute, token)" do
     context "with a remember_digest" do
       before { user.remember }
 
       it "returns true when a remember_token is correct" do
-        expect(user.authenticated?(user.remember_token)).to eq true
+        expect(user.authenticated?(:remember, user.remember_token)).to eq true
       end
 
       it "returns false when a remember_token is incorrect" do
-        expect(user.authenticated?('')).to eq false
+        expect(user.authenticated?(:remember, '')).to eq false
       end
     end
 
     context "without a remember_digest" do
       it "doesn't raise an error" do
-        expect(user.authenticated?('')).to eq false
+        expect(user.authenticated?(:remember, '')).to eq false
       end
     end
   end

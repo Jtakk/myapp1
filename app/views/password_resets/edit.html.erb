@@ -1,0 +1,8 @@
+<% if @user.errors.any? %>
+  <%= react_component("ErrorMessages", { messages: @user.errors.full_messages }) %>
+<% end %>
+<%= react_component("ResetPassword", {
+  user: @user,
+  id: params[:id],
+  token: form_authenticity_token(form_options: { action: password_reset_path(params[:id]), method: "patch" }),
+  }) %>
