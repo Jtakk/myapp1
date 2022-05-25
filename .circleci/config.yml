@@ -89,8 +89,9 @@ jobs:
       - run:
           name: Run post-deploy tasks
           command: |
-            heroku config:set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            heroku config:set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY HEROKU_SUB_DOMAIN=$HEROKU_APP_NAME
             heroku run bin/rails db:migrate
+            heroku addons:create mailgun:starter
 
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
