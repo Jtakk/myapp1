@@ -23,22 +23,22 @@ RSpec.describe "Users", type: :request do
   end
 
   describe "POST /create" do
-    subject { post users_path, params: { user: user_attributes } }
+    let(:post_create) { post users_path, params: { user: user_attributes } }
 
     context "with valid attributes" do
       let(:user_attributes) { attributes_for(:user) }
 
       it "adds a user" do
-        expect { subject }.to change(User, :count).by(1)
+        expect { post_create }.to change(User, :count).by(1)
       end
 
       it "inserts a flash message" do
-        subject
+        post_create
         expect(flash[:success]).to be_present
       end
 
       it "returns http status 302" do
-        subject
+        post_create
         expect(response).to have_http_status(302)
       end
     end
@@ -47,7 +47,7 @@ RSpec.describe "Users", type: :request do
       let(:user_attributes) { attributes_for(:user, name: "") }
 
       it "doesn't add a user" do
-        expect { subject }.not_to change(User, :count)
+        expect { post_create }.not_to change(User, :count)
       end
     end
   end
@@ -104,7 +104,7 @@ RSpec.describe "Users", type: :request do
   end
 
   describe "PATCH /update" do
-    subject { patch user_path(user), params: { user: new_user_attributes } }
+    let(:patch_update) { patch user_path(user), params: { user: new_user_attributes } }
 
     let(:user) { create(:user) }
     let(:other_user) { create(:user) }
@@ -112,7 +112,7 @@ RSpec.describe "Users", type: :request do
     context "when not logged in" do
       let(:new_user_attributes) { attributes_for(:user, password: "", password_confirmation: "") }
 
-      before { subject }
+      before { patch_update }
 
       it "returns http status 302" do
         expect(response).to have_http_status(302)
@@ -133,16 +133,16 @@ RSpec.describe "Users", type: :request do
       before { log_in_request_as(user) }
 
       it "succeeds in editing the user (allow nil passwords)" do
-        expect { subject }.to change { user.reload.name }
+        expect { patch_update }.to change { user.reload.name }
       end
 
       it "returns http status 302" do
-        subject
+        patch_update
         expect(response).to have_http_status(302)
       end
 
       it "inserts a flash message" do
-        subject
+        patch_update
         expect(flash[:success]).to be_present
       end
     end
@@ -153,7 +153,7 @@ RSpec.describe "Users", type: :request do
       before { log_in_request_as(user) }
 
       it "fails in editing the user" do
-        expect { subject }.not_to change { user.reload.name }
+        expect { patch_update }.not_to change { user.reload.name }
       end
     end
 
@@ -162,7 +162,7 @@ RSpec.describe "Users", type: :request do
 
       before do
         log_in_request_as(other_user)
-        subject
+        patch_update
       end
 
       it "returns http status 302" do
@@ -176,28 +176,28 @@ RSpec.describe "Users", type: :request do
   end
 
   describe "DELETE /destroy" do
-    subject { delete user_path(user) }
+    let(:delete_destroy) { delete user_path(user) }
 
     let!(:user) { create(:user) }
     let!(:other_user) { create(:user) }
 
     context "when not logged in" do
       it "doesn't delete a user" do
-        expect { subject }.not_to change(User, :count)
+        expect { delete_destroy }.not_to change(User, :count)
       end
 
       it "returns http status 302" do
-        subject
+        delete_destroy
         expect(response).to have_http_status(302)
       end
 
       it "inserts a flash message" do
-        subject
+        delete_destroy
         expect(flash[:warning]).to be_present
       end
 
       it "doesn't save the forwarding_url in the session for DELETE method" do
-        subject
+        delete_destroy
         expect(session[:forwarding_url]).to eq nil
       end
     end
@@ -206,16 +206,16 @@ RSpec.describe "Users", type: :request do
       before { log_in_request_as(user) }
 
       it "deletes a user" do
-        expect { subject }.to change(User, :count).by(-1)
+        expect { delete_destroy }.to change(User, :count).by(-1)
       end
 
       it "returns http status 302" do
-        subject
+        delete_destroy
         expect(response).to have_http_status(302)
       end
 
       it "inserts a flash message" do
-        subject
+        delete_destroy
         expect(flash[:success]).to be_present
       end
     end
@@ -224,16 +224,16 @@ RSpec.describe "Users", type: :request do
       before { log_in_request_as(other_user) }
 
       it "doesn't delete a user" do
-        expect { subject }.not_to change(User, :count)
+        expect { delete_destroy }.not_to change(User, :count)
       end
 
       it "returns http status 302" do
-        subject
+        delete_destroy
         expect(response).to have_http_status(302)
       end
 
       it "inserts a flash message" do
-        subject
+        delete_destroy
         expect(flash[:warning]).to be_present
       end
     end

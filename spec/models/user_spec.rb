@@ -122,9 +122,22 @@ RSpec.describe User, type: :model do
       end
     end
 
-    context "without a remember_digest" do
+    context "with a reset_digest" do
+      before { user.create_reset_digest }
+
+      it "returns true when a reset_token is correct" do
+        expect(user.authenticated?(:reset, user.reset_token)).to eq true
+      end
+
+      it "returns false when a reset_token is incorrect" do
+        expect(user.authenticated?(:reset, '')).to eq false
+      end
+    end
+
+    context "without a remember_digest or a reset_digest" do
       it "doesn't raise an error" do
         expect(user.authenticated?(:remember, '')).to eq false
+        expect(user.authenticated?(:reset, '')).to eq false
       end
     end
   end
@@ -134,6 +147,33 @@ RSpec.describe User, type: :model do
       user.remember
       user.forget
       expect(user.remember_digest).to eq nil
+    end
+  end
+
+  describe "#create_reset_digest" do
+    before { user.create_reset_digest }
+
+    it "saves a reset_digest" do
+      expect(user.reset_digest).to be_present
+    end
+
+    it "saves a reset_sent_at" do
+      expect(user.reset_sent_at).to be_present
+    end
+  end
+
+  describe "#password_reset_expired?" do
+    subject { user.password_reset_expired? }
+
+    before { user.create_reset_digest }
+
+    it "returns false just after #create_reset_digest" do
+      is_expected.to be_falsey
+    end
+
+    it "returns true more than 2 hours after #create_reset_digest" do
+      travel_to 3.hours.after
+      is_expected.to be_truthy
     end
   end
 end
