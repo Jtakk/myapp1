@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Sessions", type: :request do
-  include LogInRequestSupport
   let(:user) { create(:user) }
 
   describe "GET /new" do

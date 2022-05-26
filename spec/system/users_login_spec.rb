@@ -17,13 +17,15 @@ RSpec.describe "UsersLogin", type: :system do
       checkbox = find_by_id("remember-me-checkbox", visible: false)
       expect(checkbox).not_to be_checked
       click_button "ログインする"
-      expect(current_path).to eq user_path(user.id)
+      expect(current_path).to eq user_path(user)
       expect(page).not_to have_link "ログイン", href: login_path
       find('#menu-toggle-button').click
-      expect(page).to have_link "プロフィール", href: user_path(user.id)
-      # expect(page).to have_link "プロフィール編集", href:
-      expect(page).to have_link "ログアウト", href: logout_path
-      click_link "ログアウト"
+      within('#account-menu-list') do
+        expect(page).to have_link "プロフィール", href: user_path(user)
+        expect(page).to have_link "アカウント設定", href: edit_user_path(user)
+        expect(page).to have_link "ログアウト", href: logout_path
+        click_link "ログアウト"
+      end
       expect(current_path).to eq root_path
       expect(page).to have_link "ログイン", href: login_path
     end

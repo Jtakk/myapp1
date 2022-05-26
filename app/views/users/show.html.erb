@@ -1,3 +1,4 @@
-<h3><%= @user.name %></h3>
-<h3><%= @user.email %></h3>
-<p><%= @user.introduction %></p>
+<div style="display:flex;height:100%">
+  <aside style="height:100%;position:fixed"><%= react_component("UserSideMenu", { currentUser: current_user }, { style: "height:100%" }) %></aside>
+  <main style="flex:1;margin-left:240px"><%= react_component("UserProfile", { user: @user }, { style: "height:100%" }) %></main>
+</div>
