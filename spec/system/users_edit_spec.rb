@@ -7,8 +7,10 @@ RSpec.describe "UsersEdit", type: :system do
     let(:revised_user_params) do
       attributes_for(:user, name: "revised_name",
                             email: "revised_email@example.com",
-                            introduction: "Revised!")
+                            introduction: "Revised!",
+                            avatar: avatar)
     end
+    let(:avatar) { "#{Rails.root}/spec/fixtures/images/test_cat.png" }
     let(:invalid_user_params) do
       attributes_for(:user, password: "wrong", password_confirmation: "wrong")
     end
@@ -20,12 +22,14 @@ RSpec.describe "UsersEdit", type: :system do
       expect(page).to have_content "ログインしてください"
       log_in_as(user)
       expect(current_path).to eq edit_user_path(user)
+      attach_file "画像を設定する", revised_user_params[:avatar], make_visible: true
       fill_in "ニックネーム (30文字以内)", with: revised_user_params[:name]
       fill_in "メールアドレス", with: revised_user_params[:email]
       fill_in "紹介文", with: revised_user_params[:introduction]
       click_button "変更を保存する"
       expect(current_path).to eq user_path(user)
       expect(page).to have_content "アカウント設定を更新しました。"
+      expect(page).to have_selector "img[src$='#{user.reload.avatar.url}']"
       expect(page).to have_content revised_user_params[:name]
       expect(page).to have_content revised_user_params[:email]
       expect(page).to have_content revised_user_params[:introduction]

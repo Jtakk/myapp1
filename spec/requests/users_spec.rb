@@ -127,13 +127,24 @@ RSpec.describe "Users", type: :request do
       end
     end
 
-    context "when logged in, with valid attributes" do
-      let(:new_user_attributes) { attributes_for(:user, password: "", password_confirmation: "") }
+    context "when logged in, with valid attributes (including an avatar)" do
+      let(:new_user_attributes) do
+        attributes_for(:user, password: "",
+                              password_confirmation: "",
+                              avatar: avatar)
+      end
+      let(:avatar) do
+        Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/test_cat.png")
+      end
 
       before { log_in_request_as(user) }
 
-      it "succeeds in editing the user (allow nil passwords)" do
+      it "succeeds in editing a name of the user (allow nil passwords)" do
         expect { patch_update }.to change { user.reload.name }
+      end
+
+      it "succeeds in editing an avatar of the user (allow nil passwords)" do
+        expect { patch_update }.to change { user.reload.avatar }
       end
 
       it "returns http status 302" do
@@ -152,7 +163,7 @@ RSpec.describe "Users", type: :request do
 
       before { log_in_request_as(user) }
 
-      it "fails in editing the user" do
+      it "fails in editing a name of the user" do
         expect { patch_update }.not_to change { user.reload.name }
       end
     end
