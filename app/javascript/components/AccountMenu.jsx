@@ -24,7 +24,7 @@ const AccountMenu = (props) => {
     <>
       <Tooltip title="アカウント詳細">
         <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }} id="menu-toggle-button">
-          <Avatar sx={{ width: 32, height: 32 }}>A</Avatar>
+          <Avatar sx={{ width: 32, height: 32 }} alt={props.currentUser.name} src={props.currentUser.avatar.thumb.url} />
         </IconButton>
       </Tooltip>
       <Menu id="account-menu-list" anchorEl={anchorEl} open={open} onClose={handleClose} transformOrigin={{ horizontal: 'right', vertical: 'top' }} anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>

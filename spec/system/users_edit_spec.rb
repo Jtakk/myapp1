@@ -29,6 +29,7 @@ RSpec.describe "UsersEdit", type: :system do
       click_button "変更を保存する"
       expect(current_path).to eq user_path(user)
       expect(page).to have_content "アカウント設定を更新しました。"
+      expect(page).to have_selector "img[src$='#{user.reload.avatar.thumb.url}']"
       expect(page).to have_selector "img[src$='#{user.reload.avatar.url}']"
       expect(page).to have_content revised_user_params[:name]
       expect(page).to have_content revised_user_params[:email]
