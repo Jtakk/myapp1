@@ -40,6 +40,11 @@ RSpec.configure do |config|
     Capybara.server_port = 3001
     Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
   end
+  config.after(:all) do
+    if Rails.env.test?
+      FileUtils.rm_rf(Dir["#{Rails.root}/public/uploads_#{Rails.env}/"])
+    end
+  end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include FactoryBot::Syntax::Methods
