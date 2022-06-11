@@ -92,7 +92,7 @@ jobs:
       - run:
           name: Run post-deploy tasks
           command: |
-            heroku config:set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            heroku config:set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY GOOGLE_MAPS_API_KEY=$GOOGLE_MAPS_API_KEY
             heroku run bin/rails db:migrate
             heroku addons:create mailgun:starter
 
