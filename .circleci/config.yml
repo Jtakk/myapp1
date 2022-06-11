@@ -94,6 +94,7 @@ jobs:
           command: |
             heroku config:set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY GOOGLE_MAPS_API_KEY=$GOOGLE_MAPS_API_KEY
             heroku run bin/rails db:migrate
+            heroku run bin/rails db:seed
             heroku addons:create mailgun:starter
 
 # We use workflows to orchestrate the jobs that we declared above.
