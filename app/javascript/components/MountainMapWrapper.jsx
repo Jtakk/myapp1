@@ -59,7 +59,7 @@ const MountainMapWrapper = (props) => {
   };
 
   return (
-    <Wrapper apiKey={process.env.GOOGLE_MAPS_API_KEY} render={render} />
+    <Wrapper apiKey={process.env.REACT_APP_GMA_KEY} render={render} />
   );
 };
 
