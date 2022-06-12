@@ -18,7 +18,6 @@ const MountainMapWrapper = (props) => {
     setClick(e.latLng);
   };
   const onIdle = (m) => {
-    console.log(process.env.REACT_APP_GMA_KEY)
     setZoom(m.getZoom());
     setCenter(m.getCenter().toJSON());
   };
