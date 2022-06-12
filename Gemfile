@@ -40,6 +40,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 5.1'
   gem 'factory_bot_rails'
   gem 'pry-rails'
+  gem 'dotenv-rails'
 end
 
 group :development do
