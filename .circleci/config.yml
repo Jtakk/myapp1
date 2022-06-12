@@ -85,14 +85,14 @@ jobs:
           command: heroku apps:create $HEROKU_APP_NAME --addons=jawsdb:kitefin
       - run:
           name: Run pre-deploy tasks
-          command: heroku config:set HEROKU_SUB_DOMAIN=$HEROKU_APP_NAME
+          command: heroku config:set HEROKU_SUB_DOMAIN=$HEROKU_APP_NAME REACT_APP_GMA_KEY=$REACT_APP_GMA_KEY
       - run:
           name: Deploy
           command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
       - run:
           name: Run post-deploy tasks
           command: |
-            heroku config:set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY REACT_APP_GMA_KEY=$REACT_APP_GMA_KEY
+            heroku config:set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
             heroku run bin/rails db:migrate
             heroku run bin/rails db:seed
             heroku addons:create mailgun:starter
