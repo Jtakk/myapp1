@@ -1,6 +1,7 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 User.create!(
+  id: 1,
   name: "First User",
   email: "first@example.com",
   password: "password",
@@ -9,6 +10,7 @@ User.create!(
 )
 
 Mountain.create!(
+  id: 1,
   name: "富士山",
   elevation: 3776,
   image: File.open("./public/uploads/mountain/image/fujisan.jpg"),
@@ -20,4 +22,20 @@ Mountain.create!(
   longitude: 138.733333,
   yomi: "ふじさん",
   zoom: 10,
+)
+
+Post.create!(
+  user_id: 1,
+  mountain_id: 1,
+  message: "First message!",
+  latitude: 35.2,
+  longitude: 139,
+)
+
+Post.create!(
+  user_id: 1,
+  mountain_id: 1,
+  message: "Second message!",
+  latitude: 35.05,
+  longitude: 139,
 )

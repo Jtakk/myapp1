@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_10_115653) do
+ActiveRecord::Schema.define(version: 2022_06_13_154422) do
 
   create_table "mountains", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -23,6 +23,18 @@ ActiveRecord::Schema.define(version: 2022_06_10_115653) do
     t.decimal "longitude", precision: 11, scale: 8
     t.string "yomi"
     t.integer "zoom"
+  end
+
+  create_table "posts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "message"
+    t.decimal "latitude", precision: 10, scale: 8
+    t.decimal "longitude", precision: 11, scale: 8
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.bigint "mountain_id"
+    t.index ["mountain_id"], name: "index_posts_on_mountain_id"
+    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -39,4 +51,6 @@ ActiveRecord::Schema.define(version: 2022_06_10_115653) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "posts", "mountains"
+  add_foreign_key "posts", "users"
 end
