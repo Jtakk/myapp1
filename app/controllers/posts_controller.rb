@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_action :logged_in_user, only: [:create, :update, :destroy]
 
   def index
     @user = User.find(params[:id])
@@ -6,11 +7,12 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
+    @post = current_user.posts.build(post_params)
     if @post.save
-      flash[:success] = ""
+      flash[:success] = "投稿しました。"
+      redirect_to user_posts_url(current_user)
     else
-
+      render 'mountains/show'
     end
   end
 
@@ -23,7 +25,7 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:message, :latitude, :longitude)
+    params.require(:post).permit(:mountain_id, :message, :latitude, :longitude)
   end
 
 end

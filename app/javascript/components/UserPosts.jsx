@@ -18,6 +18,8 @@ const UserPosts = (props) => {
           <CustomPaper component="a" href="#" elevation={2} key={i}>
             <Typography variant="body2">{post.mountain.yomi}</Typography>
             <Typography variant="h4">{post.mountain.name}</Typography>
+            <Typography variant="body2">{post.latitude}</Typography>
+            <Typography variant="body2">{post.longitude}</Typography>
             <Typography variant="body2">{post.created_at}</Typography>
             <Typography variant="body2">{post.updated_at}</Typography>
             <Typography variant="body1">{post.message}</Typography>
