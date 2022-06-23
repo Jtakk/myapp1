@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import MountainMap from './MountainMap';
 import Marker from './Marker';
 import InputMessage from './InputMessage';
+import UploadPhotos from './UploadPhotos';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useForm } from 'react-hook-form';
@@ -35,6 +36,28 @@ const MountainMapWrapper = (props) => {
     setClick(point);
     setCenter(point);
   };
+
+  const [message, setMessage] = React.useState();
+  const handleChange = (e) => {
+    setMessage(e.target.value);
+  };
+
+  const [images, setImages] = React.useState([]);
+
+  const handleOnSubmit = async () => {
+    const data = new FormData();
+    data.append('post[mountain_id]', props.mountain.id);
+    data.append('post[latitude]', click.lat);
+    data.append('post[longitude]', click.lng);
+    data.append('post[message]', message);
+    images.map((image) => {
+      data.append('photo[image][]', image);
+    });
+    const fetch_params = { method: 'POST', headers: { 'X-CSRF-Token': props.token }, body: data };
+    const res = await fetch('/posts', fetch_params);
+    console.log(res);
+  };
+
   const render = (status) => {
     switch (status) {
       case Status.LOADING:
@@ -61,13 +84,13 @@ const MountainMapWrapper = (props) => {
               <button onClick={handleClick}>set Marker</button>
               <Box sx={{ p: 2 }}>
                 <Typography variant="h4">投稿</Typography>
-                <form action="/posts" method="post">
-                  <input name="authenticity_token" type="hidden" value={props.token} />
-                  <input name="post[mountain_id]" defaultValue={props.mountain.id} type="hidden"/>
-                  <input name="post[latitude]" defaultValue={click ? click.lat : ''} type="hidden"/>
-                  <input name="post[longitude]" defaultValue={click ? click.lng : ''} type="hidden"/>
-                  <InputMessage control={control} name="post[message]" defaultValue="" />
-                  <Button type="submit" variant="contained" fullWidth sx={{ mt: 5 }}>投稿する</Button>
+                <form>
+                  <input defaultValue={props.mountain.id} type="hidden" />
+                  <input defaultValue={click ? click.lat : ''} type="hidden" />
+                  <input defaultValue={click ? click.lng : ''} type="hidden" />
+                  <InputMessage defaultValue="" value={message} onChange={handleChange} />
+                  <UploadPhotos images={images} setImages={setImages} />
+                  <Button onClick={handleOnSubmit} variant="contained" fullWidth sx={{ mt: 5 }}>投稿する</Button>
                 </form>
               </Box>
             </Box>

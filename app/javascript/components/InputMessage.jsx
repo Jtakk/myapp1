@@ -1,24 +1,18 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
-import { useController } from 'react-hook-form';
 
-const InputMessage = (props) => {
-  const {
-    field: { ref, onChange, onBlur, name, value },
-    fieldState
-  } = useController(props);
-
+const InputMessage = ({name, value, defaultValue, placeholder, onChange}) => {
   return (
     <TextField
       fullWidth
       multiline
       label="メッセージ"
-      placeholder=""
+      placeholder={placeholder}
       variant="outlined"
       margin="normal"
-      inputRef={ref}
       name={name}
       value={value}
+      defaultValue={defaultValue}
       rows={4}
       onChange={onChange}
     />

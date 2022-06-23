@@ -8,10 +8,14 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.build(post_params)
-    if @post.save
-      flash[:success] = "投稿しました。"
-      redirect_to user_posts_url(current_user)
+    if params[:photo] && @post.save
+      photo_params[:image].each do |image|
+        @post.photos.create!(image: image)
+      end
+      flash.now[:success] = "投稿しました。"
+      render 'mountains/show'
     else
+      flash.now[:warning] = "投稿に失敗しました。"
       render 'mountains/show'
     end
   end
@@ -28,4 +32,7 @@ class PostsController < ApplicationController
     params.require(:post).permit(:mountain_id, :message, :latitude, :longitude)
   end
 
+  def photo_params
+    params.require(:photo).permit(image: [])
+  end
 end
