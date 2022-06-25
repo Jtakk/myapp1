@@ -12,11 +12,14 @@ class PostsController < ApplicationController
       photo_params[:image].each do |image|
         @post.photos.create!(image: image)
       end
-      flash.now[:success] = "投稿しました。"
-      render 'mountains/show'
+      # flash.now[:success] = "投稿しました。"
+      # render 'mountains/show'
     else
-      flash.now[:warning] = "投稿に失敗しました。"
-      render 'mountains/show'
+      # flash.now[:warning] = "投稿に失敗しました。"
+      # render 'mountains/show'
+      respond_to do |format|
+        format.json { render json: {} }
+      end
     end
   end
 

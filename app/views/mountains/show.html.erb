@@ -1,6 +1,6 @@
 <%= react_component("MountainHeader", { mountain: @mountain }) %>
 <%= react_component("MountainMapWrapper", {
   mountain: @mountain,
-  post: @post,
+  posts: @posts,
   token: form_authenticity_token(form_options: { action: posts_path, method: "post" }),
   }) %>
