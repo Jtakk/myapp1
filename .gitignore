@@ -26,6 +26,8 @@
 !/storage/.keep
 /public/uploads/*
 !/public/uploads/mountain/
+/public/uploads/mountain/*
+!/public/uploads/mountain/template/
 
 /public/assets
 .byebug_history
