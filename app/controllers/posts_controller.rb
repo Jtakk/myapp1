@@ -12,14 +12,12 @@ class PostsController < ApplicationController
       photo_params[:image].each do |image|
         @post.photos.create!(image: image)
       end
-      # flash.now[:success] = "投稿しました。"
-      # render 'mountains/show'
+      @data = { post: @post.as_json(include: :photos), flash: { message_type: "success", message: "投稿しました。" } }
     else
-      # flash.now[:warning] = "投稿に失敗しました。"
-      # render 'mountains/show'
-      respond_to do |format|
-        format.json { render json: {} }
-      end
+      @data = { post: nil, flash: { message_type: "warning", message: "投稿に失敗しました。"} }
+    end
+    respond_to do |format|
+      format.json { render json: @data }
     end
   end
 

@@ -14,6 +14,7 @@ import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PhotoSizeSelectActualTwoToneIcon from '@mui/icons-material/PhotoSizeSelectActualTwoTone';
 import Grid from '@mui/material/Grid';
+import FlashX from './FlashX';
 
 const containerStyle = {
   width: '50%',
@@ -57,6 +58,10 @@ const MountainMap = (props) => {
     setMessage(e.target.value);
   };
 
+  const [open, setOpen] = React.useState(false);
+  const [flashMessageType, setFlashMessageType] = React.useState("");
+  const [flashMessage, setFlashMessage] = React.useState("");
+
   const [images, setImages] = React.useState([]);
   const handleOnSubmit = async () => {
     const data = new FormData();
@@ -69,7 +74,27 @@ const MountainMap = (props) => {
     });
     const fetch_params = { method: 'POST', headers: { 'X-CSRF-Token': props.token }, body: data };
     const res = await fetch('/posts', fetch_params);
-    console.log(res);
+    if (!res.ok) {
+      console.error('通信エラー');
+      return;
+    }
+    const resData = await res.json();
+    const resPost = resData.post;
+    const resFlash = resData.flash;
+    if (resPost) {
+      setPosts([...posts, resPost]);
+      setPin();
+      setMessage("");
+      setImages([]);
+      setTab(0);
+      setView(resPost);
+    }
+    console.log(resData);
+    console.log(resPost);
+    console.log(resFlash);
+    setFlashMessageType(resFlash.message_type);
+    setFlashMessage(resFlash.message);
+    setOpen(true);
   };
 
   return (
@@ -81,7 +106,7 @@ const MountainMap = (props) => {
           zoom={zoom}
           onClick={onClickMap}
         >
-          <Marker position={pin} />
+          <Marker position={pin} icon="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png" />
           {posts.map((post, i) => (
             <Marker position={{ lat: parseFloat(post.latitude), lng: parseFloat(post.longitude) }} onClick={() => onClickMarker(post)} key={i} />
           ))}
@@ -151,6 +176,7 @@ const MountainMap = (props) => {
           </TabPanel>
         </Box>
       </Box>
+      <FlashX message_type={flashMessageType} message={flashMessage} open={open} setOpen={setOpen} />
     </LoadScript>
   );
 };
