@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
@@ -17,7 +17,6 @@ import Grid from '@mui/material/Grid';
 import FlashX from './FlashX';
 import Modal from '@mui/material/Modal';
 import Carousel from './Carousel';
-import Spinner from './Spinner';
 
 const containerStyle = {
   width: '50%',
@@ -36,10 +35,6 @@ const modalStyle = {
 };
 
 const MountainMap = (props) => {
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GMA_KEY
-  });
-
   const [posts, setPosts] = React.useState([...props.posts]);
   const [center, setCenter] = React.useState({
     lat: parseFloat(props.mountain.latitude),
@@ -115,14 +110,17 @@ const MountainMap = (props) => {
       setTab(0);
       setView(resPost);
     }
+    console.log(resData);
+    console.log(resPost);
+    console.log(resFlash);
     setFlashMessageType(resFlash.message_type);
     setFlashMessage(resFlash.message);
     setOpen(true);
   };
 
-  const renderMap = () => {
-    return (
-      <Box sx={{ display: "flex", height: "80vh", width: "100%" }}>
+  return (
+    <Box sx={{ display: "flex", height: "80vh", width: "100%" }}>
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GMA_KEY}>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
@@ -134,86 +132,80 @@ const MountainMap = (props) => {
             <Marker position={{ lat: parseFloat(post.latitude), lng: parseFloat(post.longitude) }} onClick={() => onClickMarker(post)} key={i} />
           ))}
         </GoogleMap>
-        <Box sx={{ width: '50%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
-            <Tabs value={tab} onChange={handleChangeTab} variant="fullWidth" aria-label="basic tabs example">
-              <Tab icon={<ImageSearchIcon />} label="投稿を見る" {...provideProps(0)} />
-              <Tab icon={<AddPhotoAlternateIcon />} label="投稿する" {...provideProps(1)} />
-            </Tabs>
-          </Box>
-          <TabPanel value={tab} index={0} style={{ height: '100%' }}>
-            <Box sx={{ position: "relative", height: '100%' }}>
-              {!view &&
-                <Box
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    zIndex: 100,
-                    backgroundColor: '#dcdcdc',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <PhotoSizeSelectActualTwoToneIcon fontSize="large"/>
-                  <Typography variant="body1">マップ上のピンをクリック!</Typography>
-                </Box>
-              }
-              <Box sx={{ p: 2 }}>
-                <Typography variant="h6">メッセージ</Typography>
-                {view && <Typography variant="body2">{view.message}</Typography>}
-              </Box>
-              <Box sx={{ p: 2 }}>
-                <Typography variant="h6">投稿写真一覧</Typography>
-                <Grid container spacing={2}>
-                  {view && view.photos.map((photo, i) => (
-                    <Grid item key={i} xs={6} sm={4} md={3}>
-                      <img src={photo.image.thumb.url} loading="lazy" alt={photo.image.url}/>
-                    </Grid>
-                  ))}
-                </Grid>
-                <Button onClick={handleOpenModal} >open modal</Button>
-                <Modal open={openModal} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-                  <Box sx={modalStyle}>
-                    <Carousel/>
-                  </Box>
-                </Modal>
-              </Box>
-            </Box>
-          </TabPanel>
-          <TabPanel value={tab} index={1} style={{ height: '100%' }}>
-            <Box sx={{ display: "flex", width: "100%" }}>
-              <TextField sx={{ flexGrow: 1, mr: 1 }} id="lat" label="緯度" type="number" size="small" margin="normal" inputRef={inputLat} />
-              <TextField sx={{ flexGrow: 1, ml: 1 }} id="lng" label="経度" type="number" size="small" margin="normal" inputRef={inputLng} />
-            </Box>
-            <Button onClick={onSetMarker} variant="outlined" size="small" fullWidth>マーカーをセット</Button>
-            <Box sx={{ p: 2 }}>
-              <Typography variant="h4">投稿</Typography>
-              <form>
-                <input defaultValue={props.mountain.id} type="hidden" />
-                <input defaultValue={pin ? pin.lat : ''} type="hidden" />
-                <input defaultValue={pin ? pin.lng : ''} type="hidden" />
-                <InputMessage value={message} onChange={handleChangeMessage} />
-                <UploadPhotos images={images} setImages={setImages} />
-                <Button onClick={handleOnSubmit} disabled={!pin || !images.length}  variant="contained" fullWidth sx={{ mt: 5 }}>投稿する</Button>
-              </form>
-            </Box>
-          </TabPanel>
+      </LoadScript>
+      <Box sx={{ width: '50%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
+          <Tabs value={tab} onChange={handleChangeTab} variant="fullWidth" aria-label="basic tabs example">
+            <Tab icon={<ImageSearchIcon />} label="投稿を見る" {...provideProps(0)} />
+            <Tab icon={<AddPhotoAlternateIcon />} label="投稿する" {...provideProps(1)} />
+          </Tabs>
         </Box>
-        <FlashX message_type={flashMessageType} message={flashMessage} open={open} setOpen={setOpen} />
+        <TabPanel value={tab} index={0} style={{ height: '100%' }}>
+          <Box sx={{ position: "relative", height: '100%' }}>
+            {!view &&
+              <Box
+                sx={{
+                  width: '100%',
+                  height: '100%',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  zIndex: 100,
+                  backgroundColor: '#dcdcdc',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <PhotoSizeSelectActualTwoToneIcon fontSize="large"/>
+                <Typography variant="body1">マップ上のピンをクリック!</Typography>
+              </Box>
+            }
+            <Box sx={{ p: 2 }}>
+              <Typography variant="h6">メッセージ</Typography>
+              {view && <Typography variant="body2">{view.message}</Typography>}
+            </Box>
+            <Box sx={{ p: 2 }}>
+              <Typography variant="h6">投稿写真一覧</Typography>
+              <Grid container spacing={2}>
+                {view && view.photos.map((photo, i) => (
+                  <Grid item key={i} xs={6} sm={4} md={3}>
+                    <img src={photo.image.thumb.url} loading="lazy" alt={photo.image.url}/>
+                  </Grid>
+                ))}
+              </Grid>
+              <Button onClick={handleOpenModal} >open modal</Button>
+              <Modal open={openModal} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+                <Box sx={modalStyle}>
+                  <Carousel/>
+                </Box>
+              </Modal>
+            </Box>
+          </Box>
+        </TabPanel>
+        <TabPanel value={tab} index={1} style={{ height: '100%' }}>
+          <Box sx={{ display: "flex", width: "100%" }}>
+            <TextField sx={{ flexGrow: 1, mr: 1 }} id="lat" label="緯度" type="number" size="small" margin="normal" inputRef={inputLat} />
+            <TextField sx={{ flexGrow: 1, ml: 1 }} id="lng" label="経度" type="number" size="small" margin="normal" inputRef={inputLng} />
+          </Box>
+          <Button onClick={onSetMarker} variant="outlined" size="small" fullWidth>マーカーをセット</Button>
+          <Box sx={{ p: 2 }}>
+            <Typography variant="h4">投稿</Typography>
+            <form>
+              <input defaultValue={props.mountain.id} type="hidden" />
+              <input defaultValue={pin ? pin.lat : ''} type="hidden" />
+              <input defaultValue={pin ? pin.lng : ''} type="hidden" />
+              <InputMessage value={message} onChange={handleChangeMessage} />
+              <UploadPhotos images={images} setImages={setImages} />
+              <Button onClick={handleOnSubmit} disabled={!pin || !images.length}  variant="contained" fullWidth sx={{ mt: 5 }}>投稿する</Button>
+            </form>
+          </Box>
+        </TabPanel>
       </Box>
-    );
-  };
-
-  if (loadError) {
-    return <div>Map cannot be loaded right now, sorry.</div>
-  }
-
-  return isLoaded ? renderMap() : <Spinner />
+      <FlashX message_type={flashMessageType} message={flashMessage} open={open} setOpen={setOpen} />
+    </Box>
+  );
 };
 
 export default MountainMap
