@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
@@ -75,6 +75,7 @@ const MountainMap = (props) => {
   const [view, setView] = React.useState();
   const onClickMarker = (post) => {
     setView(post);
+    setTab(2);
   };
   const [message, setMessage] = React.useState("");
   const handleChangeMessage = (e) => {
@@ -109,7 +110,7 @@ const MountainMap = (props) => {
       setPin();
       setMessage("");
       setImages([]);
-      setTab(0);
+      setTab(2);
       setView(resPost);
     }
     setFlashMessageType(resFlash.message_type);
@@ -127,9 +128,21 @@ const MountainMap = (props) => {
             zoom={zoom}
             onClick={onClickMap}
           >
-            <Marker position={pin} icon="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png" />
+            <Marker position={pin} icon="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png" >
+              {pin &&
+                <InfoWindow onCloseClick={() => setPin()} >
+                  <Button size="small" variant="contained" onClick={() => setTab(3)}>投稿する</Button>
+                </InfoWindow>
+              }
+            </Marker>
             {posts.map((post, i) => (
-              <Marker position={{ lat: parseFloat(post.latitude), lng: parseFloat(post.longitude) }} onClick={() => onClickMarker(post)} key={i} />
+              <Marker position={{ lat: parseFloat(post.latitude), lng: parseFloat(post.longitude) }} onClick={() => onClickMarker(post)} key={i} >
+                { (view === post) &&
+                  <InfoWindow onCloseClick={() => setView()} >
+                    <div>Checked!</div>
+                  </InfoWindow>
+                }
+              </Marker>
             ))}
           </GoogleMap>
         </Box>
@@ -180,14 +193,14 @@ const MountainMap = (props) => {
             </Box>
             <Button onClick={onSetMarker} variant="outlined" size="small" fullWidth>マーカーをセット</Button>
             <Box sx={{ p: 2 }}>
-              <Typography variant="h4">投稿</Typography>
+              <Typography variant="h6">投稿</Typography>
               <form>
                 <input defaultValue={props.mountain.id} type="hidden" />
                 <input defaultValue={pin ? pin.lat : ''} type="hidden" />
                 <input defaultValue={pin ? pin.lng : ''} type="hidden" />
                 <InputMessage value={message} onChange={handleChangeMessage} />
                 <UploadPhotos images={images} setImages={setImages} />
-                <Button onClick={handleOnSubmit} disabled={!pin || !images.length}  variant="contained" fullWidth sx={{ mt: 5 }}>投稿する</Button>
+                <Button onClick={handleOnSubmit} disabled={!pin || !images.length}  variant="contained" fullWidth sx={{ mt: 5 }}>この内容で投稿する</Button>
               </form>
             </Box>
           </TabPanel>
