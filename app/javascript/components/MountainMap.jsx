@@ -5,34 +5,39 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import TabPanel from './TabPanel';
+import MountainIntroduction from './MountainIntroduction';
 import TextField from '@mui/material/TextField';
 import InputMessage from './InputMessage';
 import UploadPhotos from './UploadPhotos';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import InfoIcon from '@mui/icons-material/Info';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PhotoSizeSelectActualTwoToneIcon from '@mui/icons-material/PhotoSizeSelectActualTwoTone';
-import Grid from '@mui/material/Grid';
+import AvatarChip from './AvatarChip';
 import FlashX from './FlashX';
-import Modal from '@mui/material/Modal';
 import Carousel from './Carousel';
 import Spinner from './Spinner';
 
 const containerStyle = {
-  width: '50%',
+  width: '100%',
   height: '100%',
 };
-const modalStyle = {
+
+const coverStyle = {
+  width: '100%',
+  height: '100%',
   position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
+  top: 0,
+  left: 0,
+  zIndex: 100,
+  backgroundColor: '#dcdcdc',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
 };
 
 const MountainMap = (props) => {
@@ -76,14 +81,6 @@ const MountainMap = (props) => {
     setMessage(e.target.value);
   };
 
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
   const [open, setOpen] = React.useState(false);
   const [flashMessageType, setFlashMessageType] = React.useState("");
   const [flashMessage, setFlashMessage] = React.useState("");
@@ -122,70 +119,61 @@ const MountainMap = (props) => {
 
   const renderMap = () => {
     return (
-      <Box sx={{ display: "flex", height: "80vh", width: "100%" }}>
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={zoom}
-          onClick={onClickMap}
-        >
-          <Marker position={pin} icon="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png" />
-          {posts.map((post, i) => (
-            <Marker position={{ lat: parseFloat(post.latitude), lng: parseFloat(post.longitude) }} onClick={() => onClickMarker(post)} key={i} />
-          ))}
-        </GoogleMap>
-        <Box sx={{ width: '50%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
+      <Box sx={{ height: '100%', width: '100%', position: 'relative' }}>
+        <Box sx={{ position: 'absolute', top: 0, left: 0, width: '40%', height: '100%'}} >
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={zoom}
+            onClick={onClickMap}
+          >
+            <Marker position={pin} icon="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png" />
+            {posts.map((post, i) => (
+              <Marker position={{ lat: parseFloat(post.latitude), lng: parseFloat(post.longitude) }} onClick={() => onClickMarker(post)} key={i} />
+            ))}
+          </GoogleMap>
+        </Box>
+        <Box sx={{ width: '60%', height: '100%', position: 'absolute', top: 0, right: 0, overflowY: 'scroll', display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%', position: 'sticky', top: 0, zIndex: '100', backgroundColor: '#fff' }}>
             <Tabs value={tab} onChange={handleChangeTab} variant="fullWidth" aria-label="basic tabs example">
-              <Tab icon={<ImageSearchIcon />} label="投稿を見る" {...provideProps(0)} />
-              <Tab icon={<AddPhotoAlternateIcon />} label="投稿する" {...provideProps(1)} />
+              <Tab icon={<InfoIcon />} label="基本情報" {...provideProps(0)} />
+              <Tab icon={<FormatListBulletedIcon />} label="写真一覧" {...provideProps(1)} />
+              <Tab icon={<ImageSearchIcon />} label="投稿を探す" {...provideProps(2)} />
+              <Tab icon={<AddPhotoAlternateIcon />} label="投稿する" {...provideProps(3)} />
             </Tabs>
           </Box>
           <TabPanel value={tab} index={0} style={{ height: '100%' }}>
+            <MountainIntroduction mountain={props.mountain} />
+          </TabPanel>
+          <TabPanel value={tab} index={1} style={{ height: '100%' }}>
+
+          </TabPanel>
+          <TabPanel value={tab} index={2} style={{ height: '100%' }}>
             <Box sx={{ position: "relative", height: '100%' }}>
               {!view &&
-                <Box
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    zIndex: 100,
-                    backgroundColor: '#dcdcdc',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
+                <Box sx={coverStyle} >
                   <PhotoSizeSelectActualTwoToneIcon fontSize="large"/>
                   <Typography variant="body1">マップ上のピンをクリック!</Typography>
                 </Box>
               }
-              <Box sx={{ p: 2 }}>
-                <Typography variant="h6">メッセージ</Typography>
-                {view && <Typography variant="body2">{view.message}</Typography>}
-              </Box>
-              <Box sx={{ p: 2 }}>
-                <Typography variant="h6">投稿写真一覧</Typography>
-                <Grid container spacing={2}>
+              <Box sx={{ p: 4 }}>
+                <Carousel>
                   {view && view.photos.map((photo, i) => (
-                    <Grid item key={i} xs={6} sm={4} md={3}>
-                      <img src={photo.image.thumb.url} loading="lazy" alt={photo.image.url}/>
-                    </Grid>
+                    <Box key={i} >
+                      <img src={photo.image.fixed.url} loading="lazy" alt={photo.image.url} style={{ width: '100%', height: 'auto'}} />
+                    </Box>
                   ))}
-                </Grid>
-                <Button onClick={handleOpenModal} >open modal</Button>
-                <Modal open={openModal} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-                  <Box sx={modalStyle}>
-                    <Carousel/>
-                  </Box>
-                </Modal>
+                </Carousel>
+              </Box>
+              <Box sx={{ p: 1 }}>
+                {view && <AvatarChip src={view.user.avatar.thumb.url} alt={view.user.avatar.url} label={view.user.name} />}
+              </Box>
+              <Box sx={{ p: 1 }}>
+                {view && <Typography variant="body2">{view.message}</Typography>}
               </Box>
             </Box>
           </TabPanel>
-          <TabPanel value={tab} index={1} style={{ height: '100%' }}>
+          <TabPanel value={tab} index={3} style={{ height: '100%' }}>
             <Box sx={{ display: "flex", width: "100%" }}>
               <TextField sx={{ flexGrow: 1, mr: 1 }} id="lat" label="緯度" type="number" size="small" margin="normal" inputRef={inputLat} />
               <TextField sx={{ flexGrow: 1, ml: 1 }} id="lng" label="経度" type="number" size="small" margin="normal" inputRef={inputLng} />
