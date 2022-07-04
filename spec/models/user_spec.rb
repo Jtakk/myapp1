@@ -3,9 +3,16 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   let(:new_user) { build(:user) }
   let(:user) { create(:user) }
+  let(:mountain) { create(:mountain) }
+  let(:post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
 
   it "has a valid value" do
     expect(new_user).to be_valid
+  end
+
+  it "is depended on by posts" do
+    post
+    expect { user.destroy }.to change(Post, :count).by(-1)
   end
 
   describe "name validation" do

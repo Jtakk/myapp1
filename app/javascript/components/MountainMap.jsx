@@ -179,7 +179,7 @@ const MountainMap = (props) => {
                 </Carousel>
               </Box>
               <Box sx={{ p: 1 }}>
-                {view && <AvatarChip src={view.user.avatar.thumb.url} alt={view.user.avatar.url} label={view.user.name} />}
+                {view && <AvatarChip src={view.user.avatar.thumb.url} alt={view.user.name} label={view.user.name} />}
               </Box>
               <Box sx={{ p: 1 }}>
                 {view && <Typography variant="body2">{view.message}</Typography>}

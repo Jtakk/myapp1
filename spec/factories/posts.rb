@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :post do
-    message { "MyText" }
-    latitude { "9.99" }
-    longitude { "9.99" }
+    message { "Post Text" }
+    sequence(:latitude) { |n| n }
+    sequence(:longitude) { |n| n }
   end
 end

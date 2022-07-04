@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   def index
     @user = User.find(params[:id])
-    @posts = @user.posts.as_json(include: { mountain: { only: [:name, :yomi] } })
+    @posts = @user.posts.latest.as_json(include: { mountain: { only: [:name, :yomi] } })
   end
 
   def create
@@ -12,9 +12,12 @@ class PostsController < ApplicationController
       photo_params[:image].each do |image|
         @post.photos.create!(image: image)
       end
-      @data = { post: @post.as_json(include: :photos), flash: { message_type: "success", message: "投稿しました。" } }
+      @data = {
+        post: @post.as_json(include: [:photos, :user]),
+        flash: { message_type: "success", message: "投稿しました。" },
+      }
     else
-      @data = { post: nil, flash: { message_type: "warning", message: "投稿に失敗しました。"} }
+      @data = { post: nil, flash: { message_type: "warning", message: "投稿に失敗しました。" } }
     end
     respond_to do |format|
       format.json { render json: @data }
