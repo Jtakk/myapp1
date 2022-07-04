@@ -98,24 +98,30 @@ const MountainMap = (props) => {
     });
     const fetch_params = { method: 'POST', headers: { 'X-CSRF-Token': props.token }, body: data };
     const res = await fetch('/posts', fetch_params);
-    if (!res.ok) {
+    if (res.status == 302) {
+      const resData = await res.json();
+      window.location.href = resData.redirect_url;
+    } else if (!res.ok) {
       console.error('通信エラー');
-      return;
+      setFlashMessageType('warning');
+      setFlashMessage('通信エラー');
+      setOpen(true);
+    } else {
+      const resData = await res.json();
+      const resPost = resData.post;
+      const resFlash = resData.flash;
+      if (resPost) {
+        setPosts([...posts, resPost]);
+        setPin();
+        setMessage("");
+        setImages([]);
+        setTab(2);
+        setView(resPost);
+      }
+      setFlashMessageType(resFlash.message_type);
+      setFlashMessage(resFlash.message);
+      setOpen(true);
     }
-    const resData = await res.json();
-    const resPost = resData.post;
-    const resFlash = resData.flash;
-    if (resPost) {
-      setPosts([...posts, resPost]);
-      setPin();
-      setMessage("");
-      setImages([]);
-      setTab(2);
-      setView(resPost);
-    }
-    setFlashMessageType(resFlash.message_type);
-    setFlashMessage(resFlash.message);
-    setOpen(true);
   };
 
   const renderMap = () => {

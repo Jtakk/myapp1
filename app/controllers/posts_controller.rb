@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :logged_in_user, only: [:create, :update, :destroy]
+  before_action :ajax_logged_in_user, only: [:create, :update, :destroy]
 
   def index
     @user = User.find(params[:id])
@@ -38,5 +38,12 @@ class PostsController < ApplicationController
 
   def photo_params
     params.require(:photo).permit(image: [])
+  end
+
+  def ajax_logged_in_user
+    unless logged_in?
+      flash[:warning] = "ログインしてください"
+      render json: { redirect_url: login_path }, status: 302
+    end
   end
 end
