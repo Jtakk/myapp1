@@ -19,9 +19,7 @@ class PostsController < ApplicationController
     else
       @data = { post: nil, flash: { message_type: "warning", message: "投稿に失敗しました。" } }
     end
-    respond_to do |format|
-      format.json { render json: @data }
-    end
+    render json: @data
   end
 
   def update

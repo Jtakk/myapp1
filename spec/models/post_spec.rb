@@ -54,8 +54,6 @@ RSpec.describe Post, type: :model do
     end
 
     it "returns posts sorted by created_at from newest to oldest" do
-      latest_post
-      oldest_post
       expect(Post.latest).to match [latest_post, oldest_post]
     end
   end
