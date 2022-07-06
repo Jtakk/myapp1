@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  MAX_IMAGE_COUNT = 10
   before_action :ajax_logged_in_user, only: [:create, :update, :destroy]
 
   def index
@@ -8,7 +9,7 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.build(post_params)
-    if params[:photo] && @post.save
+    if params[:photo] && (photo_params[:image].length <= MAX_IMAGE_COUNT) && @post.save
       photo_params[:image].each do |image|
         @post.photos.create!(image: image)
       end

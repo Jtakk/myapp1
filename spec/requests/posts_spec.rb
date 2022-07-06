@@ -34,14 +34,14 @@ RSpec.describe "Posts", type: :request do
       post posts_path, params: { post: post_attributes, photo: { image: image_array } }
     end
     let(:post_create_without_photos) { post posts_path, params: { post: post_attributes } }
-    let(:image_array) do
-      Array.new(2) do
-        Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/yuuyake_yama.png")
-      end
-    end
 
     context "when not logged in" do
       let(:post_attributes) { attributes_for(:post, mountain_id: mountain.id) }
+      let(:image_array) do
+        Array.new(10) do
+          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/yuuyake_yama.png")
+        end
+      end
 
       it "returns http status 302" do
         post_create
@@ -64,6 +64,11 @@ RSpec.describe "Posts", type: :request do
 
     context "when logged in, with valid attributes" do
       let(:post_attributes) { attributes_for(:post, mountain_id: mountain.id) }
+      let(:image_array) do
+        Array.new(10) do
+          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/yuuyake_yama.png")
+        end
+      end
 
       before { log_in_request_as(user) }
 
@@ -77,7 +82,7 @@ RSpec.describe "Posts", type: :request do
       end
 
       it "adds photos" do
-        expect { post_create }.to change(Photo, :count).by(2)
+        expect { post_create }.to change(Photo, :count).by(10)
       end
 
       it "assigns the post to @data" do
@@ -95,6 +100,11 @@ RSpec.describe "Posts", type: :request do
 
     context "when logged in, with invalid post attributes" do
       let(:post_attributes) { attributes_for(:post, mountain_id: "") }
+      let(:image_array) do
+        Array.new(10) do
+          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/yuuyake_yama.png")
+        end
+      end
 
       before { log_in_request_as(user) }
 
@@ -125,7 +135,6 @@ RSpec.describe "Posts", type: :request do
 
     context "when logged in, without photos" do
       let(:post_attributes) { attributes_for(:post, mountain_id: mountain.id) }
-      let(:test_user) { create(:user, name: "Bob") }
 
       before { log_in_request_as(user) }
 
@@ -149,6 +158,41 @@ RSpec.describe "Posts", type: :request do
 
       it "assigns a flash message to @data" do
         post_create_without_photos
+        flash = { flash: { message_type: "warning", message: "投稿に失敗しました。" } }
+        expect(controller.instance_variable_get("@data")).to include(flash)
+      end
+    end
+
+    context "when logged in, with photos more than 10" do
+      let(:post_attributes) { attributes_for(:post, mountain_id: mountain.id) }
+      let(:image_array) do
+        Array.new(11) do
+          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/yuuyake_yama.png")
+        end
+      end
+
+      before { log_in_request_as(user) }
+
+      it "returns http status 200" do
+        post_create
+        expect(response).to have_http_status(200)
+      end
+
+      it "doesn't add a post" do
+        expect { post_create }.not_to change(Post, :count)
+      end
+
+      it "doesn't add photos" do
+        expect { post_create }.not_to change(Photo, :count)
+      end
+
+      it "doesn't assign the post to @data" do
+        post_create
+        expect(controller.instance_variable_get("@data")).to include(post: nil)
+      end
+
+      it "assigns a flash message to @data" do
+        post_create
         flash = { flash: { message_type: "warning", message: "投稿に失敗しました。" } }
         expect(controller.instance_variable_get("@data")).to include(flash)
       end
