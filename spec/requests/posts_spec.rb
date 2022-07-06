@@ -39,7 +39,7 @@ RSpec.describe "Posts", type: :request do
       let(:post_attributes) { attributes_for(:post, mountain_id: mountain.id) }
       let(:image_array) do
         Array.new(10) do
-          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/yuuyake_yama.png")
+          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/test_photo_1.png")
         end
       end
 
@@ -66,7 +66,7 @@ RSpec.describe "Posts", type: :request do
       let(:post_attributes) { attributes_for(:post, mountain_id: mountain.id) }
       let(:image_array) do
         Array.new(10) do
-          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/yuuyake_yama.png")
+          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/test_photo_1.png")
         end
       end
 
@@ -102,7 +102,7 @@ RSpec.describe "Posts", type: :request do
       let(:post_attributes) { attributes_for(:post, mountain_id: "") }
       let(:image_array) do
         Array.new(10) do
-          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/yuuyake_yama.png")
+          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/test_photo_1.png")
         end
       end
 
@@ -167,7 +167,7 @@ RSpec.describe "Posts", type: :request do
       let(:post_attributes) { attributes_for(:post, mountain_id: mountain.id) }
       let(:image_array) do
         Array.new(11) do
-          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/yuuyake_yama.png")
+          Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/test_photo_1.png")
         end
       end
 

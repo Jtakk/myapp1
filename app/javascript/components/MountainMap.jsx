@@ -192,22 +192,32 @@ const MountainMap = (props) => {
               </Box>
             </Box>
           </TabPanel>
-          <TabPanel value={tab} index={3} style={{ height: '100%' }}>
-            <Box sx={{ display: "flex", width: "100%" }}>
-              <TextField sx={{ flexGrow: 1, mr: 1 }} id="lat" label="緯度" type="number" size="small" margin="normal" inputRef={inputLat} />
-              <TextField sx={{ flexGrow: 1, ml: 1 }} id="lng" label="経度" type="number" size="small" margin="normal" inputRef={inputLng} />
-            </Box>
-            <Button onClick={onSetMarker} variant="outlined" size="small" fullWidth>マーカーをセット</Button>
-            <Box sx={{ p: 2 }}>
-              <Typography variant="h6">投稿</Typography>
-              <form>
-                <input defaultValue={props.mountain.id} type="hidden" />
-                <input defaultValue={pin ? pin.lat : ''} type="hidden" />
-                <input defaultValue={pin ? pin.lng : ''} type="hidden" />
-                <InputMessage value={message} onChange={handleChangeMessage} />
-                <UploadPhotos images={images} setImages={setImages} />
-                <Button onClick={handleOnSubmit} disabled={!pin || !images.length}  variant="contained" fullWidth sx={{ mt: 5 }}>この内容で投稿する</Button>
-              </form>
+          <TabPanel value={tab} index={3} style={{ height: '100%' }} id="tabpanel-create-post">
+            <Box sx={{ position: "relative", height: '100%' }} >
+              {!props.isLoggedIn &&
+                <Box sx={coverStyle} >
+                  <Button color="primary" variant="contained" href="/login">ログイン</Button>
+                  <Typography variant="body1">投稿にはログインが必要です</Typography>
+                </Box>
+              }
+              <Box sx={{ p: 4 }}>
+                <Box sx={{ display: "flex", width: "100%" }}>
+                  <TextField sx={{ flexGrow: 1, mr: 1 }} id="lat" label="緯度" type="number" size="small" margin="normal" inputRef={inputLat} />
+                  <TextField sx={{ flexGrow: 1, ml: 1 }} id="lng" label="経度" type="number" size="small" margin="normal" inputRef={inputLng} />
+                </Box>
+                <Button onClick={onSetMarker} variant="outlined" size="small" fullWidth>マーカーをセット</Button>
+                <Box>
+                  <Typography variant="h6">投稿</Typography>
+                  <form>
+                    <input defaultValue={props.mountain.id} type="hidden" />
+                    <input defaultValue={pin ? pin.lat : ''} type="hidden" />
+                    <input defaultValue={pin ? pin.lng : ''} type="hidden" />
+                    <InputMessage value={message} onChange={handleChangeMessage} />
+                    <UploadPhotos images={images} setImages={setImages} />
+                    <Button id="btn-submit-post" onClick={handleOnSubmit} disabled={!pin || !images.length}  variant="contained" fullWidth sx={{ mt: 5 }}>この内容で投稿する</Button>
+                  </form>
+                </Box>
+              </Box>
             </Box>
           </TabPanel>
         </Box>

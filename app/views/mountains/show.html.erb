@@ -1,6 +1,7 @@
 <%= react_component("MountainMap", {
   mountain: @mountain,
   posts: @posts,
+  isLoggedIn: logged_in?,
   token: form_authenticity_token(form_options: { action: posts_path, method: "post" }),
   },
   {

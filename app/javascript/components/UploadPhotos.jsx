@@ -37,14 +37,14 @@ const UploadPhotos = ({images, setImages, ...rest}) => {
 
   return (
     <Box {...rest}>
-      <Button variant="outlined" component="label" disabled={overload}>
+      <Button id="btn-upload-photo" variant="outlined" component="label" disabled={overload}>
         写真を追加する
         <input type="file" multiple accept=".jpg,.jpeg,.png,.gif" onChange={handleChange} onClick={handleClick} hidden />
       </Button>
       <Stack spacing={1} >
         {images.map((image, i) => (
           <Box key={i} sx={{ p: 1, border: '1px solid #2196f3', position: 'relative' }}>
-            <CancelIcon sx={{ position: 'absolute', top:'0px', right: '0px' }} onClick={() => handleDelete(i)} />
+            <CancelIcon id={"cancel-icon-"+i} sx={{ position: 'absolute', top:'0px', right: '0px' }} onClick={() => handleDelete(i)} />
             <CustomImg src={URL.createObjectURL(image)} />
           </Box>
         ))}
