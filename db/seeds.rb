@@ -23,19 +23,3 @@ Mountain.create!(
   yomi: "ふじさん",
   zoom: 10,
 )
-
-Post.create!(
-  user_id: 1,
-  mountain_id: 1,
-  message: "First message!",
-  latitude: 35.2,
-  longitude: 139,
-)
-
-Post.create!(
-  user_id: 1,
-  mountain_id: 1,
-  message: "Second message!",
-  latitude: 35.05,
-  longitude: 139,
-)
