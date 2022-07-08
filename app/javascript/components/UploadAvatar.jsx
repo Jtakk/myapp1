@@ -4,23 +4,24 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import FaceIcon from '@mui/icons-material/Face';
 
-const UploadAvatar = (props) => {
-  const { name, ...rest } = props;
-  const [file, setFile] = React.useState('');
+const UploadAvatar = ({name, ...rest}) => {
+  const inputRef = React.useRef(null);
+  const [avatar, setAvatar] = React.useState();
   const handleChange = (e) => {
-    setFile(e.target.value);
+    setAvatar(e.target.files[0]);
   };
   const handleDelete = () => {
-    setFile('');
+    setAvatar('');
+    inputRef.current.value = '';
   };
 
   return (
     <Stack direction="row" spacing={1} {...rest} >
       <Button variant="outlined" component="label" >
         画像を設定する
-        <input type="file" name={name} value={file} onChange={handleChange} hidden />
+        <input type="file" accept=".jpg,.jpeg,.png,.gif" name={name} onChange={handleChange} ref={inputRef} hidden />
       </Button>
-      <Chip variant="outlined" icon={<FaceIcon />} label={file} onDelete={handleDelete} />
+      <Chip variant="outlined" icon={<FaceIcon />} label={avatar && avatar.name} onDelete={handleDelete} />
     </Stack>
   );
 };

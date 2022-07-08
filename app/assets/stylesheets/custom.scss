@@ -14,3 +14,13 @@ img.index-image {
   object-fit: cover;
   border-radius: 2%;
 }
+
+.mountain_map_component {
+  height: calc(100% - 56px);
+}
+
+@media screen and (min-width: 600px) {
+  .mountain_map_component {
+    height: calc(100% - 64px);
+  }
+}

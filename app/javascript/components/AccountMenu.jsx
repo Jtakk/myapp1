@@ -7,9 +7,10 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
+import PhotoIcon from '@mui/icons-material/Photo';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const AccountMenu = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -28,6 +29,12 @@ const AccountMenu = (props) => {
         </IconButton>
       </Tooltip>
       <Menu id="account-menu-list" anchorEl={anchorEl} open={open} onClose={handleClose} transformOrigin={{ horizontal: 'right', vertical: 'top' }} anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
+        <MenuItem component="a" href={"/users/"+props.currentUser.id+"/posts"}>
+          <ListItemIcon>
+            <PhotoIcon fontSize="small" />
+          </ListItemIcon>
+          投稿一覧
+        </MenuItem>
         <MenuItem component="a" href={"/users/"+props.currentUser.id}>
           <ListItemIcon>
             <AccountCircleIcon fontSize="small" />
@@ -36,14 +43,14 @@ const AccountMenu = (props) => {
         </MenuItem>
         <MenuItem component="a" href={"/users/"+props.currentUser.id+"/edit"}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <SettingsIcon fontSize="small" />
           </ListItemIcon>
           アカウント設定
         </MenuItem>
         <Divider />
         <MenuItem component="a" href="/logout" data-method="delete">
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <LogoutIcon fontSize="small" />
           </ListItemIcon>
           ログアウト
         </MenuItem>

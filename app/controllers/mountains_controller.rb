@@ -5,5 +5,6 @@ class MountainsController < ApplicationController
 
   def show
     @mountain = Mountain.find(params[:id])
+    @posts = @mountain.posts.as_json(include: [:photos, :user])
   end
 end
