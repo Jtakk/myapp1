@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
   MAX_IMAGE_COUNT = 10
-  before_action :ajax_logged_in_user, only: [:create, :update]
-  before_action :logged_in_user, only: [:destroy]
-  before_action :correct_user, only: [:destroy]
+  before_action :ajax_logged_in_user, only: [:create]
+  before_action :logged_in_user, only: [:update, :destroy]
+  before_action :correct_user, only: [:update, :destroy]
 
   def index
     @user = User.find(params[:id])
@@ -30,6 +30,13 @@ class PostsController < ApplicationController
   end
 
   def update
+    @post = Post.find(params[:id])
+    if @post.update(update_post_params)
+      flash[:success] = "メッセージを更新しました。"
+      redirect_to @post
+    else
+      render :show
+    end
   end
 
   def destroy
@@ -42,6 +49,10 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:mountain_id, :message, :latitude, :longitude)
+  end
+
+  def update_post_params
+    params.require(:post).permit(:message)
   end
 
   def photo_params

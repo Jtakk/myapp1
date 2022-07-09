@@ -5,8 +5,8 @@ FactoryBot.define do
     elevation { 2000 }
     image { Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/test_mountain.png") }
     introduction { "Text" }
-    latitude { 35.to_d }
-    longitude { 135.to_d }
+    latitude { 35 }
+    longitude { 135 }
     zoom { 10 }
   end
 end

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Posts", type: :request do
   let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
   let(:mountain) { create(:mountain) }
 
   describe "GET /index" do
@@ -213,6 +214,90 @@ RSpec.describe "Posts", type: :request do
     end
   end
 
+  describe "PATCH /update" do
+    let!(:my_post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
+    let(:patch_update) { patch post_path(my_post), params: new_post_attributes }
+
+    context "when not logged in" do
+      let(:new_post_attributes) { { post: { message: "new message" } } }
+
+      it "fails in editing a message of the post" do
+        expect { patch_update }.not_to change { my_post.reload.message }
+      end
+
+      it "returns http status 302" do
+        patch_update
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        patch_update
+        expect(flash[:warning]).to be_present
+      end
+
+      it "doesn't save the forwarding_url in the session for PATCH method" do
+        patch_update
+        expect(session[:forwarding_url]).to eq nil
+      end
+    end
+
+    context "when logged in" do
+      let(:new_post_attributes) { { post: { message: "new message" } } }
+
+      before { log_in_request_as(user) }
+
+      it "succeeds in editing a message of the post" do
+        expect { patch_update }.to change { my_post.reload.message }
+      end
+
+      it "returns http status 302" do
+        patch_update
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        patch_update
+        expect(flash[:success]).to be_present
+      end
+    end
+
+    context "when logged in, with an attribute not permitted" do
+      let(:new_post_attributes) do
+        { post: { message: "new message", latitude: my_post.latitude + 1.to_d } }
+      end
+
+      before { log_in_request_as(user) }
+
+      it "fails in editing an attribute not permitted of the post" do
+        expect { patch_update }.not_to change { my_post.reload.latitude }
+      end
+
+      it "succeeds in editing a message of the post" do
+        expect { patch_update }.to change { my_post.reload.message }
+      end
+    end
+
+    context "when logged in as wrong user" do
+      let(:new_post_attributes) { { post: { message: "new message" } } }
+
+      before { log_in_request_as(other_user) }
+
+      it "fails in editing a message of the post" do
+        expect { patch_update }.not_to change { my_post.reload.message }
+      end
+
+      it "returns http status 302" do
+        patch_update
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        patch_update
+        expect(flash[:warning]).to be_present
+      end
+    end
+  end
+
   describe "DELETE /destroy" do
     let!(:my_post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
     let(:delete_destroy) { delete post_path(my_post) }
@@ -257,8 +342,6 @@ RSpec.describe "Posts", type: :request do
     end
 
     context "when logged in as wrong user" do
-      let(:other_user) { create(:user) }
-
       before { log_in_request_as(other_user) }
 
       it "doesn't delete a post" do

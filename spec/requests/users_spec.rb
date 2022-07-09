@@ -17,7 +17,7 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status(:success)
     end
 
-    it "assigns the @user" do
+    it "assigns the user to @user" do
       expect(controller.instance_variable_get("@user")).to eq user
     end
   end
@@ -82,7 +82,7 @@ RSpec.describe "Users", type: :request do
         expect(response).to have_http_status(:success)
       end
 
-      it "assigns the @user" do
+      it "assigns the user to @user" do
         expect(controller.instance_variable_get("@user")).to eq user
       end
     end
@@ -105,24 +105,28 @@ RSpec.describe "Users", type: :request do
 
   describe "PATCH /update" do
     let(:patch_update) { patch user_path(user), params: { user: new_user_attributes } }
-
-    let(:user) { create(:user) }
+    let!(:user) { create(:user) }
     let(:other_user) { create(:user) }
 
     context "when not logged in" do
       let(:new_user_attributes) { attributes_for(:user, password: "", password_confirmation: "") }
 
-      before { patch_update }
+      it "fails in editing a name of the user" do
+        expect { patch_update }.not_to change { user.reload.name }
+      end
 
       it "returns http status 302" do
+        patch_update
         expect(response).to have_http_status(302)
       end
 
       it "inserts a flash message" do
+        patch_update
         expect(flash[:warning]).to be_present
       end
 
       it "doesn't save the forwarding_url in the session for PATCH method" do
+        patch_update
         expect(session[:forwarding_url]).to eq nil
       end
     end
@@ -171,16 +175,19 @@ RSpec.describe "Users", type: :request do
     context "when logged in as wrong user" do
       let(:new_user_attributes) { attributes_for(:user, password: "", password_confirmation: "") }
 
-      before do
-        log_in_request_as(other_user)
-        patch_update
+      before { log_in_request_as(other_user) }
+
+      it "fails in editing a name of the user" do
+        expect { patch_update }.not_to change { user.reload.name }
       end
 
       it "returns http status 302" do
+        patch_update
         expect(response).to have_http_status(302)
       end
 
       it "inserts a flash message" do
+        patch_update
         expect(flash[:warning]).to be_present
       end
     end
@@ -188,9 +195,8 @@ RSpec.describe "Users", type: :request do
 
   describe "DELETE /destroy" do
     let(:delete_destroy) { delete user_path(user) }
-
     let!(:user) { create(:user) }
-    let!(:other_user) { create(:user) }
+    let(:other_user) { create(:user) }
 
     context "when not logged in" do
       it "doesn't delete a user" do
