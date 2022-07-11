@@ -20,6 +20,7 @@ import AvatarChip from './AvatarChip';
 import FlashX from './FlashX';
 import Carousel from './Carousel';
 import Spinner from './Spinner';
+import LikeButton from './LikeButton';
 
 const containerStyle = {
   width: '100%',
@@ -184,8 +185,9 @@ const MountainMap = (props) => {
                   ))}
                 </Carousel>
               </Box>
-              <Box sx={{ p: 1 }}>
+              <Box sx={{ p: 1, display: "flex", justifyContent: 'space-between', alignItems: 'center' }}>
                 {view && <AvatarChip src={view.user.avatar.thumb.url} alt={view.user.name} label={view.user.name} />}
+                {view && props.isLoggedIn && <LikeButton postId={view.id} postToken={props.postLikeToken} deleteToken={props.deleteLikeToken} />}
               </Box>
               <Box sx={{ p: 1 }}>
                 {view && <Typography variant="body2">{view.message}</Typography>}

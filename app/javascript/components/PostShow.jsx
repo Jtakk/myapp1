@@ -11,8 +11,8 @@ const PostShow = (props) => {
     <Container sx={{ height: '100%', py: 5, bgcolor: '#f5f5f5' }}>
       <Paper elevation={2}>
         <Typography variant="h6">{props.post.message}</Typography>
-        <EditMessage post={props.post} token={props.patch_token} defaultValue={props.post.message} />
-        <DeletePost post={props.post} token={props.delete_token} />
+        <EditMessage post={props.post} token={props.patchToken} defaultValue={props.post.message} />
+        <DeletePost post={props.post} token={props.deleteToken} />
       </Paper>
     </Container>
   );

@@ -59,13 +59,6 @@ class PostsController < ApplicationController
     params.require(:photo).permit(image: [])
   end
 
-  def ajax_logged_in_user
-    unless logged_in?
-      flash[:warning] = "ログインしてください"
-      render json: { redirect_url: login_path }, status: 302
-    end
-  end
-
   def correct_user
     @user = Post.find(params[:id]).user
     unless current_user?(@user)

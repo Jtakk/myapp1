@@ -5,8 +5,8 @@
   <main style="flex:1;margin-left:240px">
     <%= react_component("PostShow", {
       post: @post,
-      patch_token: form_authenticity_token(form_options: { action: post_path(@post), method: "patch" }),
-      delete_token: form_authenticity_token(form_options: { action: post_path(@post), method: "delete" }) 
+      patchToken: form_authenticity_token(form_options: { action: post_path(@post), method: "patch" }),
+      deleteToken: form_authenticity_token(form_options: { action: post_path(@post), method: "delete" })
     }, {
       style: "height:100%"
     }) %>
