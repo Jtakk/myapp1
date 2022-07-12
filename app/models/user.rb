@@ -50,6 +50,18 @@ class User < ApplicationRecord
     reset_sent_at < 2.hours.ago
   end
 
+  def own?(post)
+    id == post.user_id
+  end
+
+  def like?(post)
+    likes.exists?(post_id: post.id)
+  end
+
+  def like(post)
+    likes.create!(post_id: post.id)
+  end
+
   private
 
   def downcase_email

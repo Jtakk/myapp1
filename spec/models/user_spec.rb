@@ -3,16 +3,24 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   let(:new_user) { build(:user) }
   let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
   let(:mountain) { create(:mountain) }
-  let(:post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
+  let(:my_post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
+  let(:other_post) { create(:post, user_id: other_user.id, mountain_id: mountain.id) }
+  let(:like) { create(:like, user_id: user.id, post_id: other_post.id) }
 
   it "has a valid value" do
     expect(new_user).to be_valid
   end
 
   it "is depended on by posts" do
-    post
+    my_post
     expect { user.destroy }.to change(Post, :count).by(-1)
+  end
+
+  it "is depended on by likes" do
+    like
+    expect { user.destroy }.to change(Like, :count).by(-1)
   end
 
   describe "name validation" do
@@ -175,12 +183,42 @@ RSpec.describe User, type: :model do
     before { user.create_reset_digest }
 
     it "returns false just after #create_reset_digest" do
-      is_expected.to be_falsey
+      is_expected.to eq false
     end
 
     it "returns true more than 2 hours after #create_reset_digest" do
       travel_to 3.hours.after
-      is_expected.to be_truthy
+      is_expected.to eq true
+    end
+  end
+
+  describe "#own?(post)" do
+    it "returns true when the user owns the post" do
+      expect(user.own?(my_post)).to eq true
+    end
+
+    it "returns false when the user doesn't own the post" do
+      expect(user.own?(other_post)).to eq false
+    end
+  end
+
+  describe "#like?(post)" do
+    let!(:liked_post) { create(:post, user_id: other_user.id, mountain_id: mountain.id) }
+    let!(:disliked_post) { create(:post, user_id: other_user.id, mountain_id: mountain.id) }
+    let!(:like) { create(:like, user_id: user.id, post_id: liked_post.id) }
+
+    it "returns true when the user likes the post" do
+      expect(user.like?(liked_post)).to eq true
+    end
+
+    it "returns false when the user doesn't like the post" do
+      expect(user.like?(disliked_post)).to eq false
+    end
+  end
+
+  describe "#like(post)" do
+    it "succeeds in creating the relation" do
+      expect { user.like(other_post) }.to change(Like, :count).by(1)
     end
   end
 end

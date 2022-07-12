@@ -2,13 +2,16 @@ require 'rails_helper'
 
 RSpec.describe Post, type: :model do
   let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
   let(:mountain) { create(:mountain) }
-  let(:post) { build(:post, user_id: user.id, mountain_id: mountain.id) }
+  let(:my_post) { build(:post, user_id: user.id, mountain_id: mountain.id) }
+  let(:other_post) { create(:post, user_id: other_user.id, mountain_id: mountain.id) }
   let(:blank_user_post) { build(:post, user_id: "", mountain_id: mountain.id) }
   let(:blank_mountain_post) { build(:post, user_id: user.id, mountain_id: "") }
+  let(:like) { create(:like, user_id: user.id, post_id: other_post.id) }
 
   it "has a valid value" do
-    expect(post).to be_valid
+    expect(my_post).to be_valid
   end
 
   it "must belong to a user" do
@@ -20,9 +23,14 @@ RSpec.describe Post, type: :model do
   end
 
   it "is depended on by photos" do
-    post.save
-    create(:photo, post_id: post.id)
-    expect { post.destroy }.to change(Photo, :count).by(-1)
+    my_post.save
+    create(:photo, post_id: my_post.id)
+    expect { my_post.destroy }.to change(Photo, :count).by(-1)
+  end
+
+  it "is depended on by likes" do
+    like
+    expect { other_post.destroy }.to change(Like, :count).by(-1)
   end
 
   describe "latitude validation" do

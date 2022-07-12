@@ -187,7 +187,7 @@ const MountainMap = (props) => {
               </Box>
               <Box sx={{ p: 1, display: "flex", justifyContent: 'space-between', alignItems: 'center' }}>
                 {view && <AvatarChip src={view.user.avatar.thumb.url} alt={view.user.name} label={view.user.name} />}
-                {view && props.isLoggedIn && <LikeButton postId={view.id} postToken={props.postLikeToken} deleteToken={props.deleteLikeToken} />}
+                {view && props.isLoggedIn && <LikeButton post={view} postToken={props.postLikeToken} deleteToken={props.deleteLikeToken} currentUserId={props.currentUser.id} />}
               </Box>
               <Box sx={{ p: 1 }}>
                 {view && <Typography variant="body2">{view.message}</Typography>}

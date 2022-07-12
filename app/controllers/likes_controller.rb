@@ -2,14 +2,21 @@ class LikesController < ApplicationController
   before_action :ajax_logged_in_user, only: [:show, :create, :destroy]
 
   def show
-    like = current_user.likes.exists?(post_id: params[:id])
-    count = Post.find(params[:id]).liked_users.count
-    render json: { like: like, count: count }
+    @post = Post.find(params[:id])
+    @like = current_user.like?(@post)
+    @count = @post.liked_users.count
+    render json: { like: @like, count: @count }
   end
 
   def create
-    @like = current_user.likes.create!(like_params)
-    render json: @like
+    @post = Post.find_by(post_params)
+    if current_user.own?(@post)
+      @like = nil
+      render json: @like, status: 403
+    else
+      @like = current_user.like(@post)
+      render json: @like
+    end
   end
 
   def destroy
@@ -20,7 +27,7 @@ class LikesController < ApplicationController
 
   private
 
-  def like_params
-    params.require(:like).permit(:post_id)
+  def post_params
+    params.require(:post).permit(:id)
   end
 end
