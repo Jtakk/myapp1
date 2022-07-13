@@ -99,7 +99,7 @@ RSpec.describe SessionsHelper, type: :helper do
       end
     end
 
-    context "when logged in not as owner of the post" do
+    context "when logged in not as an owner of the post" do
       it "returns false" do
         log_in(other_user)
         is_expected.to eq false
