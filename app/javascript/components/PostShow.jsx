@@ -6,13 +6,17 @@ import Button from '@mui/material/Button';
 import EditMessage from './EditMessage';
 import DeletePost from './DeletePost';
 
-const PostShow = (props) => {
+const PostShow = ({post, isCurrentUsersPost, patchToken, deleteToken}) => {
   return (
     <Container sx={{ height: '100%', py: 5, bgcolor: '#f5f5f5' }}>
       <Paper elevation={2}>
-        <Typography variant="h6">{props.post.message}</Typography>
-        <EditMessage post={props.post} token={props.patchToken} defaultValue={props.post.message} />
-        <DeletePost post={props.post} token={props.deleteToken} />
+        <Typography variant="h6">{post.message}</Typography>
+        {isCurrentUsersPost &&
+          <div>
+            <EditMessage post={post} token={patchToken} defaultValue={post.message} />
+            <DeletePost post={post} token={deleteToken} />
+          </div>
+        }
       </Paper>
     </Container>
   );

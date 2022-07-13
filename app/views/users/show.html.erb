@@ -1,8 +1,4 @@
 <div style="display:flex;height:100%">
-  <% if logged_in? %>
-    <aside style="height:100%;position:fixed"><%= react_component("UserSideMenu", { currentUser: current_user }, { style: "height:100%" }) %></aside>
-    <main style="flex:1;margin-left:240px"><%= react_component("UserProfile", { user: @user }, { style: "height:100%" }) %></main>
-  <% else %>
-    <main style="width:100%"><%= react_component("UserProfile", { user: @user }, { style: "height:100%" }) %></main>
-  <% end %>
+  <aside style="height:100%;position:fixed"><%= react_component("UserSideMenu", { user: @user, isCurrentUser: current_user?(@user) }, { style: "height:100%" }) %></aside>
+  <main style="flex:1;margin-left:240px"><%= react_component("UserProfile", { user: @user }, { style: "height:100%" }) %></main>
 </div>
