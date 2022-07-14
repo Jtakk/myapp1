@@ -1,9 +1,8 @@
 <%= react_component("MountainMap", {
   mountain: @mountain,
   posts: @posts,
-  isLoggedIn: logged_in?,
   currentUser: current_user,
-  token: form_authenticity_token(form_options: { action: posts_path, method: "post" }),
+  postPostToken: form_authenticity_token(form_options: { action: posts_path, method: "post" }),
   postLikeToken: form_authenticity_token(form_options: { action: likes_path, method: "post" }),
   deleteLikeToken: form_authenticity_token(form_options: {  method: "delete" }),
   },

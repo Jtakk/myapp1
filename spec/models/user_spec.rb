@@ -6,7 +6,7 @@ RSpec.describe User, type: :model do
   let(:other_user) { create(:user) }
   let(:mountain) { create(:mountain) }
   let(:my_post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
-  let(:other_post) { create(:post, user_id: other_user.id, mountain_id: mountain.id) }
+  let(:other_post) { create(:post, :second, user_id: other_user.id, mountain_id: mountain.id) }
   let(:like) { create(:like, user_id: user.id, post_id: other_post.id) }
 
   it "has a valid value" do
@@ -217,7 +217,7 @@ RSpec.describe User, type: :model do
   end
 
   describe "#like(post)" do
-    it "succeeds in creating the relation" do
+    it "succeeds in creating a relation" do
       expect { user.like(other_post) }.to change(Like, :count).by(1)
     end
   end

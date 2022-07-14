@@ -5,7 +5,7 @@ RSpec.describe "UpdateAndDeletePost", type: :system do
   let(:other_user) { create(:user) }
   let(:mountain) { create(:mountain) }
   let(:my_post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
-  let(:other_post) { create(:post, user_id: other_user.id, mountain_id: mountain.id) }
+  let(:other_post) { create(:post, :second, user_id: other_user.id, mountain_id: mountain.id) }
 
   context "when logged in as an owner of the post" do
     it "succeeds in updating and deleting the post", js: true do

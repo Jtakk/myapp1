@@ -5,7 +5,7 @@ RSpec.describe "Likes", type: :request do
   let(:other_user) { create(:user) }
   let(:mountain) { create(:mountain) }
   let(:my_post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
-  let(:other_post) { create(:post, user_id: other_user.id, mountain_id: mountain.id) }
+  let(:other_post) { create(:post, :second, user_id: other_user.id, mountain_id: mountain.id) }
 
   describe "GET /show" do
     let!(:like) { create(:like, user_id: user.id, post_id: other_post.id) }

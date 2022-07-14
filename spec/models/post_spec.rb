@@ -5,7 +5,7 @@ RSpec.describe Post, type: :model do
   let(:other_user) { create(:user) }
   let(:mountain) { create(:mountain) }
   let(:my_post) { build(:post, user_id: user.id, mountain_id: mountain.id) }
-  let(:other_post) { create(:post, user_id: other_user.id, mountain_id: mountain.id) }
+  let(:other_post) { create(:post, :second, user_id: other_user.id, mountain_id: mountain.id) }
   let(:blank_user_post) { build(:post, user_id: "", mountain_id: mountain.id) }
   let(:blank_mountain_post) { build(:post, user_id: user.id, mountain_id: "") }
   let(:like) { create(:like, user_id: user.id, post_id: other_post.id) }

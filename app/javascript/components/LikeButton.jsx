@@ -66,6 +66,7 @@ const LikeButton = ({post, postToken, deleteToken, currentUserId}) => {
       variant={like ? "contained" : "outlined"}
       onClick={handleOnClick}
       sx={post.user_id == currentUserId ? { pointerEvents: 'none' } : { pointerEvents: 'auto' }}
+      className="btn-like"
     />
   );
 };

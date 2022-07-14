@@ -5,9 +5,12 @@
   <main style="flex:1;margin-left:240px">
     <%= react_component("PostShow", {
       post: @post,
+      currentUser: current_user,
       isCurrentUsersPost: current_users_post?(@post),
-      patchToken: form_authenticity_token(form_options: { action: post_path(@post), method: "patch" }),
-      deleteToken: form_authenticity_token(form_options: { action: post_path(@post), method: "delete" })
+      patchPostToken: form_authenticity_token(form_options: { action: post_path(@post), method: "patch" }),
+      deletePostToken: form_authenticity_token(form_options: { action: post_path(@post), method: "delete" }),
+      postLikeToken: form_authenticity_token(form_options: { action: likes_path, method: "post" }),
+      deleteLikeToken: form_authenticity_token(form_options: {  method: "delete" })
     }, {
       style: "height:100%"
     }) %>
