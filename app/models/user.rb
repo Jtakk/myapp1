@@ -1,5 +1,7 @@
 class User < ApplicationRecord
   has_many :posts, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :liked_posts, through: :likes, source: :post
   attr_accessor :remember_token, :reset_token
   before_save :downcase_email
   validates :name, presence: true, length: { maximum: 30 }
@@ -46,6 +48,18 @@ class User < ApplicationRecord
 
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
+  end
+
+  def own?(post)
+    id == post.user_id
+  end
+
+  def like?(post)
+    likes.exists?(post_id: post.id)
+  end
+
+  def like(post)
+    likes.create!(post_id: post.id)
   end
 
   private

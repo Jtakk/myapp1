@@ -20,6 +20,7 @@ import AvatarChip from './AvatarChip';
 import FlashX from './FlashX';
 import Carousel from './Carousel';
 import Spinner from './Spinner';
+import LikeButton from './LikeButton';
 
 const containerStyle = {
   width: '100%',
@@ -96,7 +97,7 @@ const MountainMap = (props) => {
     images.map((image) => {
       data.append('photo[image][]', image);
     });
-    const fetch_params = { method: 'POST', headers: { 'X-CSRF-Token': props.token }, body: data };
+    const fetch_params = { method: 'POST', headers: { 'X-CSRF-Token': props.postPostToken }, body: data };
     const res = await fetch('/posts', fetch_params);
     if (res.status == 302) {
       const resData = await res.json();
@@ -184,8 +185,9 @@ const MountainMap = (props) => {
                   ))}
                 </Carousel>
               </Box>
-              <Box sx={{ p: 1 }}>
+              <Box sx={{ p: 1, display: "flex", justifyContent: 'space-between', alignItems: 'center' }}>
                 {view && <AvatarChip src={view.user.avatar.thumb.url} alt={view.user.name} label={view.user.name} />}
+                {view && props.currentUser && <LikeButton post={view} postToken={props.postLikeToken} deleteToken={props.deleteLikeToken} currentUserId={props.currentUser.id} />}
               </Box>
               <Box sx={{ p: 1 }}>
                 {view && <Typography variant="body2">{view.message}</Typography>}
@@ -194,7 +196,7 @@ const MountainMap = (props) => {
           </TabPanel>
           <TabPanel value={tab} index={3} style={{ height: '100%' }} id="tabpanel-create-post">
             <Box sx={{ position: "relative", height: '100%' }} >
-              {!props.isLoggedIn &&
+              {!props.currentUser &&
                 <Box sx={coverStyle} >
                   <Button color="primary" variant="contained" href="/login">ログイン</Button>
                   <Typography variant="body1">投稿にはログインが必要です</Typography>

@@ -35,7 +35,7 @@ const UserEdit = (props) => {
           <InputEmail control={control} name="user[email]" defaultValue={props.user.email} rules={{ required: true, maxLength: 255, pattern: validEmailRegex }} />
           <InputPassword control={control} name="user[password]" defaultValue="" />
           <InputPasswordConfirmation control={control} name="user[password_confirmation]" defaultValue="" />
-          <InputIntroduction control={control} name="user[introduction]" defaultValue={props.user.introduction} />
+          <InputIntroduction control={control} name="user[introduction]" defaultValue={props.user.introduction ? props.user.introduction : ""} />
           <Button type="submit" variant="contained" fullWidth sx={{ mt: 5 }}>変更を保存する</Button>
         </form>
         <Box sx={{ mt: 5 }}>

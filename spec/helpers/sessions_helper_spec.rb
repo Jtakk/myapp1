@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SessionsHelper, type: :helper do
   let(:user) { create(:user) }
+  let(:mountain) { create(:mountain) }
 
   describe "#log_in(user)" do
     it "saves the user_id in the session" do
@@ -73,14 +74,35 @@ RSpec.describe SessionsHelper, type: :helper do
     context "when logged in as correct user" do
       it "returns true" do
         log_in(user)
-        is_expected.to be_truthy
+        is_expected.to eq true
       end
     end
 
     context "when logged in as wrong user" do
       it "returns false" do
         log_in(other_user)
-        is_expected.to be_falsey
+        is_expected.to eq false
+      end
+    end
+  end
+
+  describe "#current_users_post?(post)" do
+    subject { current_users_post?(my_post) }
+
+    let(:my_post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
+    let(:other_user) { create(:user) }
+
+    context "when logged in as an owner of the post" do
+      it "returns true" do
+        log_in(user)
+        is_expected.to eq true
+      end
+    end
+
+    context "when logged in not as an owner of the post" do
+      it "returns false" do
+        log_in(other_user)
+        is_expected.to eq false
       end
     end
   end
@@ -91,13 +113,13 @@ RSpec.describe SessionsHelper, type: :helper do
     context "when logged in" do
       it "returns true" do
         log_in(user)
-        is_expected.to be_truthy
+        is_expected.to eq true
       end
     end
 
     context "when not logged in" do
       it "returns false" do
-        is_expected.to be_falsey
+        is_expected.to eq false
       end
     end
   end

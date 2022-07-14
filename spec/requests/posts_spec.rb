@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Posts", type: :request do
   let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
   let(:mountain) { create(:mountain) }
 
   describe "GET /index" do
@@ -26,6 +27,20 @@ RSpec.describe "Posts", type: :request do
       arr = [latest_post, oldest_post].
         map { |e| e.as_json(include: { mountain: { only: [:name, :yomi] } }) }
       expect(controller.instance_variable_get("@posts")).to match arr
+    end
+  end
+
+  describe "GET /show" do
+    let(:post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
+
+    before { get post_path(post) }
+
+    it "returns http success" do
+      expect(response).to have_http_status(:success)
+    end
+
+    it "assigns the post to @post" do
+      expect(controller.instance_variable_get("@post")).to eq post
     end
   end
 
@@ -195,6 +210,152 @@ RSpec.describe "Posts", type: :request do
         post_create
         flash = { flash: { message_type: "warning", message: "投稿に失敗しました。" } }
         expect(controller.instance_variable_get("@data")).to include(flash)
+      end
+    end
+  end
+
+  describe "PATCH /update" do
+    let!(:my_post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
+    let(:patch_update) { patch post_path(my_post), params: new_post_attributes }
+
+    context "when not logged in" do
+      let(:new_post_attributes) { { post: { message: "new message" } } }
+
+      it "fails in editing a message of the post" do
+        expect { patch_update }.not_to change { my_post.reload.message }
+      end
+
+      it "returns http status 302" do
+        patch_update
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        patch_update
+        expect(flash[:warning]).to be_present
+      end
+
+      it "doesn't save the forwarding_url in the session for PATCH method" do
+        patch_update
+        expect(session[:forwarding_url]).to eq nil
+      end
+    end
+
+    context "when logged in" do
+      let(:new_post_attributes) { { post: { message: "new message" } } }
+
+      before { log_in_request_as(user) }
+
+      it "succeeds in editing a message of the post" do
+        expect { patch_update }.to change { my_post.reload.message }
+      end
+
+      it "returns http status 302" do
+        patch_update
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        patch_update
+        expect(flash[:success]).to be_present
+      end
+    end
+
+    context "when logged in, with an attribute not permitted" do
+      let(:new_post_attributes) do
+        { post: { message: "new message", latitude: my_post.latitude + 1.to_d } }
+      end
+
+      before { log_in_request_as(user) }
+
+      it "fails in editing an attribute not permitted of the post" do
+        expect { patch_update }.not_to change { my_post.reload.latitude }
+      end
+
+      it "succeeds in editing a message of the post" do
+        expect { patch_update }.to change { my_post.reload.message }
+      end
+    end
+
+    context "when logged in as wrong user" do
+      let(:new_post_attributes) { { post: { message: "new message" } } }
+
+      before { log_in_request_as(other_user) }
+
+      it "fails in editing a message of the post" do
+        expect { patch_update }.not_to change { my_post.reload.message }
+      end
+
+      it "returns http status 302" do
+        patch_update
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        patch_update
+        expect(flash[:warning]).to be_present
+      end
+    end
+  end
+
+  describe "DELETE /destroy" do
+    let!(:my_post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
+    let(:delete_destroy) { delete post_path(my_post) }
+
+    context "when not logged in" do
+      it "doesn't delete a post" do
+        expect { delete_destroy }.not_to change(Post, :count)
+      end
+
+      it "returns http status 302" do
+        delete_destroy
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        delete_destroy
+        expect(flash[:warning]).to be_present
+      end
+
+      it "doesn't save the forwarding_url in the session for DELETE method" do
+        delete_destroy
+        expect(session[:forwarding_url]).to eq nil
+      end
+    end
+
+    context "when logged in" do
+      before { log_in_request_as(user) }
+
+      it "deletes a post" do
+        expect { delete_destroy }.to change(Post, :count).by(-1)
+      end
+
+      it "returns http status 302" do
+        delete_destroy
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        delete_destroy
+        expect(flash[:success]).to be_present
+      end
+    end
+
+    context "when logged in as wrong user" do
+      before { log_in_request_as(other_user) }
+
+      it "doesn't delete a post" do
+        expect { delete_destroy }.not_to change(Post, :count)
+      end
+
+      it "returns http status 302" do
+        delete_destroy
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        delete_destroy
+        expect(flash[:warning]).to be_present
       end
     end
   end
