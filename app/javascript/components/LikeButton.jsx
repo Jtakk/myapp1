@@ -1,6 +1,7 @@
 import React from 'react';
 import Chip from '@mui/material/Chip';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import SecondaryTheme from './SecondaryTheme';
 
 const LikeButton = ({post, postToken, deleteToken, currentUserId}) => {
   const [like, setLike] = React.useState(false);
@@ -53,21 +54,23 @@ const LikeButton = ({post, postToken, deleteToken, currentUserId}) => {
   };
 
   return (
-    <Chip
-      icon={<ThumbUpAltIcon />}
-      label={like ? "いいね済み " + count : "いいね! " + count}
-      color={
-        post.user_id == currentUserId
-          ? "primary"
-          : like
-          ? "secondary"
-          : "default"
-      }
-      variant={like ? "contained" : "outlined"}
-      onClick={handleOnClick}
-      sx={post.user_id == currentUserId ? { pointerEvents: 'none' } : { pointerEvents: 'auto' }}
-      className="btn-like"
-    />
+    <SecondaryTheme>
+      <Chip
+        icon={<ThumbUpAltIcon />}
+        label={like ? "いいね済み " + count : "いいね! " + count}
+        color={
+          post.user_id == currentUserId
+            ? "primary"
+            : like
+            ? "secondary"
+            : "default"
+        }
+        variant={like ? "contained" : "outlined"}
+        onClick={handleOnClick}
+        sx={post.user_id == currentUserId ? { pointerEvents: 'none' } : { pointerEvents: 'auto' }}
+        className="btn-like"
+      />
+    </SecondaryTheme>
   );
 };
 

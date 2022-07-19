@@ -16,11 +16,11 @@ const CustomPaper = styled(Paper)({
 
 const MountainIndex = (props) => {
   return (
-    <Box sx={{ height: '100%', width: '100%', bgcolor: '#f5f5f5' }}>
-      <Container maxWidth='lg' sx={{ height: '100%', py: 3 }}>
-        <Stack spacing={2}>
+    <Box sx={{ minHeight: '100%', bgcolor: '#f5f5f5' }}>
+      <Container maxWidth='lg' sx={{ py: 3 }}>
+        <Stack spacing={3}>
           {props.mountains.map((mountain, i) => (
-            <CustomPaper component="a" href={"/mountains/"+mountain.id} elevation={2} key={i}>
+            <CustomPaper component="a" href={"/mountains/"+mountain.id} elevation={3} key={i}>
               <Box sx={{ p: 1, overflow: 'hidden' }}>
                 <Typography variant="body2">{mountain.yomi}</Typography>
                 <Typography variant="h4" sx={{ mb: 1 }}>{mountain.name}</Typography>

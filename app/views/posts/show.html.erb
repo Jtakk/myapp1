@@ -5,6 +5,8 @@
   <main style="flex:1;margin-left:240px">
     <%= react_component("PostShow", {
       post: @post,
+      user: @user,
+      photos: @photos,
       currentUser: current_user,
       isCurrentUsersPost: current_users_post?(@post),
       patchPostToken: form_authenticity_token(form_options: { action: post_path(@post), method: "patch" }),

@@ -11,6 +11,8 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
+    @user = @post.user
+    @photos = @post.photos
   end
 
   def create
