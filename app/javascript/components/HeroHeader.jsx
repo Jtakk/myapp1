@@ -30,6 +30,17 @@ const CustomCard = styled(Card)(({theme}) => ({
 }));
 
 const HeroHeader = () => {
+  const scrollToElement = (id) => {
+    const element = document.getElementById(id);
+    const rect = element.getBoundingClientRect();
+    const elementTop = rect.top + window.pageYOffset;
+    window.scrollTo({
+      top: elementTop,
+      left: 0,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <HeroBg>
       <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -45,7 +56,7 @@ const HeroHeader = () => {
             </CardActions>
           </CustomCard>
         </Box>
-        <Button sx={{ height: '10%', backgroundColor: 'rgba(0,0,0,0.7)' }} color="primary">
+        <Button sx={{ height: '10%', backgroundColor: 'rgba(0,0,0,0.7)' }} color="primary" onClick={() => scrollToElement("overview-1st")}>
           <Typography variant="h6" sx={{ color: '#ffffff' }}>About</Typography>
           <KeyboardArrowDownIcon fontSize="large" sx={{ color: '#ffffff' }} />
         </Button>
