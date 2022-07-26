@@ -1,5 +1,7 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
+require 'csv'
+
 User.create!(
   id: 1,
   name: "First User",
@@ -23,3 +25,18 @@ Mountain.create!(
   yomi: "ふじさん",
   zoom: 10,
 )
+
+# CSV.foreach('db/csv/regions-table.csv', header: true) do |row|
+#   Region.create(
+#     id: row['id'],
+#     name: row['name']
+#   )
+# end
+#
+# CSV.foreach('db/csv/prefectures-table.csv', header: true) do |row|
+#   Prefecture.create(
+#     id: row['id'],
+#     name: row['name'],
+#     region_id: row['region_id']
+#   )
+# end
