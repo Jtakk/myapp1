@@ -11,6 +11,10 @@ import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import MapAndBinoculars from 'images/map_and_binoculars.jpeg';
+import LandscapeAndBinoculars from 'images/landscape_and_binoculars.jpeg';
+import Photographer from 'images/photographer.jpeg';
+import PcAndCamera from 'images/pc_and_camera.jpeg';
 
 const Overview = () => {
   const scrollToTop = () => {
@@ -37,7 +41,7 @@ const Overview = () => {
         <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} >
           <Box sx={{ height: '90%', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }} >
             <Card sx={{ width: '45%', height: '80%' }}>
-              <CardMedia component="img" image="assets/map_and_binoculars.jpeg" alt="map_and_binoculars" height="50%" />
+              <CardMedia component="img" image={MapAndBinoculars} alt="map_and_binoculars" height="50%" />
               <CardContent sx={{ minHeight: '30%' }}>
                 <Typography variant="h5" sx={{ mb: 2 }}>山を探す</Typography>
                 <Typography variant="body2">名前または地域から検索し、目的の山を見つけよう。</Typography>
@@ -48,7 +52,7 @@ const Overview = () => {
             </Card>
             <DoubleArrowIcon sx={{ fontSize: { xs: 30, md: 50 } }} color="primary" />
             <Card sx={{ width: '45%', height: '80%' }}>
-              <CardMedia component="img" image="assets/landscape_and_binoculars.jpeg" alt="landscape_and_binoculars" height="50%" />
+              <CardMedia component="img" image={LandscapeAndBinoculars} alt="landscape_and_binoculars" height="50%" />
               <CardContent>
                 <Typography variant="h5" sx={{ mb: 2 }}>みんなの写真を眺める</Typography>
                 <Typography variant="body2">ユーザーが投稿した写真はメッセージと共に地図上に残されています。写真に「いいね」をするとお気に入り登録することができます。</Typography>
@@ -65,7 +69,7 @@ const Overview = () => {
         <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} >
           <Box sx={{ height: '90%', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }} >
             <Card sx={{ width: '45%', height: '80%' }}>
-              <CardMedia component="img" image="assets/photographer.jpeg" alt="photographer" height="50%" />
+              <CardMedia component="img" image={Photographer} alt="photographer" height="50%" />
               <CardContent>
                 <Typography variant="h5" sx={{ mb: 2 }}>写真を撮る</Typography>
                 <Typography variant="body2">ハイキング・登山で写真を撮ろう。(GPS機能をONにして位置データを記録しておくと役に立ちます。)</Typography>
@@ -73,7 +77,7 @@ const Overview = () => {
             </Card>
             <DoubleArrowIcon sx={{ fontSize: { xs: 30, md: 50 } }} color="primary" />
             <Card sx={{ width: '45%', height: '80%' }}>
-              <CardMedia component="img" image="assets/pc_and_camera.jpeg" alt="pc_and_camera" height="50%" />
+              <CardMedia component="img" image={PcAndCamera} alt="pc_and_camera" height="50%" />
               <CardContent sx={{ minHeight: '30%' }}>
                 <Typography variant="h5" sx={{ mb: 2 }}>写真をシェアする</Typography>
                 <Typography variant="body2">地図上にピンを立てて、お気に入りの写真をメッセージと共に投稿しよう。</Typography>

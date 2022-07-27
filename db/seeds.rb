@@ -11,32 +11,69 @@ User.create!(
   introduction: "Hello, World!"
 )
 
-Mountain.create!(
-  id: 1,
-  name: "富士山",
-  elevation: 3776,
-  image: File.open("./public/uploads/mountain/template/fujisan.jpg"),
-  introduction: "山梨県（富士吉田市、南都留郡鳴沢村）と、静岡県（富士宮市、富士市、裾野市、御殿場市、駿東郡小山町）に跨る活火山である。
-                日本最高峰（剣ヶ峰）の独立峰で、その優美な風貌は日本国外でも日本の象徴として広く知られている。数多くの芸術作品の題材と
-                され芸術面のみならず、気候や地層など地質学的にも社会に大きな影響を与えている。懸垂曲線の山容を有した玄武岩質成層火山で
-                構成され、その山体は駿河湾の海岸まで及ぶ。",
-  latitude: 35.360833,
-  longitude: 138.733333,
-  yomi: "ふじさん",
-  zoom: 10,
-)
+CSV.foreach('db/csv/mountains_table.csv', headers: true) do |row|
+  Mountain.create(
+    id: row['id'],
+    name: row['name'],
+    yomi: row['yomi'],
+    elevation: row['elevation'],
+    image: row['image'] ? File.open(row['image']) : nil ,
+    introduction: row['introduction'],
+    latitude: row['latitude'],
+    longitude: row['longitude'],
+    zoom: row['zoom']
+  )
+end
 
-# CSV.foreach('db/csv/regions-table.csv', header: true) do |row|
-#   Region.create(
-#     id: row['id'],
-#     name: row['name']
-#   )
-# end
-#
-# CSV.foreach('db/csv/prefectures-table.csv', header: true) do |row|
-#   Prefecture.create(
-#     id: row['id'],
-#     name: row['name'],
-#     region_id: row['region_id']
-#   )
-# end
+CSV.foreach('db/csv/regions_table.csv', headers: true) do |row|
+  Region.create(
+    id: row['id'],
+    name: row['name']
+  )
+end
+
+CSV.foreach('db/csv/prefectures_table.csv', headers: true) do |row|
+  Prefecture.create(
+    id: row['id'],
+    name: row['name'],
+    region_id: row['region_id']
+  )
+end
+
+CSV.foreach('db/csv/locatings_table.csv', headers: true) do |row|
+  Locating.create(
+    id: row['id'],
+    mountain_id: row['mountain_id'],
+    prefecture_id: row['prefecture_id']
+  )
+end
+
+CSV.foreach('db/csv/areas_table.csv', headers: true) do |row|
+  Area.create(
+    id: row['id'],
+    name: row['name']
+  )
+end
+
+CSV.foreach('db/csv/belongings_table.csv', headers: true) do |row|
+  Belonging.create(
+    id: row['id'],
+    mountain_id: row['mountain_id'],
+    area_id: row['area_id']
+  )
+end
+
+CSV.foreach('db/csv/tags_table.csv', headers: true) do |row|
+  Tag.create(
+    id: row['id'],
+    name: row['name']
+  )
+end
+
+CSV.foreach('db/csv/taggings_table.csv', headers: true) do |row|
+  Tagging.create(
+    id: row['id'],
+    mountain_id: row['mountain_id'],
+    tag_id: row['tag_id']
+  )
+end

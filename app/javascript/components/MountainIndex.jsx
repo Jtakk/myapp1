@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
+import NoMountainImage from 'images/no_mountain_image.jpeg';
 
 const CustomPaper = styled(Paper)({
   height: '30vmin',
@@ -27,7 +28,7 @@ const MountainIndex = (props) => {
                 <Typography variant="body1" sx={{ mb: 1 }}>{"標高: "+mountain.elevation+" m"}</Typography>
                 <Typography variant="body2" sx={{ overflow: 'hidden' }}>{mountain.introduction}</Typography>
               </Box>
-              <Box sx={{ width: '30vmax', height: '100%', flexShrink: '0' }}><img className="index-image" alt={mountain.name} src={mountain.image.url} /></Box>
+              <Box sx={{ width: '30vmax', height: '100%', flexShrink: '0' }}><img className="index-image" alt={mountain.name} src={mountain.image.url ? mountain.image.url : NoMountainImage} /></Box>
             </CustomPaper>
           ))}
         </Stack>
