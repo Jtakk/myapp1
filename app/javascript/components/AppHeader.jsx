@@ -4,29 +4,20 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import AppLogo from './AppLogo';
 import AccountMenu from './AccountMenu';
+import SearchMenu from './SearchMenu';
+import SearchMenuDrawer from './SearchMenuDrawer';
 
 const AppHeader = ({currentUser}) => {
   return (
     <>
       <AppBar position="fixed" >
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2, display: { xs: 'block', md: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <SearchMenuDrawer sx={{ mr: 2, display: { xs: 'block', sm: 'none' } }} />
           <AppLogo />
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Button color="inherit" href="/mountains">名前から探す</Button>
-            <Button color="inherit" href="/mountains">地域から探す</Button>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}>
+            <SearchMenu />
           </Box>
           {currentUser
             ? <AccountMenu currentUser={currentUser} />
