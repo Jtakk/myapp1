@@ -38,16 +38,16 @@ const MountainIndex = ({initTab}) => {
         <Paper elevation={3} >
           <Box sx={{ borderRadius: '4px 4px 0 0', borderBottom: 1, borderColor: 'divider', width: '100%', position: 'sticky', top: 0, zIndex: '100', backgroundColor: '#fff' }}>
             <Tabs value={tab} onChange={handleChangeTab} variant="fullWidth" aria-label="basic tabs example">
-              <Tab icon={<SearchIcon />} label="フリーワード検索" {...provideProps(0)} />
+              <Tab icon={<SearchIcon />} label="山名から探す" {...provideProps(0)} />
               <Tab icon={<PublicIcon />} label="都道府県から探す" {...provideProps(1)} />
               <Tab icon={<TerrainIcon />} label="山域から探す" {...provideProps(2)} />
               <Tab icon={<TagIcon />} label="タグから探す" {...provideProps(3)} />
             </Tabs>
           </Box>
           <TabPanel value={tab} index={0} style={{ height: '100%', padding: '24px' }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>フリーワードで探す</Typography>
-            <form action="" method="post">
-              <TextField fullWidth label="フリーワード検索" type="text" placeholder="山の名前、キーワード などを入力" variant="outlined" margin="normal" />
+            <Typography variant="h5" sx={{ mb: 2 }}>山名から探す</Typography>
+            <form action="/mountains/search" method="get">
+              <TextField fullWidth label="山名検索" type="text" name="keyword" placeholder="山の名前(一部でも可、平仮名でも可)を入力" variant="outlined" margin="normal" />
               <Box sx={{ textAlign: 'center', mt: 1 }}>
                 <Button type="submit" variant="contained" sx={{ minWidth: '200px'}}>検索</Button>
               </Box>

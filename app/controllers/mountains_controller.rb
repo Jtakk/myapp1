@@ -8,6 +8,23 @@ class MountainsController < ApplicationController
     @posts = @mountain.posts.as_json(include: [:photos, :user])
   end
 
+  def search
+    @keyword = params[:keyword]
+    keywords = @keyword.split(/[[:blank:]]+/).select(&:present?)
+    if keywords.empty?
+      @mountains = []
+    else
+      keywords.each_with_index do |keyword, i|
+        if i == 0
+          @mountains = Mountain.search_mountain(keyword)
+        else
+          @mountains = @mountains.search_mountain(keyword)
+        end
+      end
+    end
+    @result_count = @mountains.length
+  end
+
   def show_prefecture
     @prefecture = Prefecture.find(params[:id])
     @region = @prefecture.region
