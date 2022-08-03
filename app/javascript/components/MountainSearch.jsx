@@ -11,6 +11,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Link from '@mui/material/Link';
 import NoMountainImage from 'images/no_mountain_image.jpeg';
+import Pagination from '@mui/material/Pagination';
 
 const CustomPaper = styled(Paper)({
   height: '30vmin',
@@ -20,7 +21,24 @@ const CustomPaper = styled(Paper)({
   textDecoration: 'none',
 });
 
-const MountainSearch = ({keyword, mountains, resultCount}) => {
+const MountainSearch = ({keyword, mountains}) => {
+  const [page, setPage] = React.useState(1);
+  const totalItemCount = mountains.length;
+  const itemCount = 10;
+  const pageCount = Math.ceil(totalItemCount / itemCount);
+  const [displayedItems, setDisplayedItems] = React.useState([]);
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+  React.useEffect(() => {
+    setDisplayedItems(mountains.slice((page - 1) * itemCount, page * itemCount));
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, [page]);
+
   return (
     <Box sx={{ minHeight: '100%', bgcolor: '#f5f5f5' }}>
       <Container maxWidth='lg' sx={{ py: 3 }}>
@@ -30,12 +48,16 @@ const MountainSearch = ({keyword, mountains, resultCount}) => {
             <Button type="submit" sx={{ p: '10px' }}>検索</Button>
           </Paper>
         </Box>
-        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb" sx={{ py: 3 }}>
+        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb" sx={{ mt: 3, mb: 1 }}>
           <Link href="/mountains" underline="hover" color="inherit">山を探す</Link>
-          <Typography variant="body1">" {keyword} "の検索結果 {resultCount}件</Typography>
+          <Typography variant="body1">" {keyword} "の検索結果 {totalItemCount}件</Typography>
         </Breadcrumbs>
+        {totalItemCount == 0
+          ? <Typography variant="body1" align="right" sx={{ mb: 1 }}>0件</Typography>
+          : <Typography variant="body1" align="right" sx={{ mb: 1 }}>{((page-1)*itemCount+1)+"〜"+((page-1)*itemCount+displayedItems.length)+"件を表示 / "+totalItemCount+"件中"}</Typography>
+        }
         <Stack spacing={3}>
-          {mountains.map((mountain, i) => (
+          {displayedItems.map((mountain, i) => (
             <CustomPaper component="a" href={"/mountains/"+mountain.id} elevation={3} key={i}>
               <Box sx={{ p: 1, overflow: 'hidden' }}>
                 <Typography variant="body2">{mountain.yomi}</Typography>
@@ -47,6 +69,9 @@ const MountainSearch = ({keyword, mountains, resultCount}) => {
             </CustomPaper>
           ))}
         </Stack>
+        <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
+          <Pagination count={pageCount} page={page} onChange={handleChange} />
+        </Box>
       </Container>
     </Box>
   );

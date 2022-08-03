@@ -7,6 +7,7 @@ class Mountain < ApplicationRecord
   has_many :tags, through: :taggings
   has_many :belongings
   has_many :areas, through: :belongings
+  scope :yomi_asc, -> { order(yomi: :asc) }
 
   def self.search_mountain(keyword)
     where(['name LIKE(?) OR yomi LIKE(?)', "%#{keyword}%", "%#{keyword}%"])

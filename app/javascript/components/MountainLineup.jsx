@@ -9,6 +9,7 @@ import NoMountainImage from 'images/no_mountain_image.jpeg';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Link from '@mui/material/Link';
+import Pagination from '@mui/material/Pagination';
 
 const CustomPaper = styled(Paper)({
   height: '30vmin',
@@ -19,29 +20,57 @@ const CustomPaper = styled(Paper)({
 });
 
 const MountainLineup = ({mountains, prefecture, region, area, tag}) => {
+  const [page, setPage] = React.useState(1);
+  const totalItemCount = mountains.length;
+  const itemCount = 10;
+  const pageCount = Math.ceil(totalItemCount / itemCount);
+  const [displayedItems, setDisplayedItems] = React.useState([]);
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+  React.useEffect(() => {
+    setDisplayedItems(mountains.slice((page - 1) * itemCount, page * itemCount));
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, [page]);
+
   return (
     <Box sx={{ minHeight: '100%', bgcolor: '#f5f5f5' }}>
       <Container maxWidth='lg' sx={{ py: 3 }}>
-        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb" sx={{ py: 3 }}>
-          <Link href="/mountains" underline="hover" color="inherit">山を探す</Link>
-          {prefecture &&
+        {prefecture &&
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb" sx={{ mb: 1 }}>
+            <Link href="/mountains?tab=1" underline="hover" color="inherit">山を探す</Link>
             <Link href={"/mountains/regions/"+region.id} underline="hover" color="inherit">{region.name+"地方"}</Link>
-          }
-          {prefecture &&
             <Typography>{prefecture.name}</Typography>
-          }
-          {region && !prefecture &&
+          </Breadcrumbs>
+        }
+        {region && !prefecture &&
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb" sx={{ mb: 1 }}>
+            <Link href="/mountains?tab=1" underline="hover" color="inherit">山を探す</Link>
             <Typography>{region.name+"地方"}</Typography>
-          }
-          {area &&
+          </Breadcrumbs>
+        }
+        {area &&
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb" sx={{ mb: 1 }}>
+            <Link href="/mountains?tab=2" underline="hover" color="inherit">山を探す</Link>
             <Typography>{area.name}</Typography>
-          }
-          {tag &&
+          </Breadcrumbs>
+        }
+        {tag &&
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb" sx={{ mb: 1 }}>
+            <Link href="/mountains?tab=3" underline="hover" color="inherit">山を探す</Link>
             <Typography>{tag.name}</Typography>
-          }
-        </Breadcrumbs>
+          </Breadcrumbs>
+        }
+        {totalItemCount == 0
+          ? <Typography variant="body1" align="right" sx={{ mb: 1 }}>0件</Typography>
+          : <Typography variant="body1" align="right" sx={{ mb: 1 }}>{((page-1)*itemCount+1)+"〜"+((page-1)*itemCount+displayedItems.length)+"件を表示 / "+totalItemCount+"件中"}</Typography>
+        }
         <Stack spacing={3}>
-          {mountains.map((mountain, i) => (
+          {displayedItems.map((mountain, i) => (
             <CustomPaper component="a" href={"/mountains/"+mountain.id} elevation={3} key={i}>
               <Box sx={{ p: 1, overflow: 'hidden' }}>
                 <Typography variant="body2">{mountain.yomi}</Typography>
@@ -53,6 +82,9 @@ const MountainLineup = ({mountains, prefecture, region, area, tag}) => {
             </CustomPaper>
           ))}
         </Stack>
+        <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
+          <Pagination count={pageCount} page={page} onChange={handleChange} />
+        </Box>
       </Container>
     </Box>
   );

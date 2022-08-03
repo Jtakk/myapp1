@@ -16,33 +16,32 @@ class MountainsController < ApplicationController
     else
       keywords.each_with_index do |keyword, i|
         if i == 0
-          @mountains = Mountain.search_mountain(keyword)
+          @mountains = Mountain.search_mountain(keyword).yomi_asc
         else
-          @mountains = @mountains.search_mountain(keyword)
+          @mountains = @mountains.search_mountain(keyword).yomi_asc
         end
       end
     end
-    @result_count = @mountains.length
   end
 
   def show_prefecture
     @prefecture = Prefecture.find(params[:id])
     @region = @prefecture.region
-    @mountains = @prefecture.mountains
+    @mountains = @prefecture.mountains.yomi_asc
   end
 
   def show_region
     @region = Region.find(params[:id])
-    @mountains = @region.prefectures.map(&:mountains).flatten
+    @mountains = @region.prefectures.preload(:mountains).map(&:mountains).flatten.uniq.sort_by {|x| x[:yomi]}
   end
 
   def show_tag
     @tag = Tag.find(params[:id])
-    @mountains = @tag.mountains
+    @mountains = @tag.mountains.yomi_asc
   end
 
   def show_area
     @area = Area.find(params[:id])
-    @mountains = @area.mountains
+    @mountains = @area.mountains.yomi_asc
   end
 end
