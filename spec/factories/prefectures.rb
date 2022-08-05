@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :prefecture do
-    name { "MyString" }
+    sequence(:name) { |n| "test_prefecture##{n}" }
     region { nil }
   end
 end
