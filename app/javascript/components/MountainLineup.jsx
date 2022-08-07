@@ -19,10 +19,10 @@ const CustomPaper = styled(Paper)({
   textDecoration: 'none',
 });
 
-const MountainLineup = ({mountains, prefecture, region, area, tag}) => {
+const MountainLineup = ({mountains, prefecture, region, area, tag, maxItemCount}) => {
   const [page, setPage] = React.useState(1);
   const totalItemCount = mountains.length;
-  const itemCount = 10;
+  const itemCount = maxItemCount;
   const pageCount = Math.ceil(totalItemCount / itemCount);
   const [displayedItems, setDisplayedItems] = React.useState([]);
   const handleChange = (event, value) => {
@@ -71,7 +71,7 @@ const MountainLineup = ({mountains, prefecture, region, area, tag}) => {
         }
         <Stack spacing={3}>
           {displayedItems.map((mountain, i) => (
-            <CustomPaper component="a" href={"/mountains/"+mountain.id} elevation={3} key={i}>
+            <CustomPaper component="a" href={"/mountains/"+mountain.id} elevation={3} key={i} className="mountain-paper">
               <Box sx={{ p: 1, overflow: 'hidden' }}>
                 <Typography variant="body2">{mountain.yomi}</Typography>
                 <Typography variant="h4" sx={{ mb: 1 }}>{mountain.name}</Typography>
