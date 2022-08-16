@@ -7,7 +7,7 @@ class MountainsController < ApplicationController
 
   def show
     @mountain = Mountain.find(params[:id])
-    @posts = @mountain.posts.as_json(include: [:photos, :user])
+    @posts = @mountain.posts.latest.as_json(include: [{ photos: { only: [:image] } }, { user: { only: [:id, :name, :avatar] } }, { liked_users: { only: [:id] } }])
   end
 
   def search

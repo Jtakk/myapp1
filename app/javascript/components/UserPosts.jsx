@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import LikeIndicator from './LikeIndicator';
 
 const CustomPaper = styled(Paper)({
   padding: '8px',
@@ -26,6 +26,7 @@ const UserPosts = (props) => {
               <Typography variant="body2">{post.created_at}</Typography>
               <Typography variant="body2">{post.updated_at}</Typography>
               <Typography variant="body1">{post.message}</Typography>
+              <LikeIndicator post={post} currentUser={props.currentUser} />
             </CustomPaper>
           ))}
         </Stack>

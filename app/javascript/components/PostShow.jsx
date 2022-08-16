@@ -25,8 +25,8 @@ const PostShow = ({post, user, photos, currentUser, isCurrentUsersPost, patchPos
             </Carousel>
           </Box>
           <Box sx={{ p: 2, display: "flex", justifyContent: 'space-between', alignItems: 'center' }}>
-            <AvatarChip src={user.avatar.thumb.url} alt={user.name} label={user.name} />
-            {currentUser && <LikeButton post={post} postToken={postLikeToken} deleteToken={deleteLikeToken} currentUserId={currentUser.id} />}
+            <AvatarChip user={user} />
+            <LikeButton post={post} postToken={postLikeToken} deleteToken={deleteLikeToken} currentUser={currentUser} />
           </Box>
           <Box sx={{ p: 2 }}>
             <Typography variant="h6">{post.message}</Typography>

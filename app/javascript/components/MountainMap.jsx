@@ -21,6 +21,11 @@ import FlashX from './FlashX';
 import Carousel from './Carousel';
 import Spinner from './Spinner';
 import LikeButton from './LikeButton';
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import LikeIndicator from './LikeIndicator';
 
 const containerStyle = {
   width: '100%',
@@ -47,6 +52,15 @@ const MountainMap = (props) => {
   });
 
   const [posts, setPosts] = React.useState([...props.posts]);
+  const [sortedPosts, setSortedPosts] = React.useState([]);
+
+  React.useEffect(() => {
+    const arr = [...posts].sort((a, b) => {
+      return b.liked_users.length - a.liked_users.length
+    });
+    setSortedPosts(arr);
+  }, []);
+
   const [center, setCenter] = React.useState({
     lat: parseFloat(props.mountain.latitude),
     lng: parseFloat(props.mountain.longitude),
@@ -112,7 +126,8 @@ const MountainMap = (props) => {
       const resPost = resData.post;
       const resFlash = resData.flash;
       if (resPost) {
-        setPosts([...posts, resPost]);
+        setPosts([resPost, ...posts]);
+        setSortedPosts([...sortedPosts, resPost]);
         setPin();
         setMessage("");
         setImages([]);
@@ -124,6 +139,13 @@ const MountainMap = (props) => {
       setOpen(true);
     }
   };
+
+  const [alignment, setAlignment] = React.useState('recent');
+  const handleChangeToggle = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
+
+
 
   const renderMap = () => {
     return (
@@ -157,8 +179,8 @@ const MountainMap = (props) => {
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%', position: 'sticky', top: 0, zIndex: '100', backgroundColor: '#fff' }}>
             <Tabs value={tab} onChange={handleChangeTab} variant="fullWidth" aria-label="basic tabs example">
               <Tab icon={<InfoIcon />} label="基本情報" {...provideProps(0)} />
-              <Tab icon={<FormatListBulletedIcon />} label="写真一覧" {...provideProps(1)} />
-              <Tab icon={<ImageSearchIcon />} label="投稿を探す" {...provideProps(2)} />
+              <Tab icon={<FormatListBulletedIcon />} label="一覧から探す" {...provideProps(1)} />
+              <Tab icon={<ImageSearchIcon />} label="投稿を見る" {...provideProps(2)} />
               <Tab icon={<AddPhotoAlternateIcon />} label="投稿する" {...provideProps(3)} />
             </Tabs>
           </Box>
@@ -166,7 +188,34 @@ const MountainMap = (props) => {
             <MountainIntroduction mountain={props.mountain} />
           </TabPanel>
           <TabPanel value={tab} index={1} style={{ height: '100%' }}>
-
+            <Box sx={{ p: 2, minHeight: '100%', bgcolor: '#f5f5f5' }} >
+              <Box sx={{ textAlign: 'right', mb: 2 }} >
+                <ToggleButtonGroup color="primary" size="small" value={alignment} exclusive onChange={handleChangeToggle} sx={{ bgcolor: '#fff' }}>
+                  <ToggleButton value="recent">新着</ToggleButton>
+                  <ToggleButton value="like">いいね数</ToggleButton>
+                </ToggleButtonGroup>
+              </Box>
+              <Stack spacing={3}>
+                {alignment == 'recent' && posts.map((post, i) => (
+                  <Paper elevation={3} key={i} onClick={() => onClickMarker(post)} sx={{ p: 1, bgcolor: view == post ? '#f0f8ff' : 'none', cursor: 'pointer' }}>
+                    <Box sx={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                      <AvatarChip user={post.user} />
+                      <LikeIndicator post={post} currentUser={props.currentUser} />
+                    </Box>
+                    <Typography variant="body1">{post.message}</Typography>
+                  </Paper>
+                ))}
+                {alignment == 'like' && sortedPosts.map((post, i) => (
+                  <Paper elevation={3} key={i} onClick={() => onClickMarker(post)} sx={{ p: 1, bgcolor: view == post ? '#f0f8ff' : 'none', cursor: 'pointer' }}>
+                    <Box sx={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                      <AvatarChip user={post.user} />
+                      <LikeIndicator post={post} currentUser={props.currentUser} />
+                    </Box>
+                    <Typography variant="body1">{post.message}</Typography>
+                  </Paper>
+                ))}
+              </Stack>
+            </Box>
           </TabPanel>
           <TabPanel value={tab} index={2} style={{ height: '100%' }}>
             <Box sx={{ position: "relative", height: '100%' }}>
@@ -186,8 +235,8 @@ const MountainMap = (props) => {
                 </Carousel>
               </Box>
               <Box sx={{ p: 1, display: "flex", justifyContent: 'space-between', alignItems: 'center' }}>
-                {view && <AvatarChip src={view.user.avatar.thumb.url} alt={view.user.name} label={view.user.name} />}
-                {view && props.currentUser && <LikeButton post={view} postToken={props.postLikeToken} deleteToken={props.deleteLikeToken} currentUserId={props.currentUser.id} />}
+                {view && <AvatarChip user={view.user} />}
+                {view && <LikeButton post={view} postToken={props.postLikeToken} deleteToken={props.deleteLikeToken} currentUser={props.currentUser} />}
               </Box>
               <Box sx={{ p: 1 }}>
                 {view && <Typography variant="body2">{view.message}</Typography>}

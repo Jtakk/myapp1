@@ -22,7 +22,7 @@ class PostsController < ApplicationController
         @post.photos.create!(image: image)
       end
       @data = {
-        post: @post.as_json(include: [:photos, :user]),
+        post: @post.as_json(include: [{ photos: { only: [:image] } }, { user: { only: [:id, :name, :avatar] } }, { liked_users: { only: [:id] } }]),
         flash: { message_type: "success", message: "投稿しました。" },
       }
     else
