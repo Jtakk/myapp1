@@ -50,12 +50,4 @@ class UsersController < ApplicationController
     params.require(:user).
       permit(:name, :email, :password, :password_confirmation, :introduction, :avatar)
   end
-
-  def correct_user
-    @user = User.find(params[:id])
-    unless current_user?(@user)
-      flash[:warning] = "保護されたページです"
-      redirect_to root_url
-    end
-  end
 end

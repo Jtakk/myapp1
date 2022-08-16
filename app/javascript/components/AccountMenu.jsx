@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
 import PhotoIcon from '@mui/icons-material/Photo';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -34,6 +35,12 @@ const AccountMenu = (props) => {
             <PhotoIcon fontSize="small" />
           </ListItemIcon>
           投稿一覧
+        </MenuItem>
+        <MenuItem component="a" href={"/users/"+props.currentUser.id+"/favorites"}>
+          <ListItemIcon>
+            <ThumbUpAltIcon fontSize="small" />
+          </ListItemIcon>
+          お気に入り
         </MenuItem>
         <MenuItem component="a" href={"/users/"+props.currentUser.id}>
           <ListItemIcon>

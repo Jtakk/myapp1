@@ -2,12 +2,18 @@ class PostsController < ApplicationController
   MAX_IMAGE_COUNT = 10
   MAX_ITEM_COUNT = 10
   before_action :ajax_logged_in_user, only: [:create]
-  before_action :logged_in_user, only: [:update, :destroy]
-  before_action :correct_user, only: [:update, :destroy]
+  before_action :logged_in_user, only: [:favorites, :update, :destroy]
+  before_action :correct_owner, only: [:update, :destroy]
+  before_action :correct_user, only: [:favorites]
 
   def index
     @user = User.find(params[:id])
     @posts = @user.posts.latest.as_json(include: { mountain: { only: [:name, :yomi] } })
+    @max_item_count = MAX_ITEM_COUNT
+  end
+
+  def favorites
+    @posts = @user.liked_posts.latest.as_json(include: [{ mountain: { only: [:name, :yomi] } }, { user: { only: [:id, :name, :avatar] } }])
     @max_item_count = MAX_ITEM_COUNT
   end
 
@@ -63,7 +69,7 @@ class PostsController < ApplicationController
     params.require(:photo).permit(image: [])
   end
 
-  def correct_user
+  def correct_owner
     @user = Post.find(params[:id]).user
     unless current_user?(@user)
       flash[:warning] = "保護されたページです"

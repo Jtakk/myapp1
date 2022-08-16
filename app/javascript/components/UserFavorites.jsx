@@ -7,13 +7,14 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LikeIndicator from './LikeIndicator';
 import Pagination from '@mui/material/Pagination';
+import AvatarChip from './AvatarChip';
 
 const CustomPaper = styled(Paper)({
   padding: '8px',
   textDecoration: 'none',
 });
 
-const UserPosts = ({posts, currentUser, maxItemCount}) => {
+const UserFavorites = ({posts, currentUser, maxItemCount}) => {
   const [page, setPage] = React.useState(1);
   const totalItemCount = posts.length;
   const itemCount = maxItemCount;
@@ -34,7 +35,7 @@ const UserPosts = ({posts, currentUser, maxItemCount}) => {
   return (
     <Box sx={{ minHeight: '100%', bgcolor: '#f5f5f5' }}>
       <Container maxWidth="md" sx={{ py: 5 }}>
-        <Typography variant="h5">投稿一覧</Typography>
+        <Typography variant="h5">お気に入り</Typography>
         {totalItemCount == 0
           ? <Typography variant="body1" align="right" sx={{ mb: 2 }}>0件</Typography>
           : <Typography variant="body1" align="right" sx={{ mb: 2 }}>{((page-1)*itemCount+1)+"〜"+((page-1)*itemCount+displayedItems.length)+"件を表示 / "+totalItemCount+"件中"}</Typography>
@@ -44,12 +45,15 @@ const UserPosts = ({posts, currentUser, maxItemCount}) => {
             <CustomPaper component="a" href={"/posts/"+post.id} elevation={3} key={i}>
               <Typography variant="body2">{post.mountain.yomi}</Typography>
               <Typography variant="h4">{post.mountain.name}</Typography>
+              <Box sx={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                <AvatarChip user={post.user} />
+                <LikeIndicator post={post} currentUser={currentUser} />
+              </Box>
               <Typography variant="body2">{post.latitude}</Typography>
               <Typography variant="body2">{post.longitude}</Typography>
               <Typography variant="body2">{post.created_at}</Typography>
               <Typography variant="body2">{post.updated_at}</Typography>
               <Typography variant="body1">{post.message}</Typography>
-              <LikeIndicator post={post} currentUser={currentUser} />
             </CustomPaper>
           ))}
         </Stack>
@@ -61,4 +65,4 @@ const UserPosts = ({posts, currentUser, maxItemCount}) => {
   );
 };
 
-export default UserPosts
+export default UserFavorites

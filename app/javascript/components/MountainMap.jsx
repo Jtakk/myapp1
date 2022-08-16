@@ -235,7 +235,7 @@ const MountainMap = (props) => {
                 </Carousel>
               </Box>
               <Box sx={{ p: 1, display: "flex", justifyContent: 'space-between', alignItems: 'center' }}>
-                {view && <AvatarChip user={view.user} />}
+                {view && <AvatarChip user={view.user} clickable />}
                 {view && <LikeButton post={view} postToken={props.postLikeToken} deleteToken={props.deleteLikeToken} currentUser={props.currentUser} />}
               </Box>
               <Box sx={{ p: 1 }}>

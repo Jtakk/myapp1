@@ -9,6 +9,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
 import PhotoIcon from '@mui/icons-material/Photo';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -37,6 +38,16 @@ const UserSideMenu = ({user, isCurrentUser}) => {
               <ListItemText primary="投稿一覧" />
             </ListItemButton>
           </ListItem>
+          {isCurrentUser &&
+            <ListItem disablePadding>
+              <ListItemButton component="a" href={"/users/"+user.id+"/favorites"}>
+                <ListItemIcon>
+                  <ThumbUpAltIcon />
+                </ListItemIcon>
+                <ListItemText primary="お気に入り" />
+              </ListItemButton>
+            </ListItem>
+          }
           <ListItem disablePadding>
             <ListItemButton component="a" href={"/users/"+user.id}>
               <ListItemIcon>

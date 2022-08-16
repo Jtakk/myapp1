@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :mountains, only: [:index, :show]
   resources :posts, only: [:show, :create, :update, :destroy]
   get '/users/:id/posts', to: 'posts#index', as: 'user_posts'
+  get '/users/:id/favorites', to: 'posts#favorites', as: 'user_favorites'
   resources :likes, only: [:show, :create, :destroy]
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
