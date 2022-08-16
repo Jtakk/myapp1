@@ -1,4 +1,4 @@
 <div style="display:flex;height:100%">
   <aside style="height:100%;position:fixed"><%= react_component("UserSideMenu", { user: @user, isCurrentUser: current_user?(@user) }, { style: "height:100%" }) %></aside>
-  <main style="flex:1;margin-left:240px"><%= react_component("UserPosts", { posts: @posts, currentUser: current_user }, { style: "height:100%" }) %></main>
+  <main style="flex:1;margin-left:240px"><%= react_component("UserPosts", { posts: @posts, currentUser: current_user, maxItemCount: @max_item_count }, { style: "height:100%" }) %></main>
 </div>
