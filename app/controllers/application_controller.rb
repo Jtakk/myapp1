@@ -17,12 +17,4 @@ class ApplicationController < ActionController::Base
       render json: { redirect_url: login_path }, status: 302
     end
   end
-
-  def correct_user
-    @user = User.find(params[:id])
-    unless current_user?(@user)
-      flash[:warning] = "保護されたページです"
-      redirect_to root_url
-    end
-  end
 end

@@ -1,21 +1,8 @@
 class PostsController < ApplicationController
   MAX_IMAGE_COUNT = 10
-  MAX_ITEM_COUNT = 10
   before_action :ajax_logged_in_user, only: [:create]
-  before_action :logged_in_user, only: [:favorites, :update, :destroy]
+  before_action :logged_in_user, only: [:update, :destroy]
   before_action :correct_owner, only: [:update, :destroy]
-  before_action :correct_user, only: [:favorites]
-
-  def index
-    @user = User.find(params[:id])
-    @posts = @user.posts.latest.as_json(include: { mountain: { only: [:name, :yomi] } })
-    @max_item_count = MAX_ITEM_COUNT
-  end
-
-  def favorites
-    @posts = @user.liked_posts.latest.as_json(include: [{ mountain: { only: [:name, :yomi] } }, { user: { only: [:id, :name, :avatar] } }])
-    @max_item_count = MAX_ITEM_COUNT
-  end
 
   def show
     @post = Post.find(params[:id])
@@ -40,7 +27,6 @@ class PostsController < ApplicationController
   end
 
   def update
-    @post = Post.find(params[:id])
     if @post.update(update_post_params)
       flash[:success] = "メッセージを更新しました。"
       redirect_to @post
@@ -50,7 +36,7 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    Post.find(params[:id]).destroy
+    @post.destroy
     flash[:success] = "投稿を削除しました。"
     redirect_to user_posts_path(current_user)
   end
@@ -70,7 +56,8 @@ class PostsController < ApplicationController
   end
 
   def correct_owner
-    @user = Post.find(params[:id]).user
+    @post = Post.find(params[:id])
+    @user = @post.user
     unless current_user?(@user)
       flash[:warning] = "保護されたページです"
       redirect_to root_url

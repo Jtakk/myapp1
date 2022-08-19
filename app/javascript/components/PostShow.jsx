@@ -10,7 +10,7 @@ import EditMessage from './EditMessage';
 import DeletePost from './DeletePost';
 import AvatarChip from './AvatarChip';
 
-const PostShow = ({post, user, photos, currentUser, isCurrentUsersPost, patchPostToken, deletePostToken, postLikeToken, deleteLikeToken}) => {
+const PostShow = ({post, user, photos, currentUser, patchPostToken, deletePostToken, postLikeToken, deleteLikeToken}) => {
   return (
     <Box sx={{ minHeight: '100%', bgcolor: '#f5f5f5' }}>
       <Container maxWidth="md" sx={{ py: 3 }}>
@@ -30,10 +30,10 @@ const PostShow = ({post, user, photos, currentUser, isCurrentUsersPost, patchPos
           </Box>
           <Box sx={{ p: 2 }}>
             <Typography variant="h6">{post.message}</Typography>
-            {isCurrentUsersPost && <EditMessage post={post} token={patchPostToken} defaultValue={post.message} />}
+            {currentUser && user.id == currentUser.id && <EditMessage post={post} token={patchPostToken} defaultValue={post.message} />}
           </Box>
           <Box sx={{ p: 2 }}>
-            {isCurrentUsersPost && <DeletePost post={post} token={deletePostToken} />}
+            {currentUser && user.id == currentUser.id && <DeletePost post={post} token={deletePostToken} />}
           </Box>
         </Paper>
       </Container>

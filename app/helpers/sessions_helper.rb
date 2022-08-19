@@ -25,10 +25,6 @@ module SessionsHelper
     user && user == current_user
   end
 
-  def current_users_post?(post)
-    post && current_user && post.user_id == current_user.id
-  end
-
   def logged_in?
     !current_user.nil?
   end
