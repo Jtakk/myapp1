@@ -26,6 +26,7 @@ import Paper from '@mui/material/Paper';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import LikeIndicator from './LikeIndicator';
+import { format } from 'date-fns';
 
 const containerStyle = {
   width: '100%',
@@ -198,20 +199,26 @@ const MountainMap = (props) => {
               <Stack spacing={3}>
                 {alignment == 'recent' && posts.map((post, i) => (
                   <Paper elevation={3} key={i} onClick={() => onClickMarker(post)} sx={{ p: 1, bgcolor: view == post ? '#f0f8ff' : 'none', cursor: 'pointer' }}>
-                    <Box sx={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                    <Box sx={{ display: "flex", justifyContent: 'space-between', alignItems: 'center'}}>
                       <AvatarChip user={post.user} />
                       <LikeIndicator post={post} currentUser={props.currentUser} />
                     </Box>
-                    <Typography variant="body1">{post.message}</Typography>
+                    <Typography variant="body1" sx={{ p: 1 }}>{post.message}</Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+                      <Typography variant="body2" sx={{ color: '#808080'}}>{format(new Date(post.created_at), 'yyyy-MM-dd')}</Typography>
+                    </Box>
                   </Paper>
                 ))}
                 {alignment == 'like' && sortedPosts.map((post, i) => (
                   <Paper elevation={3} key={i} onClick={() => onClickMarker(post)} sx={{ p: 1, bgcolor: view == post ? '#f0f8ff' : 'none', cursor: 'pointer' }}>
-                    <Box sx={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                    <Box sx={{ display: "flex", justifyContent: 'space-between', alignItems: 'center'}}>
                       <AvatarChip user={post.user} />
                       <LikeIndicator post={post} currentUser={props.currentUser} />
                     </Box>
-                    <Typography variant="body1">{post.message}</Typography>
+                    <Typography variant="body1" sx={{ p: 1 }}>{post.message}</Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+                      <Typography variant="body2" sx={{ color: '#808080'}}>{format(new Date(post.created_at), 'yyyy-MM-dd')}</Typography>
+                    </Box>
                   </Paper>
                 ))}
               </Stack>
@@ -225,22 +232,29 @@ const MountainMap = (props) => {
                   <Typography variant="body1">マップ上のピンをクリック!</Typography>
                 </Box>
               }
-              <Box sx={{ p: 4 }}>
-                <Carousel>
-                  {view && view.photos.map((photo, i) => (
-                    <Box key={i} >
-                      <img src={photo.image.fixed.url} loading="lazy" alt={photo.image.url} style={{ width: '100%', height: 'auto'}} />
+              {view &&
+                <>
+                  <Box sx={{ p: 4 }}>
+                    <Carousel>
+                      {view.photos.map((photo, i) => (
+                        <Box key={i} >
+                          <img src={photo.image.fixed.url} loading="lazy" alt={photo.image.url} style={{ width: '100%', height: 'auto'}} />
+                        </Box>
+                      ))}
+                    </Carousel>
+                  </Box>
+                  <Box sx={{ p: 1 }}>
+                    <Box sx={{ display: "flex", justifyContent: 'space-between', alignItems: 'center' }}>
+                      <AvatarChip user={view.user} clickable />
+                      <LikeButton post={view} postToken={props.postLikeToken} deleteToken={props.deleteLikeToken} currentUser={props.currentUser} />
                     </Box>
-                  ))}
-                </Carousel>
-              </Box>
-              <Box sx={{ p: 1, display: "flex", justifyContent: 'space-between', alignItems: 'center' }}>
-                {view && <AvatarChip user={view.user} clickable />}
-                {view && <LikeButton post={view} postToken={props.postLikeToken} deleteToken={props.deleteLikeToken} currentUser={props.currentUser} />}
-              </Box>
-              <Box sx={{ p: 1 }}>
-                {view && <Typography variant="body2">{view.message}</Typography>}
-              </Box>
+                    <Typography variant="body2" sx={{ p: 1 }}>{view.message}</Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+                      <Typography variant="body2" sx={{ color: '#808080'}}>{format(new Date(view.created_at), 'yyyy-MM-dd')}</Typography>
+                    </Box>
+                  </Box>
+                </>
+              }
             </Box>
           </TabPanel>
           <TabPanel value={tab} index={3} style={{ height: '100%' }} id="tabpanel-create-post">

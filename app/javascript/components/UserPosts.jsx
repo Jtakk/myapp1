@@ -7,9 +7,10 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LikeIndicator from './LikeIndicator';
 import Pagination from '@mui/material/Pagination';
+import { format } from 'date-fns';
 
 const CustomPaper = styled(Paper)({
-  padding: '8px',
+  padding: '10px',
   textDecoration: 'none',
 });
 
@@ -42,14 +43,17 @@ const UserPosts = ({posts, currentUser, maxItemCount}) => {
         <Stack spacing={2}>
           {displayedItems.map((post, i) => (
             <CustomPaper component="a" href={"/posts/"+post.id} elevation={3} key={i}>
-              <Typography variant="body2">{post.mountain.yomi}</Typography>
-              <Typography variant="h4">{post.mountain.name}</Typography>
-              <Typography variant="body2">{post.latitude}</Typography>
-              <Typography variant="body2">{post.longitude}</Typography>
-              <Typography variant="body2">{post.created_at}</Typography>
-              <Typography variant="body2">{post.updated_at}</Typography>
-              <Typography variant="body1">{post.message}</Typography>
-              <LikeIndicator post={post} currentUser={currentUser} />
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
+                <Box>
+                  <Typography variant="body2">{post.mountain.yomi}</Typography>
+                  <Typography variant="h4">{post.mountain.name}</Typography>
+                </Box>
+                <LikeIndicator post={post} currentUser={currentUser} />
+              </Box>
+              <Typography variant="body1" sx={{ p: 1 }}>{post.message}</Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+                <Typography variant="body2" sx={{ color: '#808080'}}>{format(new Date(post.created_at), 'yyyy-MM-dd')}</Typography>
+              </Box>
             </CustomPaper>
           ))}
         </Stack>

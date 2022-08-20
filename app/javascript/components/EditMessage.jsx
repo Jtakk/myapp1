@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-const EditMessage = ({post, token, defaultValue}) => {
+const EditMessage = ({post, token, defaultValue, ...rest}) => {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -17,7 +17,7 @@ const EditMessage = ({post, token, defaultValue}) => {
 
   return (
     <>
-      <Button size="small" variant="outlined" onClick={handleClickOpen}>
+      <Button {...rest} size="small" variant="outlined" onClick={handleClickOpen}>
         メッセージを編集
       </Button>
       <Dialog open={open} onClose={handleClose} maxWidth="false">

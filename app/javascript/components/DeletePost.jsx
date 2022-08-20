@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-const DeletePost = ({post, token}) => {
+const DeletePost = ({post, token, ...rest}) => {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -17,7 +17,7 @@ const DeletePost = ({post, token}) => {
 
   return (
     <>
-      <Button color="error" size="small" variant="outlined" onClick={handleClickOpen}>
+      <Button {...rest} color="error" size="small" variant="outlined" onClick={handleClickOpen}>
         投稿を削除
       </Button>
       <Dialog

@@ -9,6 +9,7 @@ import LikeButton from './LikeButton';
 import EditMessage from './EditMessage';
 import DeletePost from './DeletePost';
 import AvatarChip from './AvatarChip';
+import { format } from 'date-fns';
 
 const PostShow = ({post, user, photos, currentUser, patchPostToken, deletePostToken, postLikeToken, deleteLikeToken}) => {
   return (
@@ -24,16 +25,21 @@ const PostShow = ({post, user, photos, currentUser, patchPostToken, deletePostTo
               ))}
             </Carousel>
           </Box>
-          <Box sx={{ p: 2, display: "flex", justifyContent: 'space-between', alignItems: 'center' }}>
-            <AvatarChip user={user} clickable />
-            <LikeButton post={post} postToken={postLikeToken} deleteToken={deleteLikeToken} currentUser={currentUser} />
-          </Box>
-          <Box sx={{ p: 2 }}>
-            <Typography variant="h6">{post.message}</Typography>
-            {currentUser && user.id == currentUser.id && <EditMessage post={post} token={patchPostToken} defaultValue={post.message} />}
-          </Box>
-          <Box sx={{ p: 2 }}>
-            {currentUser && user.id == currentUser.id && <DeletePost post={post} token={deletePostToken} />}
+          <Box sx={{ padding: '0 18px 18px 18px' }}>
+            <Box sx={{ display: "flex", justifyContent: 'space-between', alignItems: 'center' }}>
+              <AvatarChip user={user} clickable />
+              <LikeButton post={post} postToken={postLikeToken} deleteToken={deleteLikeToken} currentUser={currentUser} />
+            </Box>
+            <Typography variant="h6" sx={{ p: 2 }}>{post.message}</Typography>
+            {currentUser && user.id == currentUser.id &&
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1}}>
+                <EditMessage sx={{ mr: 2 }} post={post} token={patchPostToken} defaultValue={post.message} />
+                <DeletePost post={post} token={deletePostToken} />
+              </Box>
+            }
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+              <Typography variant="body2" sx={{ color: '#808080'}}>{format(new Date(post.created_at), 'yyyy-MM-dd')}</Typography>
+            </Box>
           </Box>
         </Paper>
       </Container>
