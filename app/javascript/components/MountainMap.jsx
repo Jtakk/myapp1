@@ -26,6 +26,8 @@ import Paper from '@mui/material/Paper';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import LikeIndicator from './LikeIndicator';
+import CircularProgress from '@mui/material/CircularProgress';
+import { green } from '@mui/material/colors';
 import { format } from 'date-fns';
 
 const containerStyle = {
@@ -103,7 +105,12 @@ const MountainMap = (props) => {
   const [flashMessage, setFlashMessage] = React.useState("");
 
   const [images, setImages] = React.useState([]);
+
+  const [loading, setLoading] = React.useState(false);
+
   const handleOnSubmit = async () => {
+    if (loading == true) return;
+    setLoading(true);
     const data = new FormData();
     data.append('post[mountain_id]', props.mountain.id);
     data.append('post[latitude]', pin.lat);
@@ -122,6 +129,7 @@ const MountainMap = (props) => {
       setFlashMessageType('warning');
       setFlashMessage('通信エラー');
       setOpen(true);
+      setLoading(false);
     } else {
       const resData = await res.json();
       const resPost = resData.post;
@@ -138,6 +146,7 @@ const MountainMap = (props) => {
       setFlashMessageType(resFlash.message_type);
       setFlashMessage(resFlash.message);
       setOpen(true);
+      setLoading(false);
     }
   };
 
@@ -145,8 +154,6 @@ const MountainMap = (props) => {
   const handleChangeToggle = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
-
-
 
   const renderMap = () => {
     return (
@@ -279,7 +286,22 @@ const MountainMap = (props) => {
                     <input defaultValue={pin ? pin.lng : ''} type="hidden" />
                     <InputMessage value={message} onChange={handleChangeMessage} />
                     <UploadPhotos images={images} setImages={setImages} />
-                    <Button id="btn-submit-post" onClick={handleOnSubmit} disabled={!pin || !images.length}  variant="contained" fullWidth sx={{ mt: 5 }}>この内容で投稿する</Button>
+                    <Box sx={{ position: 'relative', mt: 5 }}>
+                      <Button id="btn-submit-post" onClick={handleOnSubmit} disabled={!pin || !images.length || loading}  variant="contained" fullWidth >この内容で投稿する</Button>
+                      {loading &&
+                        <CircularProgress
+                          size={24}
+                          sx={{
+                            color: green[500],
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            marginTop: '-12px',
+                            marginLeft: '-12px',
+                          }}
+                        />
+                      }
+                    </Box>
                   </form>
                 </Box>
               </Box>
