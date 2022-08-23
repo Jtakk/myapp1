@@ -5,31 +5,6 @@ RSpec.describe "Posts", type: :request do
   let(:other_user) { create(:user) }
   let(:mountain) { create(:mountain) }
 
-  describe "GET /index" do
-    let!(:oldest_post) do
-      create(:post, user_id: user.id, mountain_id: mountain.id, created_at: Time.current)
-    end
-    let!(:latest_post) do
-      create(:post, user_id: user.id, mountain_id: mountain.id, created_at: Time.current + 1.days)
-    end
-
-    before { get user_posts_path(user) }
-
-    it "returns http success" do
-      expect(response).to have_http_status(:success)
-    end
-
-    it "assigns the user to @user" do
-      expect(controller.instance_variable_get("@user")).to eq user
-    end
-
-    it "assigns user's posts to @posts in descending order of created_at" do
-      arr = [latest_post, oldest_post].
-        map { |e| e.as_json(include: { mountain: { only: [:name, :yomi] } }) }
-      expect(controller.instance_variable_get("@posts")).to match arr
-    end
-  end
-
   describe "GET /show" do
     let(:post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
 
@@ -102,7 +77,15 @@ RSpec.describe "Posts", type: :request do
 
       it "assigns the post to @data" do
         post_create
-        post = { post: Post.last.as_json(include: [:photos, :user]) }
+        post = {
+          post: Post.last.as_json(
+            include: [
+              { photos: { only: [:image] } },
+              { user: { only: [:id, :name, :avatar] } },
+              { liked_users: { only: [:id] } },
+            ]
+          ),
+        }
         expect(controller.instance_variable_get("@data")).to include(post)
       end
 

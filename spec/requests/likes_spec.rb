@@ -13,12 +13,16 @@ RSpec.describe "Likes", type: :request do
     context "when not logged in" do
       before { get like_path(other_post.id) }
 
-      it "returns http status 302" do
-        expect(response).to have_http_status(302)
+      it "returns http status 200" do
+        expect(response).to have_http_status(200)
       end
 
-      it "inserts a flash message" do
-        expect(flash[:warning]).to be_present
+      it "assigns nil to @like" do
+        expect(controller.instance_variable_get("@like")).to eq nil
+      end
+
+      it "assigns 1 to @count ( the post has been liked by one user )" do
+        expect(controller.instance_variable_get("@count")).to eq 1
       end
     end
 

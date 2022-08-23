@@ -7,7 +7,13 @@ class MountainsController < ApplicationController
 
   def show
     @mountain = Mountain.find(params[:id])
-    @posts = @mountain.posts.latest.as_json(include: [{ photos: { only: [:image] } }, { user: { only: [:id, :name, :avatar] } }, { liked_users: { only: [:id] } }])
+    @posts = @mountain.posts.latest.as_json(
+      include: [
+        { photos: { only: [:image] } },
+        { user: { only: [:id, :name, :avatar] } },
+        { liked_users: { only: [:id] } },
+      ]
+    )
   end
 
   def search
@@ -37,7 +43,8 @@ class MountainsController < ApplicationController
   def show_region
     @max_item_count = MAX_ITEM_COUNT
     @region = Region.find(params[:id])
-    @mountains = @region.prefectures.preload(:mountains).map(&:mountains).flatten.uniq.sort_by {|x| x[:yomi]}
+    @mountains = @region.prefectures.preload(:mountains).map(&:mountains).
+      flatten.uniq.sort_by { |x| x[:yomi] }
   end
 
   def show_tag

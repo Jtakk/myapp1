@@ -77,8 +77,13 @@ RSpec.describe "Mountains", type: :request do
     end
 
     it "assigns the posts @posts" do
-      expect(controller.instance_variable_get("@posts")).
-        to match_array [post_1, post_2].as_json(include: [:photos, :user])
+      expect(controller.instance_variable_get("@posts")).to match_array [post_1, post_2].as_json(
+        include: [
+          { photos: { only: [:image] } },
+          { user: { only: [:id, :name, :avatar] } },
+          { liked_users: { only: [:id] } },
+        ]
+      )
     end
   end
 
@@ -86,7 +91,7 @@ RSpec.describe "Mountains", type: :request do
     let!(:mountain_1) { create(:mountain, name: "富士山", yomi: "ふじさん") }
     let!(:mountain_2) { create(:mountain, name: "伊吹山", yomi: "いぶきやま") }
 
-    before { get ("/mountains/search" + query_parameter) }
+    before { get("/mountains/search" + query_parameter) }
 
     context "when the query parameter is empty" do
       let(:query_parameter) { "?keyword=" }
@@ -101,7 +106,7 @@ RSpec.describe "Mountains", type: :request do
     end
 
     context "when the query parameter is 2 words" do
-      let(:query_parameter) { "?keyword=#{CGI::escape("富　山")}" }
+      let(:query_parameter) { "?keyword=#{CGI.escape("富　山")}" }
 
       it "returns http success" do
         expect(response).to have_http_status(:success)

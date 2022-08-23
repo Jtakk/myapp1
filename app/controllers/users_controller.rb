@@ -47,7 +47,12 @@ class UsersController < ApplicationController
   end
 
   def favorites
-    @posts = @user.liked_posts.latest.as_json(include: [{ mountain: { only: [:name, :yomi] } }, { user: { only: [:id, :name, :avatar] } }])
+    @posts = @user.liked_posts.latest.as_json(
+      include: [
+        { mountain: { only: [:name, :yomi] } },
+        { user: { only: [:id, :name, :avatar] } },
+      ]
+    )
     @max_item_count = MAX_ITEM_COUNT
   end
 

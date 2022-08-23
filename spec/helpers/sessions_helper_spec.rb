@@ -86,27 +86,6 @@ RSpec.describe SessionsHelper, type: :helper do
     end
   end
 
-  describe "#current_users_post?(post)" do
-    subject { current_users_post?(my_post) }
-
-    let(:my_post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
-    let(:other_user) { create(:user) }
-
-    context "when logged in as an owner of the post" do
-      it "returns true" do
-        log_in(user)
-        is_expected.to eq true
-      end
-    end
-
-    context "when logged in not as an owner of the post" do
-      it "returns false" do
-        log_in(other_user)
-        is_expected.to eq false
-      end
-    end
-  end
-
   describe "#logged_in?" do
     subject { logged_in? }
 
