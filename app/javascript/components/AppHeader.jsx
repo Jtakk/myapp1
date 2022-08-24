@@ -21,7 +21,7 @@ const AppHeader = ({currentUser}) => {
           </Box>
           {currentUser
             ? <AccountMenu currentUser={currentUser} />
-            : <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            : <Box sx={{ display: 'flex' }}>
                 <Button color="inherit" variant="outlined" href="/signup" sx={{ mr: 2 }}>新規登録</Button>
                 <Button color="inherit" variant="outlined" href="/login">ログイン</Button>
               </Box>

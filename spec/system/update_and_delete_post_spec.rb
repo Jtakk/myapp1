@@ -27,7 +27,7 @@ RSpec.describe "UpdateAndDeletePost", type: :system do
       click_button "投稿を削除"
       click_button "削除する"
       expect(page).to have_content "投稿を削除しました。"
-      expect(current_path).to eq user_posts_path(user)
+      expect(current_path).to eq posts_user_path(user)
       expect(page).not_to have_content "revised message"
     end
   end

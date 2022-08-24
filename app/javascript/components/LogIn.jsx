@@ -19,7 +19,7 @@ const LogIn = (props) => {
 
   return (
     <Container maxWidth="sm" sx={{ py: 5}}>
-      <Box sx={{ p: 5, bgcolor: '#cfe8fc' }}>
+      <Box id="login-box" sx={{ p: 5, bgcolor: '#cfe8fc' }}>
         <Typography variant="h4" align="center" sx={{ mb: 3 }}>Log In</Typography>
         <form action="/login" method="post">
           <input name="authenticity_token" type="hidden" value={props.token} />
