@@ -6,6 +6,7 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
+    @mountain = @post.mountain
     @user = @post.user
     @photos = @post.photos
   end

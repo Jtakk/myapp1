@@ -1,10 +1,11 @@
 <div style="display:flex;height:100%">
-  <aside style="height:100%;position:fixed">
+  <aside style="height:100%;position:fixed;width:240px">
     <%= react_component("UserSideMenu", { user: @user, isCurrentUser: current_user?(@user) }, { style: "height:100%" }) %>
   </aside>
-  <main style="flex:1;margin-left:240px">
+  <main style="width:calc(100% - 240px);margin-left:240px">
     <%= react_component("PostShow", {
       post: @post,
+      mountain: @mountain,
       user: @user,
       photos: @photos,
       currentUser: current_user,

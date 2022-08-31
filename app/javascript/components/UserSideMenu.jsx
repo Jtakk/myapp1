@@ -16,14 +16,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const UserSideMenu = ({user, isCurrentUser}) => {
   return (
-    <Box id="side-menu-list" sx={{ width: '240px', height: '100%', bgcolor: 'background.paper', borderRight: '1px solid rgba(0,0,0,0.12)' }}>
+    <Box id="side-menu-list" sx={{ width: '100%', height: '100%', bgcolor: 'background.paper', borderRight: '1px solid rgba(0,0,0,0.12)' }}>
       <nav aria-label="main">
         <List sx={{ px: 1 }}>
           <ListItem disablePadding>
             <ListItemAvatar>
               <Avatar alt={user.name} src={user.avatar.thumb.url} />
             </ListItemAvatar>
-            <ListItemText primary={user.name} />
+            <ListItemText primary={user.name} secondary={isCurrentUser && "マイページ"} />
           </ListItem>
         </List>
       </nav>

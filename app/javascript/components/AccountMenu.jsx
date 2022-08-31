@@ -24,7 +24,7 @@ const AccountMenu = (props) => {
   };
   return (
     <>
-      <Tooltip title="アカウント詳細">
+      <Tooltip title="マイページ">
         <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }} id="menu-toggle-button">
           <Avatar sx={{ width: 32, height: 32 }} alt={props.currentUser.name} src={props.currentUser.avatar.thumb.url} />
         </IconButton>

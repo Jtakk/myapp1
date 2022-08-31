@@ -30,7 +30,7 @@ const PrevArrow = (props) => {
   );
 };
 
-const Carousel = ({children}) => {
+const Carousel = ({children, ...rest}) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -42,7 +42,7 @@ const Carousel = ({children}) => {
   };
 
   return (
-    <Slider {...settings} >
+    <Slider {...settings} {...rest} >
       {children}
     </Slider>
   );

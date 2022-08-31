@@ -8,6 +8,7 @@ import AppLogo from './AppLogo';
 import AccountMenu from './AccountMenu';
 import SearchMenu from './SearchMenu';
 import SearchMenuDrawer from './SearchMenuDrawer';
+import HomeIcon from '@mui/icons-material/Home';
 
 const AppHeader = ({currentUser}) => {
   return (
@@ -17,6 +18,9 @@ const AppHeader = ({currentUser}) => {
           <SearchMenuDrawer sx={{ mr: 2, display: { xs: 'block', sm: 'none' } }} />
           <AppLogo />
           <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}>
+            <Button size="large" color="inherit" href="/" startIcon={<HomeIcon />} sx={{ mr: 2 }} >
+              ホーム
+            </Button>
             <SearchMenu />
           </Box>
           {currentUser

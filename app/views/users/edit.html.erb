@@ -1,6 +1,6 @@
 <div style="display:flex;height:100%">
-  <aside style="height:100%;position:fixed"><%= react_component("UserSideMenu", { user: @user, isCurrentUser: current_user?(@user) }, { style: "height:100%" }) %></aside>
-  <main style="flex:1;margin-left:240px">
+  <aside style="height:100%;position:fixed;width:240px"><%= react_component("UserSideMenu", { user: @user, isCurrentUser: current_user?(@user) }, { style: "height:100%" }) %></aside>
+  <main style="width:calc(100% - 240px);margin-left:240px">
     <% if @user.errors.any? %>
       <%= react_component("ErrorMessages", { messages: @user.errors.full_messages }) %>
     <% end %>
