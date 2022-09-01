@@ -8,6 +8,7 @@ import Spinner from './Spinner';
 import Carousel from './Carousel';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import LinkChips from './LinkChips';
 import LikeButton from './LikeButton';
 import EditMessage from './EditMessage';
 import DeletePost from './DeletePost';
@@ -62,6 +63,7 @@ const PostShow = ({post, mountain, user, photos, currentUser, patchPostToken, de
               <Box sx={{ padding: '0px 24px' }}>
                 <Typography variant="body2">{mountain.yomi}</Typography>
                 <Typography variant="h4"><Link href={"/mountains/"+mountain.id} underline="hover" color="inherit">{mountain.name}</Link></Typography>
+                <LinkChips prefectures={mountain.prefectures} areas={mountain.areas} tags={mountain.tags} />
               </Box>
               <Box sx={{ padding: '16px 32px 32px' }}>
                 <Carousel>

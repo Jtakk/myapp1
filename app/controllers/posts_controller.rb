@@ -6,7 +6,7 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
-    @mountain = @post.mountain
+    @mountain = @post.mountain.as_json(include: [:prefectures, :areas, :tags])
     @user = @post.user
     @photos = @post.photos
   end

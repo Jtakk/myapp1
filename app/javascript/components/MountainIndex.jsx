@@ -18,7 +18,7 @@ import TabPanel from './TabPanel';
 import SearchIcon from '@mui/icons-material/Search';
 import PublicIcon from '@mui/icons-material/Public';
 import TerrainIcon from '@mui/icons-material/Terrain';
-import TagIcon from '@mui/icons-material/Tag';
+import SellIcon from '@mui/icons-material/Sell';
 
 const MountainIndex = ({initTab}) => {
   const provideProps = (index) => {
@@ -41,7 +41,7 @@ const MountainIndex = ({initTab}) => {
               <Tab icon={<SearchIcon />} label="山名から探す" {...provideProps(0)} />
               <Tab icon={<PublicIcon />} label="都道府県から探す" {...provideProps(1)} />
               <Tab icon={<TerrainIcon />} label="山域から探す" {...provideProps(2)} />
-              <Tab icon={<TagIcon />} label="タグから探す" {...provideProps(3)} />
+              <Tab icon={<SellIcon />} label="タグから探す" {...provideProps(3)} />
             </Tabs>
           </Box>
           <TabPanel value={tab} index={0} style={{ height: '100%', padding: '24px' }}>

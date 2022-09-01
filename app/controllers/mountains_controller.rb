@@ -6,8 +6,9 @@ class MountainsController < ApplicationController
   end
 
   def show
-    @mountain = Mountain.find(params[:id])
-    @posts = @mountain.posts.latest.as_json(
+    mountain = Mountain.find(params[:id])
+    @mountain = mountain.as_json(include: [:prefectures, :areas, :tags])
+    @posts = mountain.posts.latest.as_json(
       include: [
         { photos: { only: [:image] } },
         { user: { only: [:id, :name, :avatar] } },

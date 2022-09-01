@@ -12,7 +12,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 import PublicIcon from '@mui/icons-material/Public';
 import TerrainIcon from '@mui/icons-material/Terrain';
-import TagIcon from '@mui/icons-material/Tag';
+import SellIcon from '@mui/icons-material/Sell';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -71,7 +71,7 @@ const SearchMenuDrawer = ({...props}) => {
             <ListItem>
               <ListItemButton component="a" href="/mountains?tab=3">
                 <ListItemIcon>
-                  <TagIcon />
+                  <SellIcon />
                 </ListItemIcon>
                 <ListItemText primary="タグから探す" />
               </ListItemButton>

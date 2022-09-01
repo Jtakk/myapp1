@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import NoMountainImage from 'images/no_mountain_image.jpeg';
+import LinkChips from './LinkChips';
 
 const IntroBox = styled(Box)({
   width: '100%',
@@ -28,6 +29,7 @@ const MountainIntroduction = ({mountain}) => {
           </Box>
           <Typography variant="h6">{"標高: "+mountain.elevation+" m"}</Typography>
         </Box>
+        <LinkChips prefectures={mountain.prefectures} areas={mountain.areas} tags={mountain.tags} color="primary" sx={{ mb: 1 }} />
         <Typography variant="body1">{mountain.introduction}</Typography>
       </IntroBox>
     </Box>

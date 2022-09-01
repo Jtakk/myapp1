@@ -6,7 +6,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import SearchIcon from '@mui/icons-material/Search';
 import PublicIcon from '@mui/icons-material/Public';
 import TerrainIcon from '@mui/icons-material/Terrain';
-import TagIcon from '@mui/icons-material/Tag';
+import SellIcon from '@mui/icons-material/Sell';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const SearchMenu = () => {
@@ -45,7 +45,7 @@ const SearchMenu = () => {
         </MenuItem>
         <MenuItem component="a" href="/mountains?tab=3">
           <ListItemIcon>
-            <TagIcon fontSize="small" />
+            <SellIcon fontSize="small" />
           </ListItemIcon>
           タグから探す
         </MenuItem>
