@@ -7,6 +7,7 @@ RSpec.describe "Posts", type: :request do
 
   describe "GET /show" do
     let(:post) { create(:post, user_id: user.id, mountain_id: mountain.id) }
+    let!(:photo) { create(:photo, post_id: post.id) }
 
     before { get post_path(post) }
 
@@ -16,6 +17,19 @@ RSpec.describe "Posts", type: :request do
 
     it "assigns the post to @post" do
       expect(controller.instance_variable_get("@post")).to eq post
+    end
+
+    it "assigns the mountain to @mountain" do
+      expect(controller.instance_variable_get("@mountain")).
+        to eq mountain.as_json(include: [:prefectures, :areas, :tags])
+    end
+
+    it "assigns the user to @user" do
+      expect(controller.instance_variable_get("@user")).to eq user
+    end
+
+    it "assigns the photos to @photos" do
+      expect(controller.instance_variable_get("@photos")).to match_array [photo]
     end
   end
 

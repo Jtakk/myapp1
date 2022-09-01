@@ -73,10 +73,11 @@ RSpec.describe "Mountains", type: :request do
     end
 
     it "assigns the mountain to @mountain" do
-      expect(controller.instance_variable_get("@mountain")).to eq mountain
+      expect(controller.instance_variable_get("@mountain")).
+        to eq mountain.as_json(include: [:prefectures, :areas, :tags])
     end
 
-    it "assigns the posts @posts" do
+    it "assigns the posts to @posts" do
       expect(controller.instance_variable_get("@posts")).to match_array [post_1, post_2].as_json(
         include: [
           { photos: { only: [:image] } },
