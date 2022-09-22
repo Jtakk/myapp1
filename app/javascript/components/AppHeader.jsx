@@ -13,7 +13,7 @@ import HomeIcon from '@mui/icons-material/Home';
 const AppHeader = ({currentUser}) => {
   return (
     <>
-      <AppBar position="fixed" >
+      <AppBar position="fixed" id="app-header" >
         <Toolbar>
           <SearchMenuDrawer sx={{ mr: 2, display: { xs: 'block', sm: 'none' } }} />
           <AppLogo />

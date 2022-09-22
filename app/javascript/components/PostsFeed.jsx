@@ -21,9 +21,9 @@ const PostsFeed = ({posts, currentUser}) => {
       <Typography variant="h5" sx={{ color: '#fff', mt: 2, mb: 1 }} align="center">新着投稿</Typography>
       <Stack spacing={2}>
         {posts.map((post, i) => (
-          <CustomPaper component="a" href={"/posts/"+post.id} elevation={3} key={i}>
+          <CustomPaper component="a" href={"/posts/"+post.id} elevation={3} key={i} id={"recent-post-"+i}>
             <Box sx={{ width: '30%' }}>
-              <img src={post.photos[0].image.fixed.url} loading="lazy" alt={post.photos[0].image.url} style={{ width: '100%', height: 'auto', verticalAlign: 'middle' }} />
+              <img src={post.photos[0].image.fixed.url} alt={post.photos[0].image.url} style={{ width: '100%', height: 'auto', verticalAlign: 'middle' }} />
             </Box>
             <Box sx={{ width: '70%', pl: 1 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>

@@ -36,7 +36,7 @@ const Overview = () => {
   };
 
   return (
-    <>
+    <div id="overview">
       <Box id="overview-1st" sx={{ height: '100vh', bgcolor: '#f5f5f5', boxSizing: 'border-box', paddingTop: '64px' }}>
         <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} >
           <Box sx={{ height: '90%', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }} >
@@ -47,7 +47,7 @@ const Overview = () => {
                 <Typography variant="body2">名前または地域から検索し、目的の山を見つけよう。</Typography>
               </CardContent>
               <CardActions sx={{ justifyContent: 'center' }}>
-                <Button href="/mountains" variant="contained" color="primary">探す</Button>
+                <Button href="/mountains" variant="contained" color="primary">山を探す</Button>
               </CardActions>
             </Card>
             <DoubleArrowIcon sx={{ fontSize: { xs: 30, md: 50 } }} color="primary" />
@@ -96,7 +96,7 @@ const Overview = () => {
           </Box>
         </Container>
       </Box>
-    </>
+    </div>
   );
 };
 

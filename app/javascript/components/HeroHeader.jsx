@@ -46,7 +46,7 @@ const HeroHeader = ({posts, currentUser}) => {
   };
 
   return (
-    <HeroBg>
+    <HeroBg id="hero-header">
       <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ height: '90%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end' }} >
           <CustomCard>
