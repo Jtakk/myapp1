@@ -8,7 +8,7 @@ const AvatarChip = ({user, clickable}) => {
       avatar={<Avatar alt={user.name} src={user.avatar.thumb.url} />}
       label={user.name}
       component={clickable ? "a" : "div"}
-      href={"/users/"+user.id+"/posts"}
+      href={"/users/"+user.id}
       clickable={clickable}
       size="medium"
       color="primary"

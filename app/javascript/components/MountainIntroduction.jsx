@@ -17,7 +17,7 @@ const IntroBox = styled(Box)({
 
 const MountainIntroduction = ({mountain}) => {
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%' }} id="mountain-introduction" >
       <Box sx={{ width: '100%' }}>
         <img src={mountain.image.url ? mountain.image.url : NoMountainImage} style={{ width: '100%', height: 'auto', verticalAlign: 'top' }} />
       </Box>

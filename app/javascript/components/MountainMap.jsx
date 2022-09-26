@@ -173,7 +173,7 @@ const MountainMap = (props) => {
               }
             </Marker>
             {posts.map((post, i) => (
-              <Marker position={{ lat: parseFloat(post.latitude), lng: parseFloat(post.longitude) }} onClick={() => onClickMarker(post)} key={i} >
+              <Marker position={{ lat: parseFloat(post.latitude), lng: parseFloat(post.longitude) }} onClick={() => onClickMarker(post)} key={i}>
                 { (view === post) &&
                   <InfoWindow onCloseClick={() => setView()} >
                     <div>Checked!</div>
@@ -205,7 +205,7 @@ const MountainMap = (props) => {
               </Box>
               <Stack spacing={3}>
                 {alignment == 'recent' && posts.map((post, i) => (
-                  <Paper elevation={3} key={i} onClick={() => onClickMarker(post)} sx={{ p: 1, bgcolor: view == post ? '#f0f8ff' : 'none', cursor: 'pointer' }}>
+                  <Paper elevation={3} key={i} onClick={() => onClickMarker(post)} sx={{ p: 1, bgcolor: view == post ? '#f0f8ff' : 'none', cursor: 'pointer' }} id={"recent-posts-"+i}>
                     <Box sx={{ display: "flex", justifyContent: 'space-between', alignItems: 'center'}}>
                       <AvatarChip user={post.user} />
                       <LikeIndicator post={post} currentUser={props.currentUser} />
@@ -217,7 +217,7 @@ const MountainMap = (props) => {
                   </Paper>
                 ))}
                 {alignment == 'like' && sortedPosts.map((post, i) => (
-                  <Paper elevation={3} key={i} onClick={() => onClickMarker(post)} sx={{ p: 1, bgcolor: view == post ? '#f0f8ff' : 'none', cursor: 'pointer' }}>
+                  <Paper elevation={3} key={i} onClick={() => onClickMarker(post)} sx={{ p: 1, bgcolor: view == post ? '#f0f8ff' : 'none', cursor: 'pointer' }} id={"like-posts-"+i}>
                     <Box sx={{ display: "flex", justifyContent: 'space-between', alignItems: 'center'}}>
                       <AvatarChip user={post.user} />
                       <LikeIndicator post={post} currentUser={props.currentUser} />
@@ -232,7 +232,7 @@ const MountainMap = (props) => {
             </Box>
           </TabPanel>
           <TabPanel value={tab} index={2} style={{ height: '100%' }}>
-            <Box sx={{ position: "relative", height: '100%' }}>
+            <Box sx={{ position: "relative", height: '100%' }} id="post-view">
               {!view &&
                 <Box sx={coverStyle} >
                   <PhotoSizeSelectActualTwoToneIcon fontSize="large"/>
