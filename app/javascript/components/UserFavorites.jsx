@@ -43,7 +43,7 @@ const UserFavorites = ({posts, currentUser, maxItemCount}) => {
         }
         <Stack spacing={2}>
           {displayedItems.map((post, i) => (
-            <CustomPaper component="a" href={"/posts/"+post.id} elevation={3} key={i}>
+            <CustomPaper component="a" href={"/posts/"+post.id} elevation={3} key={i} id={"favorite-posts-"+i}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 1 }}>
                 <Box>
                   <Typography variant="body2">{post.mountain.yomi}</Typography>

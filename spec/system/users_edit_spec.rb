@@ -12,7 +12,10 @@ RSpec.describe "UsersEdit", type: :system do
     end
     let(:avatar) { "#{Rails.root}/spec/fixtures/images/test_cat.png" }
     let(:invalid_user_params) do
-      attributes_for(:user, password: "wrong", password_confirmation: "wrong")
+      attributes_for(:user, name: "revised_name",
+                            email: "revised_email@example.com",
+                            password: "wrong",
+                            password_confirmation: "wrong")
     end
 
     it "redirects to the page correctly by friendly forwarding,
@@ -29,7 +32,9 @@ RSpec.describe "UsersEdit", type: :system do
       click_button "変更を保存する"
       expect(current_path).to eq user_path(user)
       expect(page).to have_content "アカウント設定を更新しました。"
-      expect(page).to have_selector "img[src$='#{user.reload.avatar.thumb.url}']"
+      within('#app-header') do
+        expect(page).to have_selector "img[src$='#{user.reload.avatar.thumb.url}']"
+      end
       expect(page).to have_selector "img[src$='#{user.reload.avatar.url}']"
       expect(page).to have_content revised_user_params[:name]
       expect(page).to have_content revised_user_params[:email]

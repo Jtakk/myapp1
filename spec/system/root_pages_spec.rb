@@ -20,71 +20,47 @@ RSpec.describe "RootPages", type: :system do
           expect(page).to have_content mountain.yomi
           expect(page).to have_content mountain.name
           expect(page).to have_content post_list[-i].message
-          expect(page).to have_selector "img[src$='#{post_list[-i].photos.first.image.fixed.url}']"
+          expect(page).to have_selector "img[src$='#{post_list[-i].photos[0].image.fixed.url}']"
         end
         expect(page).to have_link nil, href: post_path(post_list[-i])
       end
       expect(page).not_to have_content post_list[0].message
-      expect(page).not_to have_selector "img[src$='#{post_list[0].photos.first.image.fixed.url}']"
+      expect(page).not_to have_selector "img[src$='#{post_list[0].photos[0].image.fixed.url}']"
       expect(page).not_to have_link nil, href: post_path(post_list[0])
     end
   end
 
   describe "clickable links" do
-    context "when not logged in" do
-      before { visit root_path }
+    before { visit root_path }
 
-      it "has valid links within header", js: true do
-        within('#app-header') do
-          expect(page).to have_link 'Myapp1', href: root_path
-          expect(page).to have_link 'ホーム', href: root_path
-          expect(page).to have_link '新規登録', href: signup_path
-          expect(page).to have_link 'ログイン', href: login_path
-          click_on '山を探す'
-        end
-        within('#search-menu-list') do
-          expect(page).to have_link 'フリーワード検索', href: mountains_path
-          expect(page).to have_link '都道府県から探す', href: '/mountains?tab=1'
-          expect(page).to have_link '山域から探す', href: '/mountains?tab=2'
-          expect(page).to have_link 'タグから探す', href: '/mountains?tab=3'
-        end
+    it "has valid links within header", js: true do
+      within('#app-header') do
+        expect(page).to have_link "Myapp1", href: root_path
+        expect(page).to have_link "ホーム", href: root_path
+        expect(page).to have_link "新規登録", href: signup_path
+        expect(page).to have_link "ログイン", href: login_path
+        click_on "山を探す"
       end
-
-      it "has valid links within hero header", js: true do
-        within('#hero-header') do
-          expect(page).to have_link '新規登録', href: signup_path
-          expect(page).to have_link 'ログイン', href: login_path
-        end
-      end
-
-      it "has valid links within overview", js: true do
-        within('#overview') do
-          expect(page).to have_link '山を探す', href: mountains_path
-          expect(page).to have_link '新規登録', href: signup_path
-          expect(page).to have_link 'ログイン', href: login_path
-        end
+      within('#search-menu-list') do
+        expect(page).to have_link "フリーワード検索", href: mountains_path
+        expect(page).to have_link "都道府県から探す", href: '/mountains?tab=1'
+        expect(page).to have_link "山域から探す", href: '/mountains?tab=2'
+        expect(page).to have_link "タグから探す", href: '/mountains?tab=3'
       end
     end
 
-    context "when logged in" do
-      let(:user) { create(:user) }
+    it "has valid links within hero header", js: true do
+      within('#hero-header') do
+        expect(page).to have_link "新規登録", href: signup_path
+        expect(page).to have_link "ログイン", href: login_path
+      end
+    end
 
-      it "has valid links within header", js: true do
-        log_in_as(user)
-        visit root_path
-        within('#app-header') do
-          expect(page).not_to have_link '新規登録', href: signup_path
-          expect(page).not_to have_link 'ログイン', href: login_path
-          find('#menu-toggle-button').click
-        end
-        within('#account-menu-list') do
-          expect(page).to have_link '投稿一覧', href: posts_user_path(user)
-          expect(page).to have_link 'お気に入り', href: favorites_user_path(user)
-          expect(page).to have_link 'プロフィール', href: user_path(user)
-          expect(page).to have_link 'アカウント設定', href: edit_user_path(user)
-          expect(page).to have_link "ログアウト", href: logout_path
-          click_link "ログアウト"
-        end
+    it "has valid links within overview", js: true do
+      within('#overview') do
+        expect(page).to have_link "山を探す", href: mountains_path
+        expect(page).to have_link "新規登録", href: signup_path
+        expect(page).to have_link "ログイン", href: login_path
       end
     end
   end

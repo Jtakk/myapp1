@@ -23,7 +23,8 @@ RSpec.describe "SearchMountains", type: :system do
       fill_in "山名検索", with: "岩"
       click_button "検索"
       expect(current_path).to eq mountain_search_path
-      expect(page).to have_link '山を探す', href: mountains_path
+      expect(page).to have_link "山を探す", href: mountains_path
+      expect(page).to have_content mountain_1.yomi
       expect(page).to have_content mountain_1.name
       expect(page).to have_content mountain_1.elevation
       expect(page).to have_content mountain_1.introduction
@@ -32,7 +33,8 @@ RSpec.describe "SearchMountains", type: :system do
       fill_in "山名検索", with: "八"
       click_button "検索"
       expect(current_path).to eq mountain_search_path
-      expect(page).to have_link '山を探す', href: mountains_path
+      expect(page).to have_link "山を探す", href: mountains_path
+      expect(page).to have_content mountain_2.yomi
       expect(page).to have_content mountain_2.name
       expect(page).to have_content mountain_2.elevation
       expect(page).to have_content mountain_2.introduction
@@ -44,12 +46,14 @@ RSpec.describe "SearchMountains", type: :system do
       click_on "都道府県から探す"
       click_on(region.name + "地方")
       expect(current_path).to eq mountain_region_path(region)
-      expect(page).to have_link '山を探す', href: "/mountains?tab=1"
+      expect(page).to have_link "山を探す", href: "/mountains?tab=1"
+      expect(page).to have_content mountain_1.yomi
       expect(page).to have_content mountain_1.name
       expect(page).to have_content mountain_1.elevation
       expect(page).to have_content mountain_1.introduction
       expect(page).to have_selector "img[src$='#{mountain_1.image.url}']"
       expect(page).to have_link nil, href: mountain_path(mountain_1)
+      expect(page).to have_content mountain_2.yomi
       expect(page).to have_content mountain_2.name
       expect(page).to have_content mountain_2.elevation
       expect(page).to have_content mountain_2.introduction
@@ -61,9 +65,10 @@ RSpec.describe "SearchMountains", type: :system do
       click_on "都道府県から探す"
       click_on prefecture_1.name
       expect(current_path).to eq mountain_prefecture_path(prefecture_1)
-      expect(page).to have_link '山を探す', href: "/mountains?tab=1"
+      expect(page).to have_link "山を探す", href: "/mountains?tab=1"
       expect(page).to have_link (prefecture_1.region.name + "地方"),
         href: mountain_region_path(prefecture_1.region)
+      expect(page).to have_content mountain_1.yomi
       expect(page).to have_content mountain_1.name
       expect(page).to have_content mountain_1.elevation
       expect(page).to have_content mountain_1.introduction
@@ -76,7 +81,8 @@ RSpec.describe "SearchMountains", type: :system do
       find('#panel2-header').click
       click_on area.name
       expect(current_path).to eq mountain_area_path(area)
-      expect(page).to have_link '山を探す', href: "/mountains?tab=2"
+      expect(page).to have_link "山を探す", href: "/mountains?tab=2"
+      expect(page).to have_content mountain_1.yomi
       expect(page).to have_content mountain_1.name
       expect(page).to have_content mountain_1.elevation
       expect(page).to have_content mountain_1.introduction
@@ -88,7 +94,8 @@ RSpec.describe "SearchMountains", type: :system do
       click_on "タグから探す"
       click_on tag.name
       expect(current_path).to eq mountain_tag_path(tag)
-      expect(page).to have_link '山を探す', href: "/mountains?tab=3"
+      expect(page).to have_link "山を探す", href: "/mountains?tab=3"
+      expect(page).to have_content mountain_1.yomi
       expect(page).to have_content mountain_1.name
       expect(page).to have_content mountain_1.elevation
       expect(page).to have_content mountain_1.introduction

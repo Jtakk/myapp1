@@ -42,7 +42,7 @@ const UserPosts = ({posts, currentUser, maxItemCount}) => {
         }
         <Stack spacing={2}>
           {displayedItems.map((post, i) => (
-            <CustomPaper component="a" href={"/posts/"+post.id} elevation={3} key={i}>
+            <CustomPaper component="a" href={"/posts/"+post.id} elevation={3} key={i} id={"my-posts-"+i}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start'}}>
                 <Box>
                   <Typography variant="body2">{post.mountain.yomi}</Typography>
