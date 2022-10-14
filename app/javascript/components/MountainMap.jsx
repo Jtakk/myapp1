@@ -9,6 +9,7 @@ import MountainIntroduction from './MountainIntroduction';
 import TextField from '@mui/material/TextField';
 import InputMessage from './InputMessage';
 import UploadPhotos from './UploadPhotos';
+import HelpToCreatePost from './HelpToCreatePost';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import InfoIcon from '@mui/icons-material/Info';
@@ -168,7 +169,7 @@ const MountainMap = (props) => {
             <Marker position={pin} icon="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png" >
               {pin &&
                 <InfoWindow onCloseClick={() => setPin()} >
-                  <Button size="small" variant="contained" onClick={() => setTab(3)}>投稿する</Button>
+                  <Button size="small" variant="contained" onClick={() => setTab(3)}>投稿内容を入力</Button>
                 </InfoWindow>
               }
             </Marker>
@@ -272,38 +273,50 @@ const MountainMap = (props) => {
                   <Typography variant="body1">投稿にはログインが必要です</Typography>
                 </Box>
               }
-              <Box sx={{ p: 4 }}>
-                <Box sx={{ display: "flex", width: "100%" }}>
-                  <TextField sx={{ flexGrow: 1, mr: 1 }} id="lat" label="緯度" type="number" size="small" margin="normal" inputRef={inputLat} />
-                  <TextField sx={{ flexGrow: 1, ml: 1 }} id="lng" label="経度" type="number" size="small" margin="normal" inputRef={inputLng} />
+              <Box sx={{ p: 2 }}>
+                <Box sx={{ textAlign: 'right' }}>
+                  <HelpToCreatePost/>
                 </Box>
-                <Button onClick={onSetMarker} variant="outlined" size="small" fullWidth>マーカーをセット</Button>
-                <Box>
-                  <Typography variant="h6">投稿</Typography>
-                  <form>
-                    <input defaultValue={props.mountain.id} type="hidden" />
-                    <input defaultValue={pin ? pin.lat : ''} type="hidden" />
-                    <input defaultValue={pin ? pin.lng : ''} type="hidden" />
+                <Typography variant="h6">撮影地点を決める</Typography>
+                <Box sx={{ py: 2, px: 1, mb: 3 }}>
+                  <Typography variant="body2">マップをクリックもしくは下記に緯度•経度を入力してマーカーを設置する</Typography>
+                  <Box sx={{ display: "flex", width: "100%" }}>
+                    <TextField sx={{ flexGrow: 1, mr: 1 }} id="lat" label="緯度" type="number" size="small" margin="normal" inputRef={inputLat} />
+                    <TextField sx={{ flexGrow: 1, ml: 1 }} id="lng" label="経度" type="number" size="small" margin="normal" inputRef={inputLng} />
+                  </Box>
+                  <Box sx={{ textAlign: "center" }}>
+                    <Button onClick={onSetMarker} variant="outlined" sx={{ maxWidth: "300px" }}>マーカーを設置</Button>
+                  </Box>
+                </Box>
+                <form>
+                  <Typography variant="h6">メッセージを残す</Typography>
+                  <input defaultValue={props.mountain.id} type="hidden" />
+                  <input defaultValue={pin ? pin.lat : ''} type="hidden" />
+                  <input defaultValue={pin ? pin.lng : ''} type="hidden" />
+                  <Box sx={{ px: 2, mb: 3 }}>
                     <InputMessage value={message} onChange={handleChangeMessage} />
+                  </Box>
+                  <Typography variant="h6">写真を追加する (最大10枚)</Typography>
+                  <Box sx={{ py: 2, px: 1, mb: 5 }}>
                     <UploadPhotos images={images} setImages={setImages} />
-                    <Box sx={{ position: 'relative', mt: 5 }}>
-                      <Button id="btn-submit-post" onClick={handleOnSubmit} disabled={!pin || !images.length || loading}  variant="contained" fullWidth >この内容で投稿する</Button>
-                      {loading &&
-                        <CircularProgress
-                          size={24}
-                          sx={{
-                            color: green[500],
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            marginTop: '-12px',
-                            marginLeft: '-12px',
-                          }}
-                        />
-                      }
-                    </Box>
-                  </form>
-                </Box>
+                  </Box>
+                  <Box sx={{ position: 'relative' }}>
+                    <Button id="btn-submit-post" onClick={handleOnSubmit} disabled={!pin || !images.length || loading}  variant="contained" fullWidth >この内容で投稿する</Button>
+                    {loading &&
+                      <CircularProgress
+                        size={24}
+                        sx={{
+                          color: green[500],
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          marginTop: '-12px',
+                          marginLeft: '-12px',
+                        }}
+                      />
+                    }
+                  </Box>
+                </form>
               </Box>
             </Box>
           </TabPanel>
