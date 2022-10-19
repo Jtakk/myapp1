@@ -17,19 +17,25 @@ const HeroBg = styled(Box)(({theme}) => ({
   backgroundSize: 'cover',
   position: 'relative',
   height: '100vh',
+  boxSizing: 'border-box',
   marginTop: '-56px',
+  paddingTop: '56px',
   [theme.breakpoints.up('sm')]: {
     marginTop: '-64px',
+    paddingTop: '64px',
   },
 }));
 
 const CustomCard = styled(Card)(({theme}) => ({
   backgroundColor: 'rgba(0,0,0,0.5)',
-  maxHeight: '75%',
+  maxHeight: '85%',
   overflowY: 'scroll',
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    width: '50%',
+    width: '80%',
+  },
+  [theme.breakpoints.up('md')]: {
+    width: '60%',
   },
 }));
 
@@ -54,14 +60,15 @@ const HeroHeader = ({posts, currentUser}) => {
               <Typography sx={{ color: '#fff', mb: 2 }} variant="h3" align="center">TITLE</Typography>
               <Typography sx={{ color: '#fff', mb: 1 }} variant="body1" align="center">素晴らしい山の景色をみんなで共有しよう!</Typography>
               <Typography sx={{ color: '#fff' }} variant="body1" align="center">→ <Link component="button" variant="body1" underline="hover" sx={{ color: '#fff' }} onClick={() => scrollToElement("overview-1st")}>どんなことができる？</Link></Typography>
-
             </CardContent>
-            <CardActions sx={{ justifyContent: 'space-around' }}>
-              <Button variant="contained" size="large" href="/signup">新規登録</Button>
-              <Button variant="contained" size="large" href="/login">ログイン</Button>
-            </CardActions>
+            {!currentUser &&
+              <CardActions sx={{ justifyContent: 'space-evenly' }}>
+                <Button variant="contained" size="large" href="/signup" >新規登録</Button>
+                <Button variant="contained" size="large" href="/login" >ログイン</Button>
+              </CardActions>
+            }
             <CardContent>
-              <PostsFeed posts={posts} currentUser={currentUser} />
+              <PostsFeed posts={posts} />
             </CardContent>
           </CustomCard>
         </Box>

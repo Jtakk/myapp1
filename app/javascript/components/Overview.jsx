@@ -16,7 +16,7 @@ import LandscapeAndBinoculars from 'images/landscape_and_binoculars.jpeg';
 import Photographer from 'images/photographer.jpeg';
 import PcAndCamera from 'images/pc_and_camera.jpeg';
 
-const Overview = () => {
+const Overview = ({currentUser}) => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -37,25 +37,24 @@ const Overview = () => {
 
   return (
     <div id="overview">
-      <Box id="overview-1st" sx={{ height: '100vh', bgcolor: '#f5f5f5', boxSizing: 'border-box', paddingTop: '64px' }}>
+      <Box id="overview-1st" sx={{ height: '100vh', bgcolor: '#f5f5f5', boxSizing: 'border-box', paddingTop: { xs: '56px', sm: '64px' } }}>
         <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} >
-          <Box sx={{ height: '90%', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }} >
-            <Card sx={{ width: '45%', height: '80%' }}>
-              <CardMedia component="img" image={MapAndBinoculars} alt="map_and_binoculars" height="50%" />
-              <CardContent sx={{ minHeight: '30%' }}>
-                <Typography variant="h5" sx={{ mb: 2 }}>山を探す</Typography>
-                <Typography variant="body2">名前または地域から検索し、目的の山を見つけよう。</Typography>
+          <Box sx={{ height: '90%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: 'center', justifyContent: 'space-evenly' }} >
+            <Card sx={{ width: { xs: '90%', md: '45%' }, height: { xs: '45%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
+              <CardMedia component="img" image={MapAndBinoculars} alt="map_and_binoculars" sx={{ height: { xs: '100%', md: '50%' }, width: { xs: '50%', md: '100%' } }} />
+              <CardContent sx={{ display: 'flex', flexDirection: 'column', height: { xs: '100%', md: '50%' }, boxSizing: 'border-box', overflowY: 'scroll' }}>
+                <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>山を探す</Typography>
+                <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>名前または地域から検索し、目的の山を見つけよう。</Typography>
+                <CardActions sx={{ justifyContent: 'center', marginTop: 'auto', padding: '0px' }}>
+                  <Button href="/mountains" variant="contained" color="primary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>山を探す</Button>
+                </CardActions>
               </CardContent>
-              <CardActions sx={{ justifyContent: 'center' }}>
-                <Button href="/mountains" variant="contained" color="primary">山を探す</Button>
-              </CardActions>
             </Card>
-            <DoubleArrowIcon sx={{ fontSize: { xs: 30, md: 50 } }} color="primary" />
-            <Card sx={{ width: '45%', height: '80%' }}>
-              <CardMedia component="img" image={LandscapeAndBinoculars} alt="landscape_and_binoculars" height="50%" />
-              <CardContent>
-                <Typography variant="h5" sx={{ mb: 2 }}>みんなの写真を眺める</Typography>
-                <Typography variant="body2">ユーザーが投稿した写真はメッセージと共に地図上に残されています。写真に「いいね」をするとお気に入り登録することができます。</Typography>
+            <Card sx={{ width: { xs: '90%', md: '45%' }, height: { xs: '45%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
+              <CardMedia component="img" image={LandscapeAndBinoculars} alt="landscape_and_binoculars" sx={{ height: { xs: '100%', md: '50%' }, width: { xs: '50%', md: '100%' } }} />
+              <CardContent sx={{ display: 'flex', flexDirection: 'column', height: { xs: '100%', md: '50%' }, boxSizing: 'border-box', overflowY: 'scroll' }}>
+                <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>みんなの写真を眺める</Typography>
+                <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>ユーザーが投稿した写真はメッセージと共に地図上に残されています。写真に「いいね」をするとお気に入り登録することができます。</Typography>
               </CardContent>
             </Card>
           </Box>
@@ -65,27 +64,27 @@ const Overview = () => {
           </Button>
         </Container>
       </Box>
-      <Box id="overview-2nd" sx={{ height: '100vh', bgcolor: '#f5f5f5', boxSizing: 'border-box', paddingTop: '64px' }}>
+      <Box id="overview-2nd" sx={{ height: '100vh', bgcolor: '#f5f5f5', boxSizing: 'border-box', paddingTop: { xs: '56px', sm: '64px' } }}>
         <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} >
-          <Box sx={{ height: '90%', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }} >
-            <Card sx={{ width: '45%', height: '80%' }}>
-              <CardMedia component="img" image={Photographer} alt="photographer" height="50%" />
-              <CardContent>
-                <Typography variant="h5" sx={{ mb: 2 }}>写真を撮る</Typography>
-                <Typography variant="body2">ハイキング・登山で写真を撮ろう。(GPS機能をONにして位置データを記録しておくと役に立ちます。)</Typography>
+          <Box sx={{ height: '90%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: 'center', justifyContent: 'space-evenly' }} >
+            <Card sx={{ width: { xs: '90%', md: '45%' }, height: { xs: '40%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
+              <CardMedia component="img" image={Photographer} alt="photographer" sx={{ height: { xs: '100%', md: '50%' }, width: { xs: '50%', md: '100%' } }} />
+              <CardContent sx={{ display: 'flex', flexDirection: 'column', height: { xs: '100%', md: '50%' }, boxSizing: 'border-box', overflowY: 'scroll' }}>
+                <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>写真を撮る</Typography>
+                <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>ハイキング・登山で写真を撮ろう。(GPS機能をONにして位置データを記録しておくと役に立ちます。)</Typography>
               </CardContent>
             </Card>
-            <DoubleArrowIcon sx={{ fontSize: { xs: 30, md: 50 } }} color="primary" />
-            <Card sx={{ width: '45%', height: '80%' }}>
-              <CardMedia component="img" image={PcAndCamera} alt="pc_and_camera" height="50%" />
-              <CardContent sx={{ minHeight: '30%' }}>
-                <Typography variant="h5" sx={{ mb: 2 }}>写真をシェアする</Typography>
-                <Typography variant="body2">地図上にピンを立てて、お気に入りの写真をメッセージと共に投稿しよう。</Typography>
+            <Card sx={{ width: { xs: '90%', md: '45%' }, height: { xs: '40%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
+              <CardMedia component="img" image={PcAndCamera} alt="pc_and_camera" sx={{ height: { xs: '100%', md: '50%' }, width: { xs: '50%', md: '100%' } }} />
+              <CardContent sx={{ display: 'flex', flexDirection: 'column', height: { xs: '100%', md: '50%' }, boxSizing: 'border-box', overflowY: 'scroll' }}>
+                <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>写真をシェアする</Typography>
+                <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>地図上にピンを立てて、お気に入りの写真をメッセージと共に投稿しよう。</Typography>
+                {!currentUser &&
+                  <CardActions sx={{ justifyContent: 'center', marginTop: 'auto', padding: '0px' }}>
+                    <Button href="/signup" variant="contained" color="primary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>新規登録</Button>
+                  </CardActions>
+                }
               </CardContent>
-              <CardActions sx={{ justifyContent: 'space-around' }}>
-                <Button href="/signup" variant="contained" color="primary">新規登録</Button>
-                <Button href="/login" variant="contained" color="primary">ログイン</Button>
-              </CardActions>
             </Card>
           </Box>
           <Box sx={{ height: '10%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }} >
