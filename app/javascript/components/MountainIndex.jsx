@@ -1,4 +1,5 @@
 import React from 'react';
+import { styled, useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -19,8 +20,21 @@ import SearchIcon from '@mui/icons-material/Search';
 import PublicIcon from '@mui/icons-material/Public';
 import TerrainIcon from '@mui/icons-material/Terrain';
 import SellIcon from '@mui/icons-material/Sell';
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+const CustomTab = styled(Tab)(({theme}) => ({
+  minWidth: '60px',
+  padding: '12px 16px',
+  fontSize: '0.875rem',
+  [theme.breakpoints.down('sm')]: {
+    padding: '6px 8px',
+    fontSize: '0.7rem',
+  },
+}));
 
 const MountainIndex = ({initTab}) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
   const provideProps = (index) => {
     return {
       id: `simple-tab-${index}`,
@@ -38,23 +52,23 @@ const MountainIndex = ({initTab}) => {
         <Paper elevation={3} >
           <Box sx={{ borderRadius: '4px 4px 0 0', borderBottom: 1, borderColor: 'divider', width: '100%', position: 'sticky', top: 0, zIndex: '100', backgroundColor: '#fff' }}>
             <Tabs value={tab} onChange={handleChangeTab} variant="fullWidth" aria-label="basic tabs example">
-              <Tab icon={<SearchIcon />} label="山名から探す" {...provideProps(0)} />
-              <Tab icon={<PublicIcon />} label="都道府県から探す" {...provideProps(1)} />
-              <Tab icon={<TerrainIcon />} label="山域から探す" {...provideProps(2)} />
-              <Tab icon={<SellIcon />} label="タグから探す" {...provideProps(3)} />
+              <CustomTab icon={<SearchIcon />} label="山名から探す" {...provideProps(0)} />
+              <CustomTab icon={<PublicIcon />} label="都道府県から探す" {...provideProps(1)} />
+              <CustomTab icon={<TerrainIcon />} label="山域から探す" {...provideProps(2)} />
+              <CustomTab icon={<SellIcon />} label="タグから探す" {...provideProps(3)} />
             </Tabs>
           </Box>
           <TabPanel value={tab} index={0} style={{ height: '100%', padding: '24px' }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>山名から探す</Typography>
+            <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>山名から探す</Typography>
             <form action="/mountains/search" method="get">
-              <TextField fullWidth label="山名検索" type="text" name="keyword" placeholder="山の名前(一部でも可、平仮名でも可)を入力" variant="outlined" margin="normal" />
+              <TextField fullWidth size={matches ? "medium" : "small"} label="山名検索" type="text" name="keyword" placeholder="山の名前(一部でも可、平仮名でも可)を入力" variant="outlined" margin="normal" />
               <Box sx={{ textAlign: 'center', mt: 1 }}>
-                <Button type="submit" variant="contained" sx={{ minWidth: '200px'}}>検索</Button>
+                <Button type="submit" variant="contained" sx={{ minWidth: '200px'}} size={matches ? "medium" : "small"}>検索</Button>
               </Box>
             </form>
           </TabPanel>
           <TabPanel value={tab} index={1} style={{ height: '100%', padding: '24px' }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>都道府県から探す</Typography>
+            <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>都道府県から探す</Typography>
             <Box>
               <Box><Button href="/mountains/regions/1" size="large">北海道地方</Button></Box>
               <Box sx={{ pl: 2 }}>
@@ -149,7 +163,7 @@ const MountainIndex = ({initTab}) => {
             </Box>
           </TabPanel>
           <TabPanel value={tab} index={2} style={{ height: '100%', padding: '24px' }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>山域から探す</Typography>
+            <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>山域から探す</Typography>
             <Accordion>
               <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ bgcolor: '#f0f8ff'}} aria-controls="panel1-content" id="panel1-header">
                 <Typography variant="body1">北海道</Typography>
@@ -290,13 +304,13 @@ const MountainIndex = ({initTab}) => {
             </Accordion>
           </TabPanel>
           <TabPanel value={tab} index={3} style={{ height: '100%', padding: '24px' }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>タグから探す</Typography>
-            <Button href="/mountains/tags/1" size="large" variant="outlined" sx={{ m: 1 }}>日本百名山</Button>
-            <Button href="/mountains/tags/2" size="large" variant="outlined" sx={{ m: 1 }}>新日本百名山</Button>
-            <Button href="/mountains/tags/3" size="large" variant="outlined" sx={{ m: 1 }}>花の百名山</Button>
-            <Button href="/mountains/tags/4" size="large" variant="outlined" sx={{ m: 1 }}>新・花の百名山</Button>
-            <Button href="/mountains/tags/5" size="large" variant="outlined" sx={{ m: 1 }}>都道府県最高峰</Button>
-            <Button href="/mountains/tags/6" size="large" variant="outlined" sx={{ m: 1 }}>3000m峰</Button>
+            <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>タグから探す</Typography>
+            <Button href="/mountains/tags/1" size={matches ? "large" : "medium"} variant="outlined" sx={{ m: 1 }}>日本百名山</Button>
+            <Button href="/mountains/tags/2" size={matches ? "large" : "medium"} variant="outlined" sx={{ m: 1 }}>新日本百名山</Button>
+            <Button href="/mountains/tags/3" size={matches ? "large" : "medium"} variant="outlined" sx={{ m: 1 }}>花の百名山</Button>
+            <Button href="/mountains/tags/4" size={matches ? "large" : "medium"} variant="outlined" sx={{ m: 1 }}>新・花の百名山</Button>
+            <Button href="/mountains/tags/5" size={matches ? "large" : "medium"} variant="outlined" sx={{ m: 1 }}>都道府県最高峰</Button>
+            <Button href="/mountains/tags/6" size={matches ? "large" : "medium"} variant="outlined" sx={{ m: 1 }}>3000m峰</Button>
           </TabPanel>
         </Paper>
       </Container>
