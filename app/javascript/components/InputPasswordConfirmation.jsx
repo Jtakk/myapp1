@@ -1,6 +1,8 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import { useController } from 'react-hook-form';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const InputPasswordConfirmation = (props) => {
   const {
@@ -17,6 +19,9 @@ const InputPasswordConfirmation = (props) => {
         break;
     }
   };
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+
   return (
     <TextField
       fullWidth
@@ -32,6 +37,7 @@ const InputPasswordConfirmation = (props) => {
       onChange={onChange}
       error={Boolean(fieldState.error)}
       helperText={showError(fieldState.error?.type)}
+      size={matches ? "medium" : "small"}
     />
   );
 };

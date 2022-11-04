@@ -42,7 +42,12 @@ class UsersController < ApplicationController
 
   def posts
     @user = User.find(params[:id])
-    @posts = @user.posts.latest.as_json(include: { mountain: { only: [:name, :yomi] } })
+    @posts = @user.posts.latest.as_json(
+      include: [
+        { mountain: { only: [:name, :yomi] } },
+        { photos: { only: [:image] } },
+      ]
+    )
     @max_item_count = MAX_ITEM_COUNT
   end
 
@@ -50,6 +55,7 @@ class UsersController < ApplicationController
     @posts = @user.liked_posts.latest.as_json(
       include: [
         { mountain: { only: [:name, :yomi] } },
+        { photos: { only: [:image] } },
         { user: { only: [:id, :name, :avatar] } },
       ]
     )
