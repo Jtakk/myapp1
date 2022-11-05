@@ -127,7 +127,7 @@ const UserSideMenuWrapper = ({user, isCurrentUser, children}) => {
             {drawer}
           </Drawer>
         </Box>
-        <Box component="main" sx={{ flexGrow: 1, width: { md: 'calc(100% - 240px)' }, height: '100%' }}>
+        <Box component="main" sx={{ flexGrow: 1, width: { xs: '100%', md: 'calc(100% - 240px)' }, height: '100%' }}>
           {children}
         </Box>
       </Box>

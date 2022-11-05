@@ -48,9 +48,7 @@ const UserEdit = ({ user, isCurrentUser, token }) => {
                 <Button type="submit" variant="contained" size={matches ? "medium" : "small"} >変更を保存する</Button>
               </Box>
             </form>
-
-              <DeleteUser user={user} sx={{ mt: '40px', textAlign: 'right' }} />
-            
+            <DeleteUser user={user} sx={{ mt: '40px', textAlign: 'right' }} />
           </Paper>
         </Container>
       </Box>

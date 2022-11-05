@@ -2,10 +2,14 @@ import React from 'react';
 import Chip from '@mui/material/Chip';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import SecondaryTheme from './SecondaryTheme';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const LikeButton = ({post, postToken, deleteToken, currentUser}) => {
   const [like, setLike] = React.useState(false);
   const [count, setCount] = React.useState(0);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
   React.useEffect(() => {
     const ajax = async() => {
@@ -66,6 +70,7 @@ const LikeButton = ({post, postToken, deleteToken, currentUser}) => {
         onClick={handleOnClick}
         sx={currentUser && post.user_id != currentUser.id ? { pointerEvents: 'auto' } : { pointerEvents: 'none' }}
         className="btn-like"
+        size={matches ? "medium" : "small"}
       />
     </SecondaryTheme>
   );
