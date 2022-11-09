@@ -1,5 +1,6 @@
 import React from "react";
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -12,8 +13,10 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from "@mui/material/useMediaQuery";
 
-const AccountMenu = (props) => {
+const AccountMenu = ({ currentUser }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -22,44 +25,47 @@ const AccountMenu = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+
   return (
     <>
       <Tooltip title="マイページ">
-        <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }} id="menu-toggle-button">
-          <Avatar sx={{ width: 32, height: 32 }} alt={props.currentUser.name} src={props.currentUser.avatar.thumb.url} />
+        <IconButton onClick={handleClick} size={matches ? "medium" : "small"} sx={{ ml: '16px' }} id="menu-toggle-button">
+          <Avatar sx={{ width: { xs: '32px', sm: '36px' }, height: { xs: '32px', sm: '36px' } }} alt={currentUser.name} src={currentUser.avatar.thumb.url} />
         </IconButton>
       </Tooltip>
       <Menu id="account-menu-list" anchorEl={anchorEl} open={open} onClose={handleClose} transformOrigin={{ horizontal: 'right', vertical: 'top' }} anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
-        <MenuItem component="a" href={"/users/"+props.currentUser.id+"/posts"}>
+        <MenuItem component="a" href={"/users/"+currentUser.id+"/posts"} sx={{ minHeight: '40px' }}>
           <ListItemIcon>
-            <PhotoIcon fontSize="small" />
+            <PhotoIcon fontSize={matches ? "medium" : "small"} />
           </ListItemIcon>
-          投稿一覧
+          <Typography variant={matches ? "body1" : "body2"}>投稿一覧</Typography>
         </MenuItem>
-        <MenuItem component="a" href={"/users/"+props.currentUser.id+"/favorites"}>
+        <MenuItem component="a" href={"/users/"+currentUser.id+"/favorites"} sx={{ minHeight: '40px' }}>
           <ListItemIcon>
-            <ThumbUpAltIcon fontSize="small" />
+            <ThumbUpAltIcon fontSize={matches ? "medium" : "small"} />
           </ListItemIcon>
-          お気に入り
+          <Typography variant={matches ? "body1" : "body2"}>お気に入り</Typography>
         </MenuItem>
-        <MenuItem component="a" href={"/users/"+props.currentUser.id}>
+        <MenuItem component="a" href={"/users/"+currentUser.id} sx={{ minHeight: '40px' }}>
           <ListItemIcon>
-            <AccountCircleIcon fontSize="small" />
+            <AccountCircleIcon fontSize={matches ? "medium" : "small"} />
           </ListItemIcon>
-          プロフィール
+          <Typography variant={matches ? "body1" : "body2"}>プロフィール</Typography>
         </MenuItem>
-        <MenuItem component="a" href={"/users/"+props.currentUser.id+"/edit"}>
+        <MenuItem component="a" href={"/users/"+currentUser.id+"/edit"} sx={{ minHeight: '40px' }}>
           <ListItemIcon>
-            <SettingsIcon fontSize="small" />
+            <SettingsIcon fontSize={matches ? "medium" : "small"} />
           </ListItemIcon>
-          アカウント設定
+          <Typography variant={matches ? "body1" : "body2"}>アカウント設定</Typography>
         </MenuItem>
         <Divider />
-        <MenuItem component="a" href="/logout" data-method="delete">
+        <MenuItem component="a" href="/logout" data-method="delete" sx={{ minHeight: '40px' }}>
           <ListItemIcon>
-            <LogoutIcon fontSize="small" />
+            <LogoutIcon fontSize={matches ? "medium" : "small"} />
           </ListItemIcon>
-          ログアウト
+          <Typography variant={matches ? "body1" : "body2"}>ログアウト</Typography>
         </MenuItem>
       </Menu>
     </>
