@@ -1,9 +1,10 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import NoMountainImage from 'images/no_mountain_image.jpeg';
 import LinkChips from './LinkChips';
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const IntroBox = styled(Box)({
   width: '100%',
@@ -16,21 +17,20 @@ const IntroBox = styled(Box)({
 });
 
 const MountainIntroduction = ({mountain}) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
+
   return (
     <Box sx={{ width: '100%' }} id="mountain-introduction" >
       <Box sx={{ width: '100%' }}>
         <img src={mountain.image.url ? mountain.image.url : NoMountainImage} style={{ width: '100%', height: 'auto', verticalAlign: 'top' }} />
       </Box>
       <IntroBox>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 2 }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="body2">{mountain.yomi}</Typography>
-            <Typography variant="h4">{mountain.name}</Typography>
-          </Box>
-          <Typography variant="h6">{"標高: "+mountain.elevation+" m"}</Typography>
-        </Box>
-        <LinkChips prefectures={mountain.prefectures} areas={mountain.areas} tags={mountain.tags} color="primary" sx={{ mb: 1 }} />
-        <Typography variant="body1">{mountain.introduction}</Typography>
+        <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.8rem', md: '0.875rem' } }}>{mountain.yomi}</Typography>
+        <Typography variant={matches ? "h4" : "h5"}>{mountain.name}</Typography>
+        <Typography variant={matches ? "h6" : "body1"} align="right" sx={{ mb: '16px' }}>{"標高: "+mountain.elevation+" m"}</Typography>
+        <LinkChips prefectures={mountain.prefectures} areas={mountain.areas} tags={mountain.tags} color="primary" sx={{ mb: '8px' }} />
+        <Typography variant={matches ? "body1" : "body2"}>{mountain.introduction}</Typography>
       </IntroBox>
     </Box>
   );

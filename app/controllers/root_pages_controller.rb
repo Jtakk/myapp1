@@ -6,8 +6,6 @@ class RootPagesController < ApplicationController
       include: [
         { mountain: { only: [:name, :yomi] } },
         { photos: { only: [:image] } },
-        { user: { only: [:id, :name, :avatar] } },
-        { liked_users: { only: [:id] } },
       ]
     )
   end
