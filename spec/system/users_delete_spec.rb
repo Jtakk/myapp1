@@ -13,5 +13,11 @@ RSpec.describe "UsersDelete", type: :system do
     end
     expect(current_path).to eq root_path
     expect(page).to have_content "アカウントを削除しました。"
+    visit login_path
+    fill_in "メールアドレス", with: user.email
+    fill_in "パスワード (半角英数6文字以上)", with: user.password
+    click_button "ログインする"
+    expect(current_path).to eq login_path
+    expect(page).to have_content "メールアドレスまたはパスワードが正しくありません"
   end
 end

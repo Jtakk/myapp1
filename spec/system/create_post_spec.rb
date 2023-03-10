@@ -23,7 +23,7 @@ RSpec.describe "CreatePost", type: :system do
     expect(find('#btn-submit-post', visible: false)).to be_disabled
     fill_in "緯度", with: latitude
     fill_in "経度", with: longitude
-    click_button "マーカーをセット"
+    click_button "マーカーを設置"
     fill_in "メッセージ", with: message
     expect(find('#btn-submit-post', visible: false)).to be_disabled
     10.times do

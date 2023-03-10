@@ -101,7 +101,7 @@ const UserSideMenuWrapper = ({user, isCurrentUser, children}) => {
   return (
     <Box sx={{ height: '100%' }}>
       <Box sx={{ display: { xs: 'block', md: 'none' }, position: 'fixed', top: '75px', left: '10px', zIndex: 1000 }}>
-        <Button variant="contained" onClick={handleDrawerToggle} sx={{ display: 'flex', flexDirection: 'column', fontSize: '0.7rem', padding: '2px 8px' }} >
+        <Button id="side-menu-btn" variant="contained" onClick={handleDrawerToggle} sx={{ display: 'flex', flexDirection: 'column', fontSize: '0.7rem', padding: '2px 8px' }} >
           <div>ユーザー</div>
           <div>メニュー</div>
         </Button>

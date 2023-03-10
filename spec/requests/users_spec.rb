@@ -33,6 +33,12 @@ RSpec.describe "Users", type: :request do
         expect { post_create }.to change(User, :count).by(1)
       end
 
+      it "succeeds in login" do
+        post_create
+        user = User.find_by(email: user_attributes[:email])
+        expect(session[:user_id]).to eq user.id
+      end
+
       it "inserts a flash message" do
         post_create
         expect(flash[:success]).to be_present
@@ -270,7 +276,12 @@ RSpec.describe "Users", type: :request do
     end
 
     it "assigns user's posts to @posts in descending order of created_at" do
-      arr = [latest_post, oldest_post].as_json(include: { mountain: { only: [:name, :yomi] } })
+      arr = [latest_post, oldest_post].as_json(
+        include: [
+          { mountain: { only: [:name, :yomi] } },
+          { photos: { only: [:image] } },
+        ]
+      )
       expect(controller.instance_variable_get("@posts")).to match arr
     end
   end
@@ -327,6 +338,7 @@ RSpec.describe "Users", type: :request do
         arr = [latest_post, oldest_post].as_json(
           include: [
             { mountain: { only: [:name, :yomi] } },
+            { photos: { only: [:image] } },
             { user: { only: [:id, :name, :avatar] } },
           ]
         )

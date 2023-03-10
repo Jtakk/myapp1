@@ -34,7 +34,7 @@ RSpec.describe "UsersSignup", type: :system do
         click_button "アカウントを作成する"
       }.not_to change(User, :count)
       expect(current_path).to eq signup_path
-      expect(page).to have_content "Sign Up"
+      expect(page).to have_content "新規登録"
       expect(page).to have_content "入力必須項目"
     end
   end

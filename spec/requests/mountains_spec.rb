@@ -10,8 +10,11 @@ RSpec.describe "Mountains", type: :request do
     context "without the query parameter" do
       before { get path }
 
-      it "returns http success and assigns zero to @tab" do
+      it "returns http success" do
         expect(response).to have_http_status(:success)
+      end
+
+      it "assigns zero to @tab" do
         expect(controller.instance_variable_get("@tab")).to eq 0
       end
     end
@@ -21,8 +24,11 @@ RSpec.describe "Mountains", type: :request do
 
       before { get path_with_query }
 
-      it "returns http success and assigns the query parameter to @tab" do
+      it "returns http success" do
         expect(response).to have_http_status(:success)
+      end
+
+      it "assigns the query parameter to @tab" do
         expect(controller.instance_variable_get("@tab")).to eq 0
       end
     end
@@ -32,8 +38,11 @@ RSpec.describe "Mountains", type: :request do
 
       before { get path_with_query }
 
-      it "returns http success and assigns the query parameter to @tab" do
+      it "returns http success" do
         expect(response).to have_http_status(:success)
+      end
+
+      it "assigns the query parameter to @tab" do
         expect(controller.instance_variable_get("@tab")).to eq 1
       end
     end
@@ -43,8 +52,11 @@ RSpec.describe "Mountains", type: :request do
 
       before { get path_with_query }
 
-      it "returns http success and assigns the query parameter to @tab" do
+      it "returns http success" do
         expect(response).to have_http_status(:success)
+      end
+
+      it "assigns the query parameter to @tab" do
         expect(controller.instance_variable_get("@tab")).to eq 2
       end
     end
@@ -54,8 +66,11 @@ RSpec.describe "Mountains", type: :request do
 
       before { get path_with_query }
 
-      it "returns http success and assigns the query parameter to @tab" do
+      it "returns http success" do
         expect(response).to have_http_status(:success)
+      end
+
+      it "assigns the query parameter to @tab" do
         expect(controller.instance_variable_get("@tab")).to eq 3
       end
     end
@@ -106,7 +121,19 @@ RSpec.describe "Mountains", type: :request do
       end
     end
 
-    context "when the query parameter is 2 words" do
+    context "when the query parameter is 1 word and matches 2 mountains" do
+      let(:query_parameter) { "?keyword=#{CGI.escape("山")}" }
+
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+
+      it "assigns the two mountains to @mountains" do
+        expect(controller.instance_variable_get("@mountains")).to match [mountain_2, mountain_1]
+      end
+    end
+
+    context "when the query parameter is 2 words and matches 1 mountain" do
       let(:query_parameter) { "?keyword=#{CGI.escape("富　山")}" }
 
       it "returns http success" do
@@ -151,10 +178,13 @@ RSpec.describe "Mountains", type: :request do
     let(:mountain_1) { create(:mountain, id: 1, yomi: "い") }
     let(:prefecture_2) { create(:prefecture, region_id: region.id) }
     let(:mountain_2) { create(:mountain, id: 2, yomi: "あ") }
+    let(:mountain_3) { create(:mountain, id: 3, yomi: "う") }
 
     before do
       mountain_1.prefectures << prefecture_1
       mountain_2.prefectures << prefecture_2
+      mountain_3.prefectures << prefecture_1
+      mountain_3.prefectures << prefecture_2
       get mountain_region_path(region)
     end
 
@@ -166,8 +196,9 @@ RSpec.describe "Mountains", type: :request do
       expect(controller.instance_variable_get("@region")).to eq region
     end
 
-    it "assigns the mountains to @mountains in ascending order of yomi" do
-      expect(controller.instance_variable_get("@mountains")).to match [mountain_2, mountain_1]
+    it "assigns the deduplicated mountains to @mountains in ascending order of yomi" do
+      expect(controller.instance_variable_get("@mountains")).
+        to match [mountain_2, mountain_1, mountain_3]
     end
   end
 

@@ -40,7 +40,7 @@ RSpec.describe "UsersLogin", type: :system do
       click_button "ログインする"
       expect(current_path).to eq login_path
       expect(page).to have_content "メールアドレスまたはパスワードが正しくありません"
-      expect(page).to have_content "Log In"
+      expect(page).to have_content "ログイン"
       within('#app-header') do
         expect(page).to have_link "ログイン", href: login_path
       end

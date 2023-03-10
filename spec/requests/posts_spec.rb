@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Posts", type: :request do
+  number = PostsController::MAX_IMAGE_COUNT
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:mountain) { create(:mountain) }
@@ -37,12 +38,14 @@ RSpec.describe "Posts", type: :request do
     let(:post_create) do
       post posts_path, params: { post: post_attributes, photo: { image: image_array } }
     end
-    let(:post_create_without_photos) { post posts_path, params: { post: post_attributes } }
+    let(:post_create_without_photos) do
+      post posts_path, params: { post: post_attributes }
+    end
 
     context "when not logged in" do
       let(:post_attributes) { attributes_for(:post, mountain_id: mountain.id) }
       let(:image_array) do
-        Array.new(10) do
+        Array.new(number) do
           Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/test_photo_1.png")
         end
       end
@@ -69,7 +72,7 @@ RSpec.describe "Posts", type: :request do
     context "when logged in, with valid attributes" do
       let(:post_attributes) { attributes_for(:post, mountain_id: mountain.id) }
       let(:image_array) do
-        Array.new(10) do
+        Array.new(number) do
           Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/test_photo_1.png")
         end
       end
@@ -86,7 +89,7 @@ RSpec.describe "Posts", type: :request do
       end
 
       it "adds photos" do
-        expect { post_create }.to change(Photo, :count).by(10)
+        expect { post_create }.to change(Photo, :count).by(number)
       end
 
       it "assigns the post to @data" do
@@ -113,7 +116,7 @@ RSpec.describe "Posts", type: :request do
     context "when logged in, with invalid post attributes" do
       let(:post_attributes) { attributes_for(:post, mountain_id: "") }
       let(:image_array) do
-        Array.new(10) do
+        Array.new(number) do
           Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/test_photo_1.png")
         end
       end
@@ -175,10 +178,10 @@ RSpec.describe "Posts", type: :request do
       end
     end
 
-    context "when logged in, with photos more than 10" do
+    context "when logged in, with photos more than the limited number" do
       let(:post_attributes) { attributes_for(:post, mountain_id: mountain.id) }
       let(:image_array) do
-        Array.new(11) do
+        Array.new(number + 1) do
           Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/images/test_photo_1.png")
         end
       end
@@ -271,6 +274,16 @@ RSpec.describe "Posts", type: :request do
 
       it "succeeds in editing a message of the post" do
         expect { patch_update }.to change { my_post.reload.message }
+      end
+
+      it "returns http status 302" do
+        patch_update
+        expect(response).to have_http_status(302)
+      end
+
+      it "inserts a flash message" do
+        patch_update
+        expect(flash[:success]).to be_present
       end
     end
 

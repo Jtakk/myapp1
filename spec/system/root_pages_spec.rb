@@ -60,7 +60,6 @@ RSpec.describe "RootPages", type: :system do
       within('#overview') do
         expect(page).to have_link "山を探す", href: mountains_path
         expect(page).to have_link "新規登録", href: signup_path
-        expect(page).to have_link "ログイン", href: login_path
       end
     end
   end

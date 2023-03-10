@@ -39,6 +39,7 @@ RSpec.describe "UsersEdit", type: :system do
       expect(page).to have_content revised_user_params[:name]
       expect(page).to have_content revised_user_params[:email]
       expect(page).to have_content revised_user_params[:introduction]
+      find('#side-menu-btn').click
       within('#side-menu-list') do
         click_link "ログアウト"
       end

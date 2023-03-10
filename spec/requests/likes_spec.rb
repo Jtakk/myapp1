@@ -17,6 +17,10 @@ RSpec.describe "Likes", type: :request do
         expect(response).to have_http_status(200)
       end
 
+      it "assigns the post to @post" do
+        expect(controller.instance_variable_get("@post")).to eq other_post
+      end
+
       it "assigns nil to @like" do
         expect(controller.instance_variable_get("@like")).to eq nil
       end
@@ -34,6 +38,10 @@ RSpec.describe "Likes", type: :request do
 
       it "returns http status 200" do
         expect(response).to have_http_status(200)
+      end
+
+      it "assigns the post to @post" do
+        expect(controller.instance_variable_get("@post")).to eq other_post
       end
 
       it "assigns true to @like ( the user has liked the post )" do
@@ -77,6 +85,11 @@ RSpec.describe "Likes", type: :request do
         expect(response).to have_http_status(200)
       end
 
+      it "assigns the post to @post" do
+        post_create
+        expect(controller.instance_variable_get("@post")).to eq other_post
+      end
+
       it "adds a relation" do
         expect { post_create }.to change(Like, :count).by(1)
       end
@@ -87,9 +100,14 @@ RSpec.describe "Likes", type: :request do
 
       before { log_in_request_as(user) }
 
-      it "returns http status 200" do
+      it "returns http status 403" do
         post_create
         expect(response).to have_http_status(403)
+      end
+
+      it "assigns the post to @post" do
+        post_create
+        expect(controller.instance_variable_get("@post")).to eq my_post
       end
 
       it "doesn't add a relation" do
