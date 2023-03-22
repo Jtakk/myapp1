@@ -82,7 +82,7 @@ jobs:
           command: timestamp=`date +%Y%m%d%H%M%S` && echo "export HEROKU_APP_NAME=myapp1-$timestamp" >> $BASH_ENV
       - run:
           name: Create fresh Heroku app
-          command: heroku apps:create $HEROKU_APP_NAME --addons=jawsdb:kitefin
+          command: heroku apps:create $HEROKU_APP_NAME --addons=jawsdb:kitefin --stack heroku-20
       - run:
           name: Run pre-deploy tasks
           command: heroku config:set HEROKU_SUB_DOMAIN=$HEROKU_APP_NAME REACT_APP_GMA_KEY=$REACT_APP_GMA_KEY
