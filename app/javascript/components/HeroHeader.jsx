@@ -9,10 +9,11 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import HeroBgImage from 'images/heroheader.jpg';
 import PostsFeed from './PostsFeed';
 
 const HeroBg = styled(Box)(({theme}) => ({
-  backgroundImage: "url(/assets/heroheader.jpg)",
+  backgroundImage: `url(${HeroBgImage})`,
   backgroundPosition: 'center',
   backgroundSize: 'cover',
   position: 'relative',
