@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :post do
-    message { "Post Text" }
+    sequence(:message) { |n| "Post Text First #{n}" }
     latitude { 35.1 }
     longitude { 135 }
 
     trait :second do
-      message { "Post Text 2" }
+      sequence(:message) { |n| "Post Text Second #{n}" }
       latitude { 35.2 }
       longitude { 135 }
     end

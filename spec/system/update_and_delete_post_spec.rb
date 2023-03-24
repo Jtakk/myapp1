@@ -11,6 +11,7 @@ RSpec.describe "UpdateAndDeletePost", type: :system do
     it "succeeds in updating and deleting the post", js: true do
       log_in_as(user)
       visit post_path(my_post)
+      expect(page).to have_link user.name, href: user_path(user)
       expect(page).to have_content my_post.message
       click_button "メッセージを編集"
       fill_in "メッセージ", with: "revised message"
@@ -27,7 +28,7 @@ RSpec.describe "UpdateAndDeletePost", type: :system do
       click_button "投稿を削除"
       click_button "削除する"
       expect(page).to have_content "投稿を削除しました。"
-      expect(current_path).to eq user_posts_path(user)
+      expect(current_path).to eq posts_user_path(user)
       expect(page).not_to have_content "revised message"
     end
   end
@@ -35,11 +36,13 @@ RSpec.describe "UpdateAndDeletePost", type: :system do
   context "when not logged in or logged in not as an owner of the post" do
     it "is not able to update and delete the post", js: true do
       visit post_path(my_post)
+      expect(page).to have_link user.name, href: user_path(user)
       expect(page).to have_content my_post.message
       expect(page).not_to have_selector 'button', text: "メッセージを編集"
       expect(page).not_to have_selector 'button', text: "投稿を削除"
       log_in_as(user)
       visit post_path(other_post)
+      expect(page).to have_link other_user.name, href: user_path(other_user)
       expect(page).to have_content other_post.message
       expect(page).not_to have_selector 'button', text: "メッセージを編集"
       expect(page).not_to have_selector 'button', text: "投稿を削除"

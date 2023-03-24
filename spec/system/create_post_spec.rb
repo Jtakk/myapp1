@@ -11,10 +11,6 @@ RSpec.describe "CreatePost", type: :system do
 
   it "makes a user login and succeeds in creating a post with photos", js: true do
     visit mountain_path(mountain)
-    expect(page).to have_content mountain.name
-    expect(page).to have_content mountain.yomi
-    expect(page).to have_content mountain.elevation
-    expect(page).to have_content mountain.introduction
     click_on "投稿する"
     within('#tabpanel-create-post') do
       click_on "ログイン"
@@ -27,7 +23,7 @@ RSpec.describe "CreatePost", type: :system do
     expect(find('#btn-submit-post', visible: false)).to be_disabled
     fill_in "緯度", with: latitude
     fill_in "経度", with: longitude
-    click_button "マーカーをセット"
+    click_button "マーカーを設置"
     fill_in "メッセージ", with: message
     expect(find('#btn-submit-post', visible: false)).to be_disabled
     10.times do
@@ -45,9 +41,11 @@ RSpec.describe "CreatePost", type: :system do
     expect(page).to have_content "投稿しました。"
     posted_image_1 = user.posts.last.photos[0].image
     posted_image_2 = user.posts.last.photos[1].image
-    expect(page).to have_selector "img[src$='#{posted_image_1.fixed.url}']"
-    expect(page).to have_selector "img[src$='#{posted_image_2.fixed.url}']"
-    expect(page).to have_content user.name
-    expect(page).to have_content message
+    within('#post-view') do
+      expect(page).to have_selector "img[src$='#{posted_image_1.fixed.url}']"
+      expect(page).to have_selector "img[src$='#{posted_image_2.fixed.url}']"
+      expect(page).to have_link user.name, href: user_path(user)
+      expect(page).to have_content message
+    end
   end
 end

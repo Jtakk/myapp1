@@ -7,6 +7,7 @@ RSpec.describe "ResetPassword", type: :system do
     visit login_path
     click_link "パスワードをお忘れの方はこちら"
     expect(current_path).to eq new_password_reset_path
+    fill_in "メールアドレス", with: ""
     fill_in "メールアドレス", with: "wrong@example.com"
     click_button "メールを送信する"
     expect(page).to have_content "登録されていないメールアドレスです。"
@@ -32,6 +33,7 @@ RSpec.describe "ResetPassword", type: :system do
   it "fails in resetting the password with an expired token", js: true do
     visit login_path
     click_link "パスワードをお忘れの方はこちら"
+    fill_in "メールアドレス", with: ""
     fill_in "メールアドレス", with: user.email
     click_button "メールを送信する"
     travel_to 3.hours.after

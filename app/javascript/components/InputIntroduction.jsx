@@ -1,12 +1,16 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import { useController } from 'react-hook-form';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const InputIntroduction = (props) => {
   const {
     field: { ref, onChange, onBlur, name, value },
     fieldState
   } = useController(props);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
     <TextField
@@ -21,6 +25,7 @@ const InputIntroduction = (props) => {
       value={value}
       rows={4}
       onChange={onChange}
+      size={matches ? "medium" : "small"}
     />
   );
 };

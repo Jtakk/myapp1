@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 import FaceIcon from '@mui/icons-material/Face';
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const UploadAvatar = ({name, ...rest}) => {
   const inputRef = React.useRef(null);
@@ -14,15 +16,23 @@ const UploadAvatar = ({name, ...rest}) => {
     setAvatar('');
     inputRef.current.value = '';
   };
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
-    <Stack direction="row" spacing={1} {...rest} >
-      <Button variant="outlined" component="label" >
-        画像を設定する
-        <input type="file" accept=".jpg,.jpeg,.png,.gif" name={name} onChange={handleChange} ref={inputRef} hidden />
-      </Button>
-      <Chip variant="outlined" icon={<FaceIcon />} label={avatar && avatar.name} onDelete={handleDelete} />
-    </Stack>
+    <Box {...rest} >
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
+        <Box sx={{ m: { xs: '0 0 6px', sm: '0 6px 0 0' } }}>
+          <Button variant="outlined" component="label" size={matches ? "medium" : "small"} >
+            画像を設定する
+            <input type="file" accept=".jpg,.jpeg,.png,.gif" name={name} onChange={handleChange} ref={inputRef} hidden />
+          </Button>
+        </Box>
+        <Box>
+          <Chip variant="outlined" icon={<FaceIcon />} label={avatar && avatar.name} onDelete={handleDelete} size={matches ? "medium" : "small"} />
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

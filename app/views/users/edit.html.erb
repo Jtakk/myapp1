@@ -1,9 +1,4 @@
-<div style="display:flex;height:100%">
-  <aside style="height:100%;position:fixed"><%= react_component("UserSideMenu", { user: @user, isCurrentUser: current_user?(@user) }, { style: "height:100%" }) %></aside>
-  <main style="flex:1;margin-left:240px">
-    <% if @user.errors.any? %>
-      <%= react_component("ErrorMessages", { messages: @user.errors.full_messages }) %>
-    <% end %>
-    <%= react_component("UserEdit", { user: @user, token: form_authenticity_token(form_options: { action: user_path(@user), method: "patch" }) }, { style: "height:100%" }) %>
-  </main>
-</div>
+<% if @user.errors.any? %>
+  <%= react_component("ErrorMessages", { messages: @user.errors.full_messages }) %>
+<% end %>
+<%= react_component("UserEdit", { user: @user, isCurrentUser: current_user?(@user), token: form_authenticity_token(form_options: { action: user_path(@user), method: "patch" }) }, { style: "height:calc(100% - 56px)" } ) %>

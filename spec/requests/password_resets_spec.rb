@@ -9,15 +9,27 @@ RSpec.describe "PasswordResets", type: :request do
   end
 
   describe "POST /create" do
-    let(:user) { create(:user) }
+    let!(:user) { create(:user) }
 
     before { post password_resets_path, params: { password_reset: { email: email_attribute } } }
 
-    context "with a wrong email" do
+    context "with an unregistered email" do
       let(:email_attribute) { "wrong@example.com" }
 
-      it "doesn't assign the @user" do
+      it "doesn't assign anything to @user" do
         expect(controller.instance_variable_get("@user")).to eq nil
+      end
+
+      it "doesn't save a reset_digest" do
+        expect(user.reload.reset_digest).to eq nil
+      end
+
+      it "doesn't save a reset_sent_at" do
+        expect(user.reload.reset_sent_at).to eq nil
+      end
+
+      it "doesn't deliver email" do
+        expect(ActionMailer::Base.deliveries.size).to eq 0
       end
 
       it "inserts a flash message" do
@@ -28,7 +40,7 @@ RSpec.describe "PasswordResets", type: :request do
     context "with the correct email" do
       let(:email_attribute) { user.email }
 
-      it "assigns the @user" do
+      it "assigns the user to @user" do
         expect(controller.instance_variable_get("@user")).to eq user
       end
 
@@ -66,7 +78,7 @@ RSpec.describe "PasswordResets", type: :request do
 
       before { get_edit }
 
-      it "doesn't assign the @user" do
+      it "doesn't assign anything to @user" do
         expect(controller.instance_variable_get("@user")).to eq nil
       end
 
@@ -81,7 +93,7 @@ RSpec.describe "PasswordResets", type: :request do
 
       before { get_edit }
 
-      it "assigns the @user" do
+      it "assigns the user to @user" do
         expect(controller.instance_variable_get("@user")).to eq user
       end
 
@@ -96,7 +108,7 @@ RSpec.describe "PasswordResets", type: :request do
 
       before { get_edit }
 
-      it "assigns the @user" do
+      it "assigns the user to @user" do
         expect(controller.instance_variable_get("@user")).to eq user
       end
 

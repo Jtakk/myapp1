@@ -1,18 +1,14 @@
-<div style="display:flex;height:100%">
-  <aside style="height:100%;position:fixed">
-    <%= react_component("UserSideMenu", { user: @post.user, isCurrentUser: current_users_post?(@post) }, { style: "height:100%" }) %>
-  </aside>
-  <main style="flex:1;margin-left:240px">
-    <%= react_component("PostShow", {
-      post: @post,
-      currentUser: current_user,
-      isCurrentUsersPost: current_users_post?(@post),
-      patchPostToken: form_authenticity_token(form_options: { action: post_path(@post), method: "patch" }),
-      deletePostToken: form_authenticity_token(form_options: { action: post_path(@post), method: "delete" }),
-      postLikeToken: form_authenticity_token(form_options: { action: likes_path, method: "post" }),
-      deleteLikeToken: form_authenticity_token(form_options: {  method: "delete" })
-    }, {
-      style: "height:100%"
-    }) %>
-  </main>
-</div>
+<%= react_component("PostShow", {
+  post: @post,
+  mountain: @mountain,
+  user: @user,
+  isCurrentUser: current_user?(@user),
+  photos: @photos,
+  currentUser: current_user,
+  patchPostToken: form_authenticity_token(form_options: { action: post_path(@post), method: "patch" }),
+  deletePostToken: form_authenticity_token(form_options: { action: post_path(@post), method: "delete" }),
+  postLikeToken: form_authenticity_token(form_options: { action: likes_path, method: "post" }),
+  deleteLikeToken: form_authenticity_token(form_options: {  method: "delete" })
+}, {
+  style: "height:calc(100% - 56px)"
+}) %>

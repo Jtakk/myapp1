@@ -1,9 +1,9 @@
 class LikesController < ApplicationController
-  before_action :ajax_logged_in_user, only: [:show, :create, :destroy]
+  before_action :ajax_logged_in_user, only: [:create, :destroy]
 
   def show
     @post = Post.find(params[:id])
-    @like = current_user.like?(@post)
+    @like = current_user&.like?(@post)
     @count = @post.liked_users.count
     render json: { like: @like, count: @count }
   end

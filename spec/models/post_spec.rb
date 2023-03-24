@@ -55,14 +55,30 @@ RSpec.describe Post, type: :model do
 
   describe "the 'latest' scope" do
     let(:oldest_post) do
-      create(:post, user_id: user.id, mountain_id: mountain.id, created_at: Time.current)
+      create(
+        :post,
+        id: 1,
+        user_id: user.id,
+        mountain_id: mountain.id,
+        created_at: Time.current
+      )
     end
     let(:latest_post) do
-      create(:post, user_id: user.id, mountain_id: mountain.id, created_at: Time.current + 1.days)
+      create(
+        :post,
+        id: 2,
+        user_id: user.id,
+        mountain_id: mountain.id,
+        created_at: Time.current + 1.days
+      )
+    end
+
+    it "returns posts in ascending order of ID" do
+      expect(Post.all).to match [oldest_post, latest_post]
     end
 
     it "returns posts sorted by created_at from newest to oldest" do
-      expect(Post.latest).to match [latest_post, oldest_post]
+      expect(Post.all.latest).to match [latest_post, oldest_post]
     end
   end
 end

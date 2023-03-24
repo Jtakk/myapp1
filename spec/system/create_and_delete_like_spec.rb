@@ -29,9 +29,10 @@ RSpec.describe "CreateAndDeleteLike", type: :system do
   end
 
   context "when not logged in" do
-    it "is not able to find the Like button", js: true do
+    it "is not able to create and delete a relation", js: true do
       visit post_path(other_post)
-      expect(page).not_to have_content "いいね! 0"
+      expect(page).to have_content "いいね! 0"
+      expect(find('.btn-like').style('pointer-events')['pointer-events']).to eq "none"
     end
   end
 end

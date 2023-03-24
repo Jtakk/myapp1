@@ -16,7 +16,8 @@ RSpec.describe "UsersSignup", type: :system do
         click_button "アカウントを作成する"
       }.to change(User, :count).by(1)
       user = User.find_by(email: valid_user_params[:email])
-      expect(current_path).to eq user_path(user.id)
+      expect(current_path).to eq user_path(user)
+      expect(page).not_to have_link "ログイン", href: login_path
       expect(page).to have_content "アカウントを作成しました。"
       expect(page).to have_content user.name
       expect(page).to have_content user.email
@@ -32,7 +33,8 @@ RSpec.describe "UsersSignup", type: :system do
         fill_in "パスワード再入力", with: invalid_user_params[:password_confirmation]
         click_button "アカウントを作成する"
       }.not_to change(User, :count)
-      expect(page).to have_content "Sign Up"
+      expect(current_path).to eq signup_path
+      expect(page).to have_content "新規登録"
       expect(page).to have_content "入力必須項目"
     end
   end
