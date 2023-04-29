@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   MAX_ITEM_COUNT = 10
   before_action :logged_in_user, only: [:edit, :update, :destroy, :favorites]
   before_action :correct_user, only: [:edit, :update, :destroy, :favorites]
+  before_action :restricted_user, only: [:update, :destroy]
 
   def show
     @user = User.find(params[:id])
@@ -74,6 +75,13 @@ class UsersController < ApplicationController
     unless current_user?(@user)
       flash[:warning] = "保護されたページです"
       redirect_to root_url
+    end
+  end
+
+  def restricted_user
+    if @user.id == 1
+      flash[:warning] = "操作が許可されていないアカウントです"
+      redirect_to @user
     end
   end
 end

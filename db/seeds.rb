@@ -4,11 +4,11 @@ require 'csv'
 
 User.create!(
   id: 1,
-  name: "First User",
-  email: "first@example.com",
+  name: "Guest",
+  email: "guest@example.com",
   password: "password",
   password_confirmation: "password",
-  introduction: "Hello, World!"
+  introduction: "ゲスト用アカウントです"
 )
 
 CSV.foreach('db/csv/mountains_table.csv', headers: true) do |row|
