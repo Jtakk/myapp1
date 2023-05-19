@@ -44,3 +44,6 @@ yarn-debug.log*
 
 # Ignore environment variables
 /.env
+
+# Ignore others
+/memo.md

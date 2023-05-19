@@ -73,7 +73,7 @@
 - バックエンド
   - Ruby 3.0.3
   - Ruby on Rails 6.1.4.6
-  - MySQL 8.0.32
+  - MySQL 8.0
   - RSpec 3.11
   - RuboCop 0.93.1
 - フロントエンド
