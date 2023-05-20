@@ -35,8 +35,7 @@ RSpec.describe "RootPages", type: :system do
 
     it "has valid links within header", js: true do
       within('#app-header') do
-        expect(page).to have_link "Myapp1", href: root_path
-        expect(page).to have_link "ホーム", href: root_path
+        expect(find('#app-logo-link')).to have_link nil, href: root_path
         expect(page).to have_link "新規登録", href: signup_path
         expect(page).to have_link "ログイン", href: login_path
         click_on "山を探す"
