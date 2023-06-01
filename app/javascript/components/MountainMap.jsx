@@ -194,6 +194,7 @@ const MountainMap = (props) => {
             center={center}
             zoom={zoom}
             onClick={onClickMap}
+            mapTypeId={google.maps.MapTypeId.HYBRID}
           >
             <Marker position={pin} icon="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png" >
               {pin &&
