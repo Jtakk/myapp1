@@ -13,6 +13,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
+const images = require.context('../images', true)
+
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
