@@ -164,8 +164,11 @@ const MountainMap = (props) => {
   };
 
   const [mapview, setMapview] = React.useState(false);
-  const switchMap = () => {
-    setMapview(!mapview);
+  const closeMap = () => {
+    setMapview(false);
+  };
+  const openMap = () => {
+    setMapview(true);
   };
 
   const [alignment, setAlignment] = React.useState('recent');
@@ -181,12 +184,12 @@ const MountainMap = (props) => {
     return (
       <Box sx={{ height: '100%', width: '100%', position: 'relative' }}>
         {mapview &&
-          <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: '#000', opacity: '0.8', zIndex: '1000' }} onClick={() => switchMap()}></Box>
+          <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: '#000', opacity: '0.8', zIndex: '1000' }} onClick={() => closeMap()}></Box>
         }
         <Box sx={{ position: 'absolute', top: { xs: '5%', sm: 0 }, left: { xs: '10%', sm: 0 }, width: { xs: '80%', sm: '40%' }, height: { xs: '80%', sm: '100%' }, visibility: { xs: mapview ? 'visible' : 'hidden', sm: 'visible' }, zIndex: '1100' }} >
           {!lowMatches &&
             <Box sx={{ backgroundColor: '#fff', p: '5px 10px' }}>
-              <Button variant="contained" color="success" size="small" startIcon={<ClearIcon fontSize="small" />} fullWidth onClick={() => switchMap()}>マップを閉じる</Button>
+              <Button variant="contained" color="success" size="small" startIcon={<ClearIcon fontSize="small" />} fullWidth onClick={() => closeMap()}>マップを閉じる</Button>
             </Box>
           }
           <GoogleMap
@@ -199,7 +202,7 @@ const MountainMap = (props) => {
             <Marker position={pin} icon="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png" >
               {pin &&
                 <InfoWindow onCloseClick={() => setPin()} >
-                  <Button size="small" variant="contained" onClick={() => {setTab(3); switchMap();}}>投稿内容を入力</Button>
+                  <Button size="small" variant="contained" onClick={() => {setTab(3); closeMap();}}>投稿内容を入力</Button>
                 </InfoWindow>
               }
             </Marker>
@@ -218,7 +221,7 @@ const MountainMap = (props) => {
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%', position: 'sticky', top: 0, zIndex: '100', backgroundColor: '#fff' }}>
             {!lowMatches &&
               <Box sx={{ backgroundColor: '#fff', p: '5px 10px' }}>
-                <Button size="small" variant="contained" color="success" fullWidth onClick={() => switchMap()}>マップを開く</Button>
+                <Button size="small" variant="contained" color="success" fullWidth onClick={() => openMap()}>マップを開く</Button>
               </Box>
             }
             <Tabs value={tab} onChange={handleChangeTab} variant="fullWidth" aria-label="basic tabs example">

@@ -6,6 +6,7 @@ class MountainsController < ApplicationController
   end
 
   def show
+    store_location
     mountain = Mountain.find(params[:id])
     @mountain = mountain.as_json(include: [:prefectures, :areas, :tags])
     @posts = mountain.posts.latest.as_json(
