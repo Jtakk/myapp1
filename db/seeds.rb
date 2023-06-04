@@ -8,7 +8,8 @@ User.create!(
   email: "guest@example.com",
   password: "password",
   password_confirmation: "password",
-  introduction: "ゲスト用アカウントです"
+  introduction: "ゲスト用アカウントです",
+  avatar: File.open('./public/uploads/user/template/guest.png')
 )
 
 CSV.foreach('db/csv/mountains_table.csv', headers: true) do |row|

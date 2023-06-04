@@ -28,6 +28,9 @@
 !/public/uploads/mountain/
 /public/uploads/mountain/*
 !/public/uploads/mountain/template/
+!/public/uploads/user/
+/public/uploads/user/*
+!/public/uploads/user/template/
 
 /public/assets
 .byebug_history
