@@ -50,3 +50,4 @@ yarn-debug.log*
 
 # Ignore others
 /memo.md
+.DS_Store
