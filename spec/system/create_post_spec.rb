@@ -21,8 +21,8 @@ RSpec.describe "CreatePost", type: :system do
     visit mountain_path(mountain)
     click_on "投稿する"
     expect(find('#btn-submit-post', visible: false)).to be_disabled
-    fill_in "緯度", with: latitude
-    fill_in "経度", with: longitude
+    fill_in "input-latitude-decimal", with: latitude
+    fill_in "input-longitude-decimal", with: longitude
     click_button "マーカーを設置"
     fill_in "メッセージ", with: message
     expect(find('#btn-submit-post', visible: false)).to be_disabled

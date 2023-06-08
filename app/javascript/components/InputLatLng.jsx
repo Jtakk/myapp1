@@ -53,7 +53,7 @@ const InputLatLng = ({onSetMarker}) => {
             <Typography variant="body2" sx={{ width: "36px", mr: "4px", fontSize: { xs: "0.8rem", md: "0.875rem" } }}>緯度:</Typography>
             <TextField
               sx={{ flexGrow: 1, maxWidth: "250px" }}
-              id="lat"
+              id="input-latitude-decimal"
               type="number"
               size="small"
               margin="none"
@@ -64,7 +64,7 @@ const InputLatLng = ({onSetMarker}) => {
             <Typography variant="body2" sx={{ width: "36px", mr: "4px", fontSize: { xs: "0.8rem", md: "0.875rem" } }}>経度:</Typography>
             <TextField
               sx={{ flexGrow: 1, maxWidth: "250px" }}
-              id="lng"
+              id="input-longitude-decimal"
               type="number"
               size="small"
               margin="none"
