@@ -7,6 +7,7 @@ import Tab from '@mui/material/Tab';
 import TabPanel from './TabPanel';
 import MountainIntroduction from './MountainIntroduction';
 import TextField from '@mui/material/TextField';
+import InputLatLng from './InputLatLng';
 import InputMessage from './InputMessage';
 import UploadPhotos from './UploadPhotos';
 import HelpToCreatePost from './HelpToCreatePost';
@@ -96,10 +97,7 @@ const MountainMap = (props) => {
   const handleChangeTab = (event, newValue) => {
     setTab(newValue);
   };
-  const inputLat = React.useRef(null);
-  const inputLng = React.useRef(null);
-  const onSetMarker = () => {
-    const point = { lat: parseFloat(inputLat.current.value), lng: parseFloat(inputLng.current.value) };
+  const onSetMarker = (point) => {
     setPin(point);
     setCenter(point);
   };
@@ -318,13 +316,7 @@ const MountainMap = (props) => {
                 <Typography variant="h6" sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>撮影地点を決める</Typography>
                 <Box sx={{ py: 2, px: 1, mb: 3 }}>
                   <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '0.875rem' } }}>マップをクリックもしくは下記に緯度•経度を入力してマーカーを設置する</Typography>
-                  <Box sx={{ display: "flex", width: "100%" }}>
-                    <TextField sx={{ flexGrow: 1, mr: 1 }} id="lat" label="緯度" type="number" size="small" margin="normal" inputRef={inputLat} />
-                    <TextField sx={{ flexGrow: 1, ml: 1 }} id="lng" label="経度" type="number" size="small" margin="normal" inputRef={inputLng} />
-                  </Box>
-                  <Box sx={{ textAlign: "center" }}>
-                    <Button onClick={onSetMarker} variant="outlined" size={highMatches ? 'medium' : 'small'} sx={{ maxWidth: "300px" }}>マーカーを設置</Button>
-                  </Box>
+                  <InputLatLng onSetMarker={onSetMarker} />
                 </Box>
                 <form>
                   <Typography variant="h6">メッセージを残す</Typography>

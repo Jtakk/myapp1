@@ -42,10 +42,12 @@ const UploadPhotos = ({images, setImages, size, ...rest}) => {
 
   return (
     <>
-      <Button id="btn-upload-photo" variant="outlined" component="label" disabled={overload} fullWidth size={size} {...rest}>
-        写真を追加する
-        <input type="file" multiple accept=".jpg,.jpeg,.png,.gif" onChange={handleChange} onClick={handleClick} hidden />
-      </Button>
+      <Box sx={{ maxWidth: '250px', mx: 'auto' }}>
+        <Button id="btn-upload-photo" variant="outlined" component="label" disabled={overload} fullWidth size={size} {...rest}>
+          写真を追加する
+          <input type="file" multiple accept=".jpg,.jpeg,.png,.gif" onChange={handleChange} onClick={handleClick} hidden />
+        </Button>
+      </Box>
       <Box>
         {images.map((image, i) => (
           <Box key={i} sx={{ display: 'inline-block', p: { xs: '4px 24px 4px 4px', md: '8px 26px 8px 8px' }, m: '4px', border: '1px solid #2196f3', position: 'relative' }}>
