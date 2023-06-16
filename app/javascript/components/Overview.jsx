@@ -40,7 +40,7 @@ const Overview = ({currentUser}) => {
       <Box id="overview-1st" sx={{ height: '100vh', bgcolor: '#f5f5f5', boxSizing: 'border-box', paddingTop: { xs: '56px', sm: '64px' } }}>
         <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} >
           <Box sx={{ height: '90%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: 'center', justifyContent: 'space-evenly' }} >
-            <Card sx={{ width: { xs: '90%', md: '45%' }, height: { xs: '45%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
+            <Card sx={{ width: { xs: '100%', sm: '90%', md: '45%' }, height: { xs: '45%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
               <CardMedia component="img" image={MapAndBinoculars} alt="map_and_binoculars" sx={{ height: { xs: '100%', md: '50%' }, width: { xs: '50%', md: '100%' } }} />
               <CardContent sx={{ display: 'flex', flexDirection: 'column', height: { xs: '100%', md: '50%' }, boxSizing: 'border-box', overflowY: 'scroll' }}>
                 <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>山を探す</Typography>
@@ -50,7 +50,7 @@ const Overview = ({currentUser}) => {
                 </CardActions>
               </CardContent>
             </Card>
-            <Card sx={{ width: { xs: '90%', md: '45%' }, height: { xs: '45%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
+            <Card sx={{ width: { xs: '100%', sm: '90%', md: '45%' }, height: { xs: '45%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
               <CardMedia component="img" image={LandscapeAndBinoculars} alt="landscape_and_binoculars" sx={{ height: { xs: '100%', md: '50%' }, width: { xs: '50%', md: '100%' } }} />
               <CardContent sx={{ display: 'flex', flexDirection: 'column', height: { xs: '100%', md: '50%' }, boxSizing: 'border-box', overflowY: 'scroll' }}>
                 <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>みんなの写真を眺める</Typography>
@@ -67,14 +67,14 @@ const Overview = ({currentUser}) => {
       <Box id="overview-2nd" sx={{ height: '100vh', bgcolor: '#f5f5f5', boxSizing: 'border-box', paddingTop: { xs: '56px', sm: '64px' } }}>
         <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} >
           <Box sx={{ height: '90%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: 'center', justifyContent: 'space-evenly' }} >
-            <Card sx={{ width: { xs: '90%', md: '45%' }, height: { xs: '40%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
+            <Card sx={{ width: { xs: '100%', sm: '90%', md: '45%' }, height: { xs: '40%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
               <CardMedia component="img" image={Photographer} alt="photographer" sx={{ height: { xs: '100%', md: '50%' }, width: { xs: '50%', md: '100%' } }} />
               <CardContent sx={{ display: 'flex', flexDirection: 'column', height: { xs: '100%', md: '50%' }, boxSizing: 'border-box', overflowY: 'scroll' }}>
                 <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>写真を撮る</Typography>
                 <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>ハイキング・登山で写真を撮ろう。(GPS機能をONにして位置データを記録しておくと役に立ちます。)</Typography>
               </CardContent>
             </Card>
-            <Card sx={{ width: { xs: '90%', md: '45%' }, height: { xs: '40%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
+            <Card sx={{ width: { xs: '100%', sm: '90%', md: '45%' }, height: { xs: '40%', md: '80%' }, display: { xs: 'flex', md: 'block' } }}>
               <CardMedia component="img" image={PcAndCamera} alt="pc_and_camera" sx={{ height: { xs: '100%', md: '50%' }, width: { xs: '50%', md: '100%' } }} />
               <CardContent sx={{ display: 'flex', flexDirection: 'column', height: { xs: '100%', md: '50%' }, boxSizing: 'border-box', overflowY: 'scroll' }}>
                 <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>写真をシェアする</Typography>
