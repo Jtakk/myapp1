@@ -52,3 +52,15 @@ test:
 production:
   <<: *default
   url: <%= ENV['JAWSDB_URL']&.sub('mysql://', 'mysql2://') %>
+
+# AWS本番環境用
+# 上記の default, development, test, production に関する記述はコメントアウト
+# production:
+#   adapter: mysql2
+#   encoding: utf8mb4
+#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+#   username: <%= ENV.fetch("MYSQL_USERNAME", "root") %>
+#   password: <%= ENV.fetch("MYSQL_PASSWORD", "password") %>
+#   host: <%= ENV['DB_SERVER_ADDRESS'] %>
+#   socket: /var/lib/mysql/mysql.sock
+#   database: myapp1_production

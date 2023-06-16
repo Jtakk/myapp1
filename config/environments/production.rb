@@ -66,6 +66,9 @@ Rails.application.configure do
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
+
+
+  # HEROKU用
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   host = ENV['HEROKU_SUB_DOMAIN'] + '.herokuapp.com'
@@ -78,6 +81,20 @@ Rails.application.configure do
     :domain => host,
     :authentication => :plain,
   }
+
+  # AWS本番環境用
+  # host = 'trekkers-view.com'
+  # creds = Aws::Credentials.new(ENV['AWS_ACCESS_KEY_ID'], ENV['AWS_SECRET_ACCESS_KEY'])
+  # Aws::Rails.add_action_mailer_delivery_method(
+  #   :ses,
+  #   credentials: creds,
+  #   region: ENV['AWS_REGION'],
+  # )
+  # config.action_mailer.default_url_options = { host: host, protocol: 'http' }
+  # config.action_mailer.delivery_method = :ses
+  # config.action_mailer.perform_deliveries = true
+  # config.action_mailer.raise_delivery_errors = true
+
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

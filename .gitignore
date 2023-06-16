@@ -28,6 +28,9 @@
 !/public/uploads/mountain/
 /public/uploads/mountain/*
 !/public/uploads/mountain/template/
+!/public/uploads/user/
+/public/uploads/user/*
+!/public/uploads/user/template/
 
 /public/assets
 .byebug_history
@@ -44,3 +47,7 @@ yarn-debug.log*
 
 # Ignore environment variables
 /.env
+
+# Ignore others
+/memo.md
+.DS_Store

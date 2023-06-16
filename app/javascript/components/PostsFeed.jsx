@@ -1,11 +1,12 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { format } from 'date-fns';
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const CustomPaper = styled(Paper)({
   textDecoration: 'none',
@@ -13,10 +14,13 @@ const CustomPaper = styled(Paper)({
 });
 
 const PostsFeed = ({posts}) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+
   return (
     <Box>
       {!!posts.length
-        ? <Typography variant="h5" sx={{ color: '#fff', mt: 2, mb: 1 }} align="center">新着投稿</Typography>
+        ? <Typography variant={matches ? "h5" : "h6"} sx={{ color: '#fff', mt: 2, mb: 1 }} align="center">新着投稿</Typography>
         : <Typography variant="h5" sx={{ color: '#fff', mt: 2, mb: 1 }} align="center">新着投稿はありません</Typography>
       }
       {!!posts.length &&

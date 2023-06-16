@@ -7,6 +7,7 @@ import Tab from '@mui/material/Tab';
 import TabPanel from './TabPanel';
 import MountainIntroduction from './MountainIntroduction';
 import TextField from '@mui/material/TextField';
+import InputLatLng from './InputLatLng';
 import InputMessage from './InputMessage';
 import UploadPhotos from './UploadPhotos';
 import HelpToCreatePost from './HelpToCreatePost';
@@ -96,10 +97,7 @@ const MountainMap = (props) => {
   const handleChangeTab = (event, newValue) => {
     setTab(newValue);
   };
-  const inputLat = React.useRef(null);
-  const inputLng = React.useRef(null);
-  const onSetMarker = () => {
-    const point = { lat: parseFloat(inputLat.current.value), lng: parseFloat(inputLng.current.value) };
+  const onSetMarker = (point) => {
     setPin(point);
     setCenter(point);
   };
@@ -164,8 +162,11 @@ const MountainMap = (props) => {
   };
 
   const [mapview, setMapview] = React.useState(false);
-  const switchMap = () => {
-    setMapview(!mapview);
+  const closeMap = () => {
+    setMapview(false);
+  };
+  const openMap = () => {
+    setMapview(true);
   };
 
   const [alignment, setAlignment] = React.useState('recent');
@@ -181,12 +182,12 @@ const MountainMap = (props) => {
     return (
       <Box sx={{ height: '100%', width: '100%', position: 'relative' }}>
         {mapview &&
-          <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: '#000', opacity: '0.8', zIndex: '1000' }} onClick={() => switchMap()}></Box>
+          <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: '#000', opacity: '0.8', zIndex: '1000' }} onClick={() => closeMap()}></Box>
         }
         <Box sx={{ position: 'absolute', top: { xs: '5%', sm: 0 }, left: { xs: '10%', sm: 0 }, width: { xs: '80%', sm: '40%' }, height: { xs: '80%', sm: '100%' }, visibility: { xs: mapview ? 'visible' : 'hidden', sm: 'visible' }, zIndex: '1100' }} >
           {!lowMatches &&
             <Box sx={{ backgroundColor: '#fff', p: '5px 10px' }}>
-              <Button variant="contained" color="success" size="small" startIcon={<ClearIcon fontSize="small" />} fullWidth onClick={() => switchMap()}>マップを閉じる</Button>
+              <Button variant="contained" color="success" size="small" startIcon={<ClearIcon fontSize="small" />} fullWidth onClick={() => closeMap()}>マップを閉じる</Button>
             </Box>
           }
           <GoogleMap
@@ -194,11 +195,12 @@ const MountainMap = (props) => {
             center={center}
             zoom={zoom}
             onClick={onClickMap}
+            mapTypeId={google.maps.MapTypeId.HYBRID}
           >
             <Marker position={pin} icon="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png" >
               {pin &&
                 <InfoWindow onCloseClick={() => setPin()} >
-                  <Button size="small" variant="contained" onClick={() => {setTab(3); switchMap();}}>投稿内容を入力</Button>
+                  <Button size="small" variant="contained" onClick={() => {setTab(3); closeMap();}}>投稿内容を入力</Button>
                 </InfoWindow>
               }
             </Marker>
@@ -217,7 +219,7 @@ const MountainMap = (props) => {
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%', position: 'sticky', top: 0, zIndex: '100', backgroundColor: '#fff' }}>
             {!lowMatches &&
               <Box sx={{ backgroundColor: '#fff', p: '5px 10px' }}>
-                <Button size="small" variant="contained" color="success" fullWidth onClick={() => switchMap()}>マップを開く</Button>
+                <Button size="small" variant="contained" color="success" fullWidth onClick={() => openMap()}>マップを開く</Button>
               </Box>
             }
             <Tabs value={tab} onChange={handleChangeTab} variant="fullWidth" aria-label="basic tabs example">
@@ -314,13 +316,7 @@ const MountainMap = (props) => {
                 <Typography variant="h6" sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>撮影地点を決める</Typography>
                 <Box sx={{ py: 2, px: 1, mb: 3 }}>
                   <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '0.875rem' } }}>マップをクリックもしくは下記に緯度•経度を入力してマーカーを設置する</Typography>
-                  <Box sx={{ display: "flex", width: "100%" }}>
-                    <TextField sx={{ flexGrow: 1, mr: 1 }} id="lat" label="緯度" type="number" size="small" margin="normal" inputRef={inputLat} />
-                    <TextField sx={{ flexGrow: 1, ml: 1 }} id="lng" label="経度" type="number" size="small" margin="normal" inputRef={inputLng} />
-                  </Box>
-                  <Box sx={{ textAlign: "center" }}>
-                    <Button onClick={onSetMarker} variant="outlined" size={highMatches ? 'medium' : 'small'} sx={{ maxWidth: "300px" }}>マーカーを設置</Button>
-                  </Box>
+                  <InputLatLng onSetMarker={onSetMarker} />
                 </Box>
                 <form>
                   <Typography variant="h6">メッセージを残す</Typography>

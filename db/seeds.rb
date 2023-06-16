@@ -4,11 +4,42 @@ require 'csv'
 
 User.create!(
   id: 1,
-  name: "First User",
-  email: "first@example.com",
+  name: "Guest",
+  email: "guest@example.com",
   password: "password",
   password_confirmation: "password",
-  introduction: "Hello, World!"
+  introduction: "ゲスト用アカウントです",
+  avatar: File.open('./public/uploads/user/template/guest.png')
+)
+
+User.create!(
+  id: 2,
+  name: "greg147",
+  email: "sample1@example.com",
+  password: "password",
+  password_confirmation: "password",
+  introduction: "趣味は景色を撮ること",
+  avatar: File.open('./public/uploads/user/template/sample1.jpeg')
+)
+
+User.create!(
+  id: 3,
+  name: "PEGasus",
+  email: "sample2@example.com",
+  password: "password",
+  password_confirmation: "password",
+  introduction: "Hello!!",
+  avatar: File.open('./public/uploads/user/template/sample2.png')
+)
+
+User.create!(
+  id: 4,
+  name: "penguin_hiker",
+  email: "sample3@example.com",
+  password: "password",
+  password_confirmation: "password",
+  introduction: "登山好き。目指すは百名山制覇！！",
+  avatar: File.open('./public/uploads/user/template/sample3.png')
 )
 
 CSV.foreach('db/csv/mountains_table.csv', headers: true) do |row|

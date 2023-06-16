@@ -103,6 +103,7 @@ const PostShow = ({post, mountain, user, isCurrentUser, photos, currentUser, pat
                   mapContainerStyle={containerStyle}
                   center={location}
                   zoom={mountain.zoom}
+                  mapTypeId={google.maps.MapTypeId.HYBRID}
                 >
                   <Marker position={location} />
                 </GoogleMap>

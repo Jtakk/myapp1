@@ -1,5 +1,5 @@
 import React from "react";
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -11,6 +11,8 @@ import Button from '@mui/material/Button';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import HeroBgImage from 'images/heroheader.jpg';
 import PostsFeed from './PostsFeed';
+import AppTitle from 'images/app_title.svg';
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const HeroBg = styled(Box)(({theme}) => ({
   backgroundImage: `url(${HeroBgImage})`,
@@ -28,7 +30,7 @@ const HeroBg = styled(Box)(({theme}) => ({
 }));
 
 const CustomCard = styled(Card)(({theme}) => ({
-  backgroundColor: 'rgba(0,0,0,0.5)',
+  backgroundColor: 'rgba(0,0,0,0.6)',
   maxHeight: '85%',
   overflowY: 'scroll',
   width: '100%',
@@ -52,20 +54,27 @@ const HeroHeader = ({posts, currentUser}) => {
     });
   };
 
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+
   return (
     <HeroBg id="hero-header">
       <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ height: '90%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end' }} >
           <CustomCard>
             <CardContent>
-              <Typography sx={{ color: '#fff', mb: 2 }} variant="h3" align="center">TITLE</Typography>
-              <Typography sx={{ color: '#fff', mb: 1 }} variant="body1" align="center">素晴らしい山の景色をみんなで共有しよう!</Typography>
-              <Typography sx={{ color: '#fff' }} variant="body1" align="center">→ <Link component="button" variant="body1" underline="hover" sx={{ color: '#fff' }} onClick={() => scrollToElement("overview-1st")}>どんなことができる？</Link></Typography>
+              <Box sx={{ width: '100%' }}>
+                <img alt="Trekker's View" src={AppTitle} style={{ height: 'auto', width: '100%', verticalAlign: 'middle' }} />
+              </Box>
+              <Typography sx={{ color: '#fff', mt: '24px', mb: '8px', fontSize: { sm: '1rem' } }} variant="body2" align="center">素晴らしい山の景色をみんなで共有しよう!</Typography>
+              <Typography sx={{ color: '#fff', fontSize: { sm: '1rem' } }} variant="body2" align="center">
+                → <Link component="button" variant="body2" underline="hover" sx={{ color: '#fff', fontSize: { sm: '1rem' } }} onClick={() => scrollToElement("overview-1st")}>どんなことができる？</Link>
+              </Typography>
             </CardContent>
             {!currentUser &&
               <CardActions sx={{ justifyContent: 'space-evenly' }}>
-                <Button variant="contained" size="large" href="/signup" >新規登録</Button>
-                <Button variant="contained" size="large" href="/login" >ログイン</Button>
+                <Button variant="contained" size={matches ? "large" : "medium"} href="/signup" >新規登録</Button>
+                <Button variant="contained" size={matches ? "large" : "medium"} href="/login" >ログイン</Button>
               </CardActions>
             }
             <CardContent>

@@ -40,6 +40,7 @@ const HelpToCreatePost = ({...rest}) => {
           <Box sx={{ p: '16px', mb: '16px', display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
             <Box sx={{ width: { xs: '100%', sm: '40%' } }}>
               <Typography variant="body1" sx={{ mb: '16px', fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' } }}>マップ上をクリックする、もしくは緯度•経度を入力して「マーカーを設置」ボタンを押すことでマップ上に青いピンを設置します。</Typography>
+              <Typography variant="body1" sx={{ mb: '16px', fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' } }}>緯度•経度を入力する場合、入力タイプを「小数」もしくは「度•分•秒」から選択できます。</Typography>
               <Typography variant="body1" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' } }}>投稿を完了するには青いピンの設置が必須となります。</Typography>
             </Box>
             <Box sx={{ width: { xs: '100%', sm: '60%' }, boxSizing: "border-box", p: { xs: '16px 16px 0', sm: '0 16px' }  }}>

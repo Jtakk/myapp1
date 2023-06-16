@@ -30,7 +30,7 @@ const UserProfile = ({user, isCurrentUser}) => {
               </Box>
               {isCurrentUser &&
                 <Box sx={{ mb: '32px' }} >
-                  <Typography variant="body2" sx={{ m: '0 0 8px 8px' }} >メールアドレス</Typography>
+                  <Typography variant="body2" sx={{ m: '0 0 8px 8px' }} >メールアドレス(非公開)</Typography>
                   <Typography variant="body2" sx={{ m: { xs: '0 24px 8px', sm: '0 40px 8px', md: '0 70px 8px' }, fontSize: { xs: '0.8rem', sm: '0.875rem' } }} >{user.email}</Typography>
                   <Divider />
                 </Box>

@@ -4,31 +4,38 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import AppLogo from './AppLogo';
+import { AppLogoHorizontal, AppLogoVertical, AppLogoImageOnly } from './AppLogoLinks';
 import AccountMenu from './AccountMenu';
 import SearchMenu from './SearchMenu';
-
 import HomeIcon from '@mui/icons-material/Home';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const AppHeader = ({currentUser}) => {
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+  const lowMatches = useMediaQuery(theme.breakpoints.up('sm'));
+  const highMatches = useMediaQuery(theme.breakpoints.up('md'));
 
   return (
     <>
       <AppBar position="fixed" id="app-header" >
-        <Toolbar>
-          <AppLogo />
-          {matches
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Box id="app-logo-link" sx={{ height: { xs: '40px', sm: '45px' } }}>
+            {highMatches
+              ? <AppLogoHorizontal/>
+              : lowMatches
+                ? <AppLogoVertical/>
+                : <AppLogoImageOnly/>
+            }
+          </Box>
+          {highMatches
             ? <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: "space-evenly" }}>
                 <Button size="large" color="inherit" href="/" startIcon={<HomeIcon />}  >
                   ホーム
                 </Button>
                 <SearchMenu />
               </Box>
-            : <Box sx={{ mr: '8px' }}>
+            : <Box>
                 <SearchMenu />
               </Box>
           }
