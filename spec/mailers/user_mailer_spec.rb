@@ -10,7 +10,7 @@ RSpec.describe UserMailer, type: :mailer do
     it "renders the headers" do
       expect(mail.subject).to eq "パスワード再設定のご案内"
       expect(mail.to).to eq [user.email]
-      expect(mail.from).to eq ["from@example.com"]
+      expect(mail.from).to eq ["no-reply@trekkers-view.com"]
     end
 
     it "renders the body" do
