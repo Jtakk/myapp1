@@ -14,7 +14,8 @@ Trekker's View は山の景色の写真を投稿できるWebサイトです。<b
 
 
 # URL
-http://trekkers-view.com
+~~http://trekkers-view.com~~
+現在閲覧停止中です。
 
 
 
